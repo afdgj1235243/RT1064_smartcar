@@ -1,5 +1,4 @@
-./objects/uart_communication.o: ..\CODE\uart_communication.c \
-  ..\code\uart_communication.h \
+./objects/keys.o: ..\CODE\keys.c ..\code\keys.h \
   ..\..\libraries\zf_common\zf_common_headfile.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \

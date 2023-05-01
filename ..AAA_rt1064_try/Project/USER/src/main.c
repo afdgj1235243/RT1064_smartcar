@@ -86,7 +86,8 @@ void main(void)
 //	while(1){tft180_show_string(0,60,"lineate_uart_init");}
 		motor_init();
 		encord_init();
-
+		icm20602_init();
+	
 		interrupt_global_enable(0);
 		
 		// π”√÷–∂œCH0
@@ -99,7 +100,7 @@ void main(void)
 		pit_ms_init(PIT_CH0, 1);
 		
 //		lineate_uart_try();
-		jieshou_try(100);
+//		jieshou_try(100);
 		
 		while(1)
 		{
@@ -107,11 +108,11 @@ void main(void)
 //			uart_tx_interrupt(UART_1, 1);
 //			try();
 //			encoder_get();
-			
-			tft180_show_int(0,0,jieshoushuju.add[10],5);
-			tft180_show_int(0,15,jieshoushuju.add[20],5);
-			tft180_show_int(0,30,jieshoushuju.add[30],5);
-			tft180_show_int(0,45,jieshoushuju.add[40],5);
+//			
+//			tft180_show_int(0,0,jieshoushuju.add[10],5);
+//			tft180_show_int(0,15,jieshoushuju.add[20],5);
+//			tft180_show_int(0,30,jieshoushuju.add[30],5);
+//			tft180_show_int(0,45,jieshoushuju.add[40],5);
 			
 //			car_ahead();
 			
@@ -131,11 +132,12 @@ void main(void)
 //			tft180_show_int(0,60,speed_tar_1,5);
 //		motor_run(1);
 
-			tft180_show_string(0,60,"lineate_uart_init");
-			
+//			tft180_show_string(0,60,"lineate_uart_init");
+//			
 //			uart_write_string(UART_4, "seekfree"); 
 
-			
+			      MatrixKey();
+            Menu_Scan();
 			
 //			uart_write_byte(UART_4, 0xA5); 
 			

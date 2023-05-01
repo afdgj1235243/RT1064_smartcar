@@ -51,7 +51,9 @@ void PIT_IRQHandler(void)
     if(pit_flag_get(PIT_CH0))
     {
 			
+			  keep_Front();
 //				encoder_get();
+//  			ICM_getEulerianAngles();
 				
         pit_flag_clear(PIT_CH0);
     }

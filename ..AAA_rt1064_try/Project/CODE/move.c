@@ -7,10 +7,10 @@
 
 #define DIR_1 D2
 #define DIR_2 C10
-////#define DIR_3 D15
-////#define DIR_4 D1
+#define DIR_3 C6
+#define DIR_4 C8
 
-//#define PWM_LIMIT 25000
+//#define PWM_LIMIT 10000
 
 //#define PWM_1 PWM1_MODULE3_CHB_D1		
 //#define PWM_2 PWM2_MODULE3_CHB_D3
@@ -24,7 +24,7 @@
 //#define PWM_7 PWM1_MODULE0_CHA_D12
 //#define PWM_8 PWM1_MODULE1_CHA_D14
 
-#define PWM_LIMIT 25000
+#define PWM_LIMIT 2000
 
 
 //前轮接口
@@ -32,8 +32,8 @@
 #define PWM_2 PWM2_MODULE2_CHB_C11
 
 //dv8701后轮接口
-//#define PWM_3 PWM2_MODULE2_CHA_C10
-//#define PWM_4 PWM2_MODULE2_CHB_C11
+//#define PWM_3 PWM2_MODULE1_CHB_C9
+//#define PWM_4 PWM2_MODULE0_CHB_C7
 
 //2014驱动后轮接口
 #define PWM_5 PWM2_MODULE1_CHA_C8		
@@ -65,7 +65,7 @@ bool dir = true;
 
 int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机pwm值
 
-double speed_tar = 10;//目标速度
+double speed_tar = 5;//目标速度
 
 
 
@@ -74,8 +74,8 @@ void motor_init(void)
 	
 		gpio_init(DIR_1, GPO, 0, GPIO_PIN_CONFIG); 	
     gpio_init(DIR_2, GPO, 0, GPIO_PIN_CONFIG);
-//		gpio_init(DIR_3, GPO, 0, GPIO_PIN_CONFIG);       
-//    gpio_init(DIR_4, GPO, 0, GPIO_PIN_CONFIG);
+		gpio_init(DIR_3, GPO, 0, GPIO_PIN_CONFIG);       
+    gpio_init(DIR_4, GPO, 0, GPIO_PIN_CONFIG);
     pwm_init(PWM_1, 17000, 0);      					
     pwm_init(PWM_2, 17000, 0);     						
 //    pwm_init(PWM_3, 17000, 0);                          
@@ -373,13 +373,13 @@ int position_pid4(int Encoder,int Target){
 
 int limit_pid_pwm(int32 duty_in)
 {
-		if(duty_in > PWM_DUTY_MAX) 
+		if(duty_in > PWM_LIMIT) 
 		{
-			duty_in = PWM_DUTY_MAX -1;
+			duty_in = PWM_LIMIT ;
 		}
-		if(duty_in < -PWM_DUTY_MAX) 
+		if(duty_in < -PWM_LIMIT) 
 		{
-			duty_in = -PWM_DUTY_MAX +1;
+			duty_in = -PWM_LIMIT ;
 		}
 		return duty_in;
 }
@@ -400,8 +400,8 @@ void pid_calculate(void){
     duty1 = position_pid1(encoder1,speed_tar_1);    //后期车出现问题时注意一下这里的正负号问题
     duty2 = position_pid2(-encoder2,speed_tar_2);
     duty3 = position_pid3(encoder3,speed_tar_3);
-    duty4 = position_pid4(encoder4,speed_tar_4);
-	
+    duty4 = position_pid4(-encoder4,speed_tar_4);
+	  
 		
 		duty1 = limit_pid_pwm(duty1);
     duty2 = limit_pid_pwm(duty2);
@@ -449,28 +449,28 @@ if(duty1>=0){
       gpio_set_level(DIR_2,0);
 			pwm_set_duty(PWM_2,-duty2);
     }
-		 if(duty3>=0){
-//while(1){tft180_show_int(0,75,duty3,5);}
-      pwm_set_duty(PWM_7,duty3);
-			pwm_set_duty(PWM_8, 0);
-    } else {
-       
-      pwm_set_duty(PWM_8,-duty3);
-			pwm_set_duty(PWM_7, 0);
-    }
+//		 if(duty3>=0){
+//			 
+//			gpio_set_level(DIR_3,1);
+//			pwm_set_duty(PWM_3,duty3);
+//    } else {
+//       
+//      gpio_set_level(DIR_3,0);
+//			pwm_set_duty(PWM_3,-duty3);
+//    }
 
-    if(duty4>=0){
+//    if(duty4>=0){
 
-        
-      pwm_set_duty(PWM_6,duty4);
-			pwm_set_duty(PWM_5, 0);
-    } else {
+//        
+//			gpio_set_level(DIR_4,1);
+//			pwm_set_duty(PWM_4,duty4);
+//    } else {
 
-      pwm_set_duty(PWM_5,-duty4);
-			pwm_set_duty(PWM_6, 0);
-    }
+//      gpio_set_level(DIR_4,0);
+//			pwm_set_duty(PWM_4,-duty4);
+//    }
 	
-}
+//}
 
 
 
@@ -505,27 +505,35 @@ if(duty1>=0){
 ////        pwm_set_duty(PWM_4,-duty2);
 ////    }
 
-//    if(duty3>=0){
-//        
-//      pwm_set_duty(PWM_8,duty1);
-//			pwm_set_duty(PWM_7, 0);
-//    } else {
-//       
-//      pwm_set_duty(PWM_6,-duty1);
-//			pwm_set_duty(PWM_5, 0);
-//    }
+    if(duty3>=0){
+        
+      pwm_set_duty(PWM_6,duty3);
+			pwm_set_duty(PWM_5, 0);
+    } else {
+       
+      pwm_set_duty(PWM_6,0);
+			pwm_set_duty(PWM_5, -duty3);
+    }
 
-//    if(duty4>=0){
-//        
-//      pwm_set_duty(PWM_7,duty1);
-//			pwm_set_duty(PWM_8, 0);
-//    } else {
-//        
-//      pwm_set_duty(PWM_7,-duty1);
-//			pwm_set_duty(PWM_8, 0);
-//    }
-//}
+    if(duty4>=0){
+        
+      pwm_set_duty(PWM_7,duty4);
+			pwm_set_duty(PWM_8, 0);
+    } else {
+        
+      pwm_set_duty(PWM_7,0);
+			pwm_set_duty(PWM_8, -duty4);
+    }
+}
 
-
-
-
+///////////////////////
+void car_omni(float x, float y, float z){
+//    speed_tar_1= y + x + z;
+//    speed_tar_2= y - x + z;
+//    speed_tar_3= y + x - z;
+//    speed_tar_4= y - x - z;
+    speed_tar_1= y + x + z;
+    speed_tar_2= y - x - z;
+    speed_tar_3= y + x - z;
+    speed_tar_4= y - x + z;
+}

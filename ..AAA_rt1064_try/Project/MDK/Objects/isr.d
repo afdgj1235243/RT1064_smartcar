@@ -3,6 +3,7 @@
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h \
+  D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\..\libraries\sdk\drives\fsl_common.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\assert.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
@@ -111,4 +112,5 @@
   ..\..\libraries\sdk\board\clock_config.h ..\code\encord.h \
   ..\code\move.h ..\code\encord.h ..\code\mymath.h \
   ..\code\uart_communication.h ..\code\mt9v03x_project.h \
-  ..\code\attitude.h ..\user\inc\isr.h
+  ..\code\attitude.h ..\code\icm20602.h ..\code\utils.h ..\code\menus.h \
+  ..\code\keys.h ..\user\inc\isr.h

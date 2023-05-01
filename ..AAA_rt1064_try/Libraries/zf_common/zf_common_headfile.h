@@ -39,6 +39,7 @@
 #include "stdio.h"
 #include "stdint.h"
 #include "string.h"
+#include "math.h"
 
 //===================================================Ð¾Æ¬ SDK µ×²ã===================================================
 #include "fsl_common.h"
@@ -126,6 +127,10 @@
 #include "uart_communication.h"
 #include "mt9v03x_project.h"
 #include "attitude.h"
-
+#include "icm20602.h"
+#include "utils.h"
+#include "attitude.h"
+#include "menus.h"
+#include "keys.h"
 
 #endif

@@ -32,7 +32,7 @@ void car_turnround_new();
 void car_anticlockwise_new();
 void car_concerning_new();
 void car_stop_new();
-
+void car_omni(float x, float y, float z);;
 
 void pid_calculate(void);
 void motor_run(bool run);

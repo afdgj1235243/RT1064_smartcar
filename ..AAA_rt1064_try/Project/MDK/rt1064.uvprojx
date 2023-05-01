@@ -498,6 +498,26 @@
               <FileType>5</FileType>
               <FilePath>..\CODE\timer_pit.h</FilePath>
             </File>
+            <File>
+              <FileName>keys.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\keys.c</FilePath>
+            </File>
+            <File>
+              <FileName>keys.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\keys.h</FilePath>
+            </File>
+            <File>
+              <FileName>menus.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\menus.c</FilePath>
+            </File>
+            <File>
+              <FileName>menus.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\menus.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

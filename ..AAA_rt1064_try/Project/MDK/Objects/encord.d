@@ -26,6 +26,7 @@
   ..\..\libraries\sdk\drives\fsl_common.h \
   ..\..\libraries\sdk\drives\fsl_common_arm.h \
   ..\..\libraries\zf_common\zf_common_headfile.h \
+  D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\..\libraries\sdk\utilities\debug_console\fsl_debug_console.h \
   ..\..\libraries\sdk\drives\fsl_iomuxc.h \
   ..\..\libraries\sdk\drives\fsl_cache.h \
@@ -110,4 +111,5 @@
   ..\..\libraries\components\sdmmc\sdmmc_config.h \
   ..\..\libraries\sdk\board\clock_config.h ..\code\encord.h \
   ..\code\move.h ..\code\mymath.h ..\code\uart_communication.h \
-  ..\code\mt9v03x_project.h ..\code\attitude.h
+  ..\code\mt9v03x_project.h ..\code\attitude.h ..\code\icm20602.h \
+  ..\code\utils.h ..\code\menus.h ..\code\keys.h

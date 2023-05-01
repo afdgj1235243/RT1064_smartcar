@@ -10,6 +10,8 @@
 ".\objects\icm20602.o"
 ".\objects\utils.o"
 ".\objects\timer_pit.o"
+".\objects\keys.o"
+".\objects\menus.o"
 ".\objects\zf_common_clock.o"
 ".\objects\zf_common_debug.o"
 ".\objects\zf_common_fifo.o"
