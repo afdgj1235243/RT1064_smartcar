@@ -12,6 +12,16 @@
 
 void encord_init();
 void encoder_get(void);
+void omni_mileage();
 
+struct RC_Para
+{
+    float temp;  //暂存值,存储RC_baro
+    float value; //滤波值
+    float RC;    //低通滤波参数
+};
+typedef struct RC_Para *RC_Filter_pt;
+
+float RCFilter(float value,RC_Filter_pt Filter);
 
 #endif 

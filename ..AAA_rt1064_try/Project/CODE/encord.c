@@ -1,10 +1,21 @@
 #include "encord.h"
 
-
+extern location_goal Car;
 
 int32 encoder1=0,encoder2=0,encoder3=0,encoder4=0;//编码器的值
+int32 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;
+float MileageKx=0.01079f;
+float MileageKy=0.00999f;
 
+struct RC_Para Encoder1_Para = {0,0,0.25};
+struct RC_Para Encoder2_Para = {0,0,0.25};
+struct RC_Para Encoder3_Para = {0,0,0.25};
+struct RC_Para Encoder4_Para = {0,0,0.25};
 
+RC_Filter_pt RC_Encoder1 = &Encoder1_Para;
+RC_Filter_pt RC_Encoder2 = &Encoder2_Para;
+RC_Filter_pt RC_Encoder3 = &Encoder3_Para;
+RC_Filter_pt RC_Encoder4 = &Encoder4_Para;
 
 //typedef enum
 //{
@@ -46,7 +57,12 @@ void encoder_get(void)
 	
     //计算位移(单位：m)
     //Car.mileage=(Encoder/1024)*(45/104)*2*PI*0.03;
+    omni_mileage();
 
+    RC_encoder1 = (int16_t)RCFilter(encoder1,RC_Encoder1);
+    RC_encoder2 = (int16_t)RCFilter(encoder2,RC_Encoder2);
+    RC_encoder3 = (int16_t)RCFilter(encoder3,RC_Encoder3);
+    RC_encoder4 = (int16_t)RCFilter(encoder4,RC_Encoder4);
 
 	
 	
@@ -55,4 +71,22 @@ void encoder_get(void)
     encoder_clear_count(QTIMER1_ENCODER2 );
     encoder_clear_count(QTIMER2_ENCODER1 );
     encoder_clear_count(QTIMER2_ENCODER2 );
+}
+
+
+float RCFilter(float value,RC_Filter_pt Filter)
+{
+    Filter->temp = value;
+    Filter->value = (1 - Filter->RC) * Filter->value + Filter->RC * Filter->temp;
+//	temp = RC * value + (1 - RC) * temp;
+    return Filter->value;
+}
+
+
+void omni_mileage(){
+    float detax=0,detay=0;
+    detax=(float)(RC_encoder1 - RC_encoder2 + RC_encoder3 - RC_encoder4)/4;
+    detay=(float)(RC_encoder1 + RC_encoder2 + RC_encoder3 + RC_encoder4)/4;
+    Car.MileageX+=(float)(detax*MileageKx);
+    Car.MileageY+=(float)(detay*MileageKy);
 }

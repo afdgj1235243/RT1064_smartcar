@@ -138,7 +138,8 @@ void main(void)
 
 			      MatrixKey();
             Menu_Scan();
-			
+						move_distance();
+						
 //			uart_write_byte(UART_4, 0xA5); 
 			
 		}

@@ -24,7 +24,7 @@
 //#define PWM_7 PWM1_MODULE0_CHA_D12
 //#define PWM_8 PWM1_MODULE1_CHA_D14
 
-#define PWM_LIMIT 2000
+#define PWM_LIMIT 8000
 
 
 //前轮接口
@@ -65,7 +65,7 @@ bool dir = true;
 
 int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机pwm值
 
-double speed_tar = 5;//目标速度
+double speed_tar = 10;//目标速度
 
 
 
@@ -532,8 +532,25 @@ void car_omni(float x, float y, float z){
 //    speed_tar_2= y - x + z;
 //    speed_tar_3= y + x - z;
 //    speed_tar_4= y - x - z;
-    speed_tar_1= y + x + z;
-    speed_tar_2= y - x - z;
-    speed_tar_3= y + x - z;
-    speed_tar_4= y - x + z;
+	  
+//		speed_tar_1= y + x + z;
+//    speed_tar_2= y - x - z;
+//    speed_tar_3= y - x - z;
+//    speed_tar_4= y + x + z;
+	
+		speed_tar_1= 1.5*9 + z;
+    speed_tar_2= 3 - z;
+    speed_tar_3= -3 - z;
+    speed_tar_4= 1.5*(-9) + z;
+	
+	
+//	  speed_tar_1= y + x + z;
+//    speed_tar_2= y - x - z;
+//    speed_tar_3= y + x - z;
+//    speed_tar_4= y - x + z;
+	
+//    speed_tar_1= y - x + z;
+//    speed_tar_2= y + x - z;
+//    speed_tar_3= y + x - z;
+//    speed_tar_4= y - x + z;
 }

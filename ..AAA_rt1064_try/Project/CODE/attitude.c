@@ -179,30 +179,47 @@ void reset_mileage(){
     Car.DistanceY=0;
 }
 
+//void get_target() {
+//    //赋予新的目标坐标点
+//    /*
+//    nextpoint=locate_route();
+//    Car.x1=originMap[nextpoint][0];
+//    Car.y1=originMap[nextpoint][1];
+//    */
 
+//    if(Car.Position_Pointer<locate_sz){//locate_sz => true_sz改
+//        get_route();
+//    }
+////    if(Car.Position_Pointer<locate_sz){
+////        Car.x1=Car_Location_Route[Car.Position_Pointer][0];
+////        Car.y1=Car_Location_Route[Car.Position_Pointer][1];
+////    }else if(Car.Position_Pointer==locate_sz){
+////        Car.x1=0;
+////        Car.y1=0;
+////    }
 
-
-
-
+//}
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     姿态调整函数，使车头始终朝前
+// 函数简介     车身定位记录函数
 // 参数说明     void
 // 返回参数     return_state
 // 使用示例     lineate_uart_init();
-// 备注信息     
+// 备注信息     \
 //-------------------------------------------------------------------------------------------------------------------
-
-
-void attitude_ahead()
+void location_place(int x)
 {
 	
-
-
+	Car.x = Car.x1;
+	Car.x1 = coord[x+1];
+	Car.y = Car.y1;
+	Car.y1 = coord[x+1];
+	
 }
 
+
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     计算车行动路程
+// 函数简介     计算车行动路程(测试中)
 // 参数说明     void
 // 返回参数     return_state
 // 使用示例     lineate_uart_init();
@@ -211,9 +228,55 @@ void attitude_ahead()
 
 void move_distance()
 {
-	coord[0] = 1;
-	coord[1] = 1;
+	 bool x_flag=false,y_flag=false;
+	coord[0] = 2;
+	coord[1] = 1; 
+	
+	Car.x1 = coord[0];
+	Car.y1 = coord[1];
+	
+	Car.x = 0;
+	Car.y = 0;
+	
+	Car.Angel_Target=atan2((Car.x1-Car.x),(Car.y1-Car.y))*180/PI;
+	
+	Car.DistanceX=20*(Car.x1-Car.x);
+	Car.DistanceY=20*(Car.y1-Car.y);
 	
 	
+    if(abs(Car.MileageX)<abs(Car.DistanceX)){
+        nextpoint++;
+        Car.Speed_X=(speed_tar * sin(Car.Angel_Target/180 *PI));//((float)speed_tar * sin(Car.Angel_Target/180 *PI)),((float)speed_tar * cos(Car.Angel_Target/180 *PI)),0);
+        if(Car.Speed_X>-1&&Car.Speed_X<0){
+            Car.Speed_X=-1;
+        }
+        if(Car.Speed_X>0&&Car.Speed_X<1){
+            Car.Speed_X=1;
+        }
+        x_flag=false;
+    }else{
+        Car.Speed_X=0;
+        x_flag=true;
+    }
+    if(abs(Car.MileageY)<abs(Car.DistanceY)){
+        Car.Speed_Y=(speed_tar * cos(Car.Angel_Target/180 *PI));
+        if(Car.Speed_Y<0&&Car.Speed_Y>-1){
+            Car.Speed_Y=-1;
+        }
+        if(Car.Speed_Y>0&&Car.Speed_Y<1){
+            Car.Speed_Y=1;
+        }
+        y_flag=false;
+    }else{
+        Car.Speed_Y=0;
+        y_flag=true;
+    }
+	
+	
+	
+	car_omni(Car.Speed_X,Car.Speed_Y,Car.Speed_Z);
+	
+	motor_run(1);
 	
 }
+

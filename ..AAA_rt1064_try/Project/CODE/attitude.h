@@ -38,8 +38,11 @@ typedef struct location_goal {
     float MileageY;
 }location_goal;
 
+
+
 void car_omnimove(void);
 void reset_mileage(void);
 void keep_Front(void);
+void move_distance();
 
 #endif 
