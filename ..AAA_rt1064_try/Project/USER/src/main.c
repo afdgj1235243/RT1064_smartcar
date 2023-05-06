@@ -79,15 +79,28 @@ void main(void)
 		tft180_set_color(RGB565_WHITE, RGB565_BLACK);
 		tft180_init();
 	
-	
+		tft180_show_string(0,0,"uart_init");
 		uart_init(UART_4,115200,UART4_TX_C16,UART4_RX_C17);
+		tft180_show_string(0,60,"success");
 	
-//		lineate_uart_init();
-//	while(1){tft180_show_string(0,60,"lineate_uart_init");}
+		tft180_show_string(15,0,"lineate_uart_init");
+		lineate_uart_init();
+		tft180_show_string(0,60,"success");
+	
+	
+		tft180_show_string(30,0,"motor_init");
 		motor_init();
+		tft180_show_string(0,60,"success");
+		
+		tft180_show_string(45,0,"encord_init");
 		encord_init();
+		tft180_show_string(0,60,"success");
+		
+		tft180_show_string(60,0,"encord_init");
 		icm20602_init();
-	
+		tft180_show_string(0,60,"success");
+		
+		
 		interrupt_global_enable(0);
 		
 		// π”√÷–∂œCH0
@@ -101,7 +114,19 @@ void main(void)
 		
 //		lineate_uart_try();
 //		jieshou_try(100);
-		
+	while(1){
+		if(gpio_get_level(C12)==0){
+
+			tft180_show_string(60,0,"Self test success");
+			
+			while(gpio_get_level(C12)==0);
+			system_delay_ms(20);
+			
+			break;
+			
+		}
+	}
+
 		while(1)
 		{
 			

@@ -391,10 +391,12 @@ void lineate_uart_callback (void)
 
 
 void jieshou_try(int8 x)
-{uint8 i=1;
+{
+	uint8 i=1;
 	while(1)
 {
-uart_query_byte(UART_4,&jieshoushuju.map_data);
+	
+	uart_query_byte(UART_4,&jieshoushuju.map_data);
 
 if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
 { 
