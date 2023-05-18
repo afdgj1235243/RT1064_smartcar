@@ -37,7 +37,7 @@
 
 #include "zf_device_type.h"
 
-
+#include "uart_communication.h"
 camera_type_enum    camera_type                     = NO_CAMERE;                    // 摄像头类型变量
 callback_function   camera_uart_handler             = type_default_callback;        // 串口通讯中断函数指针，根据初始化时设置的函数进行跳转
 
@@ -48,6 +48,10 @@ callback_function   flexio_camera_uart_handler      = type_default_callback;    
 wireless_type_enum  wireless_type                   = NO_WIRELESS;
 callback_function   wireless_module_uart_handler    = type_default_callback;        // 无线串口接收中断函数指针，根据初始化时设置的函数进行跳转
 callback_function   wireless_module_spi_handler     = type_default_callback;        // WIFI SPI GPIO中断函数指针，根据初始化时设置的函数进行跳转
+
+wireless_type_enum  lineate_type                   = NO_WIRELESS;
+callback_function   lineate_module_uart_handler    = type_default_callback;        
+callback_function   lineate_module_spi_handler     = type_default_callback;       
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     空回调函数
@@ -104,4 +108,18 @@ void set_wireless_type (wireless_type_enum type_set, callback_function wireless_
     wireless_module_uart_handler = ((wireless_callback == NULL) ? (type_default_callback) : (wireless_callback));
 }
 
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     设置无模式串口接收类型
+// 参数说明     type_set        	选定的无线模块类型
+// 参数说明     wireless_callback   设备的串口回调函数
+// 返回参数     void
+// 使用示例     set_wireless_type(WIRELESS_UART);
+// 备注信息     一般由各无线模块初始化内部调用
+//-------------------------------------------------------------------------------------------------------------------
+void set_lineate_type (wireless_type_enum type_set, callback_function lineate_callback)
+{
+    wireless_type = type_set;
+    lineate_module_uart_handler = ((lineate_callback == NULL) ? (type_default_callback) : (lineate_uart_callback));
+}
 

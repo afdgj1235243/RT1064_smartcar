@@ -62,6 +62,8 @@
 	extern int speed_tar_1;
 	
 	extern jieshou_try_need jieshoushuju;
+	extern unsigned char original_image[image_h][image_w];
+	extern unsigned char bin_image[image_h][image_w];
 /***********************************************************/	
 
 
@@ -81,24 +83,23 @@ void main(void)
 	
 		tft180_show_string(0,0,"uart_init");
 		uart_init(UART_4,115200,UART4_TX_C16,UART4_RX_C17);
-		tft180_show_string(0,60,"success");
 	
-		tft180_show_string(15,0,"lineate_uart_init");
-		lineate_uart_init();
-		tft180_show_string(0,60,"success");
+		tft180_show_string(0,15,"lineate_uart_init");
+//		lineate_uart_init();
 	
 	
-		tft180_show_string(30,0,"motor_init");
+		tft180_show_string(0,30,"motor_init");
 		motor_init();
-		tft180_show_string(0,60,"success");
 		
-		tft180_show_string(45,0,"encord_init");
+		tft180_show_string(0,45,"encord_init");
 		encord_init();
-		tft180_show_string(0,60,"success");
 		
-		tft180_show_string(60,0,"encord_init");
+		tft180_show_string(0,60,"icm20602_init");
 		icm20602_init();
-		tft180_show_string(0,60,"success");
+		
+		
+		tft180_show_string(0,75,"mt9v03x_init");
+		mt9v03x_init();
 		
 		
 		interrupt_global_enable(0);
@@ -113,34 +114,41 @@ void main(void)
 		pit_ms_init(PIT_CH0, 1);
 		
 //		lineate_uart_try();
+		tft180_clear();
+		
 //		jieshou_try(100);
+//		tft180_show_string(0,0,"jieshou_success");
+		
 	while(1){
 		if(gpio_get_level(C12)==0){
-
-			tft180_show_string(60,0,"Self test success");
+			
+			tft180_clear();
+			tft180_show_string(0,0,"Self test success");
 			
 			while(gpio_get_level(C12)==0);
 			system_delay_ms(20);
-			
+			tft180_clear();
 			break;
 			
 		}
 	}
 
+	jieshou_map(1);
 		while(1)
 		{
 			
 //			uart_tx_interrupt(UART_1, 1);
 //			try();
 //			encoder_get();
-//			
-//			tft180_show_int(0,0,jieshoushuju.add[10],5);
-//			tft180_show_int(0,15,jieshoushuju.add[20],5);
-//			tft180_show_int(0,30,jieshoushuju.add[30],5);
-//			tft180_show_int(0,45,jieshoushuju.add[40],5);
+//		
+			
+//			tft180_show_int(0,0,jieshoushuju.X[1],5);
+//			tft180_show_int(0,15,jieshoushuju.X[2],5);
+//			tft180_show_int(0,30,jieshoushuju.X[3],5);
+//			tft180_show_int(0,45,jieshoushuju.X[4],5);          
 			
 //			car_ahead();
-			
+			 
 //			motor_run(run);
 //			motor_control(1);
 //			gpio_set_level(DIR_1,1);
@@ -162,13 +170,16 @@ void main(void)
 //			uart_write_string(UART_4, "seekfree"); 
 
 			      MatrixKey();
-            Menu_Scan();
-						move_distance();
+//            Menu_Scan();
+//						move_distance();
 						
 //			uart_write_byte(UART_4, 0xA5); 
-			
+			deal_image();
+			tft180_show_gray_image(0, 0, &bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);
+			//tft180_displayimage03x(mt9v03x_image[0], 94, 60);
 		}
 
 
 
 }
+

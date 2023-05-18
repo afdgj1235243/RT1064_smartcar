@@ -8,6 +8,11 @@
 
 #include "zf_common_headfile.h"
 
+#define image_h	120//图像高度
+#define image_w	188//图像宽度
+
+#define white_pixel	255
+#define black_pixel	0
 
 void generateGaussianTemplate(double window[][11], int ksize, double sigma);
 
@@ -104,4 +109,12 @@ void draw_x(image_t *img, int x, int y, int len, uint8_t value);
 // 绘制O
 void draw_o(image_t *img, int x, int y, int radius, uint8_t value);
 
+
+unsigned char otsuThreshold(unsigned char *image, unsigned short col, unsigned short row);
+
+void turn_to_bin(void);
+
+void deal_image();
+
+void Get_image(unsigned char(*mt9v03x_image)[image_w]);
 #endif 

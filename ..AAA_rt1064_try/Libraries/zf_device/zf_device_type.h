@@ -70,6 +70,10 @@ extern      wireless_type_enum              wireless_type;
 extern      callback_function               wireless_module_uart_handler;    
 extern      callback_function               wireless_module_spi_handler;
 
+extern  wireless_type_enum  lineate_type;                   
+extern  callback_function   lineate_module_uart_handler;      
+extern  callback_function   lineate_module_spi_handler;       
+
 void        type_default_callback           (void);
 void        set_camera_type                 (camera_type_enum type_set, callback_function vsync_callback, callback_function dma_callback, callback_function uart_callback);
 void        set_flexio_camera_type          (camera_type_enum type_set, callback_function vsync_callback, callback_function dma_callback, callback_function uart_callback);

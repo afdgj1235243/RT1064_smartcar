@@ -7,6 +7,8 @@
 #define AT_CLIP(img, x, y)  AT_IMAGE((img), clip((x), 0, (img)->width-1), clip((y), 0, (img)->height-1));
 #define PI_1           		    3.14159265358979f
 
+
+
 extern int clip(int x, int low, int up);
 
 
@@ -706,3 +708,119 @@ void draw_o(image_t *img, int x, int y, int radius, uint8_t value) {
                 AT(img, clip(x + radius * cosf(i), 0, img->width - 1), clip(y + radius * sinf(i), 0, img->height - 1)) = value;
     }
 }
+
+
+//大津法获得阈值，取自韬子的函数
+unsigned char original_image[image_h][image_w];
+unsigned char image_thereshold;//图像分割阈值
+unsigned char otsuThreshold(unsigned char *image, unsigned short col, unsigned short row)
+{
+    #define GrayScale 256
+    unsigned short width = col;
+    unsigned short height = row;
+    int pixelCount[GrayScale];
+    float pixelPro[GrayScale];
+    int i, j, pixelSum = width * height;
+    unsigned char threshold = 0;
+    unsigned char* data = image;  //指向像素数据的指针
+    for (i = 0; i < GrayScale; i++)
+    {
+        pixelCount[i] = 0;
+        pixelPro[i] = 0;
+    }
+
+    //统计灰度级中每个像素在整幅图像中的个数
+    for (i = 0; i < height; i++)
+    {
+        for (j = 0; j < width; j++)
+        {
+            pixelCount[(int)data[i * width + j]]++;  //将像素值作为计数数组的下标
+        }
+    }
+
+    //计算每个像素在整幅图像中的比例
+    float maxPro = 0.0;
+    for (i = 0; i < GrayScale; i++)
+    {
+        pixelPro[i] = (float)pixelCount[i] / pixelSum;
+        if (pixelPro[i] > maxPro)
+        {
+            maxPro = pixelPro[i];
+        }
+    }
+
+    //遍历灰度级[0,255]
+    float w0, w1, u0tmp, u1tmp, u0, u1, u, deltaTmp, deltaMax = 0;
+    for (i = 0; i < GrayScale; i++)     // i作为阈值
+    {
+        w0 = w1 = u0tmp = u1tmp = u0 = u1 = u = deltaTmp = 0;
+        for (j = 0; j < GrayScale; j++)
+        {
+            if (j <= i)   //背景部分
+            {
+                w0 += pixelPro[j];
+                u0tmp += j * pixelPro[j];
+            }
+            else   //前景部分
+            {
+                w1 += pixelPro[j];
+                u1tmp += j * pixelPro[j];
+            }
+        }
+        u0 = u0tmp / w0;
+        u1 = u1tmp / w1;
+        u = u0tmp + u1tmp;
+        deltaTmp = w0 * pow((u0 - u), 2) + w1 * pow((u1 - u), 2);
+        if (deltaTmp > deltaMax)
+        {
+            deltaMax = deltaTmp;
+            threshold = (unsigned char)i;
+        }
+    }
+
+    return threshold;
+}
+
+
+
+unsigned char bin_image[image_h][image_w];//图像数组
+void turn_to_bin(void)
+{
+  unsigned char i,j;
+ image_thereshold = otsuThreshold(original_image[0], image_w, image_h);
+  for(i = 0;i<image_h;i++)
+  {
+      for(j = 0;j<image_w;j++)
+      {
+          if(original_image[i][j]>image_thereshold)bin_image[i][j] = white_pixel;
+          else bin_image[i][j] = black_pixel;
+      }
+  }
+}
+
+
+void Get_image(unsigned char(*mt9v03x_image)[image_w])
+{
+#define use_num		1	//1就是不压缩，2就是压缩一倍	
+	unsigned char i = 0, j = 0, row = 0, line = 0;
+    for (i = 0; i < image_h; i += use_num)          //
+    {
+        for (j = 0; j <image_w; j += use_num)     //
+        {
+            original_image[row][line] = mt9v03x_image[i][j];//这里的参数填写你的摄像头采集到的图像
+			line++;
+        }
+        line = 0;
+        row++;
+    }
+}
+
+
+
+void deal_image()
+{
+	Get_image(&mt9v03x_image[0]);
+	turn_to_bin();
+}
+
+

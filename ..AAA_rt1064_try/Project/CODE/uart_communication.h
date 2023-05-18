@@ -39,9 +39,10 @@ typedef struct
 typedef struct
 {
 	uint8 map_data;
+	uint8 X[150];
+	uint8 Y[150];
 	uint8 add[150];
 	uint16 len;
-	
 
 }jieshou_try_need;
 
@@ -57,7 +58,9 @@ uint8 lineate_uart_init(void);
 uint32 lineate_uart_buff_read(uint8 *buff, uint32 len);
 
 uint32 lineate_uart_buff_send (const uint8 data);
+uint32 lineate_uart_send_byte (const uint8 data);
+	
+void set_lineate_type (wireless_type_enum type_set, callback_function wireless_callback);
 
-
-void jieshou_try(int8 x);
+void jieshou_map(int8 x);
 #endif 
