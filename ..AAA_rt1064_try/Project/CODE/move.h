@@ -39,7 +39,7 @@ void motor_run(bool run);
 void motor_control(bool run);
 int limit_pid_pwm(int32 duty_in);
 void try();
-
+int nihe();
 
 int position_pid(int Encoder,int Target);
 

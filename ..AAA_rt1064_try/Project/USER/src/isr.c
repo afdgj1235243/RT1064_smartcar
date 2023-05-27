@@ -37,7 +37,7 @@
 #include "zf_common_debug.h"
 #include "isr.h"
 
-
+extern void move_test(int x,int y);
 
 
 void CSI_IRQHandler(void)
@@ -52,6 +52,7 @@ void PIT_IRQHandler(void)
     {
 			
 			  keep_Front();
+			move_test(5,5);
 //				encoder_get();
 //  			ICM_getEulerianAngles();
 				

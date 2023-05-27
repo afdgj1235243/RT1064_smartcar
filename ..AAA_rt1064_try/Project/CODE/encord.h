@@ -13,6 +13,7 @@
 void encord_init();
 void encoder_get(void);
 void omni_mileage();
+void encoderjiajia();
 
 struct RC_Para
 {

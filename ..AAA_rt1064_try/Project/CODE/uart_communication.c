@@ -196,33 +196,33 @@ void lineate_uart_callback (void)
 
 
 
-//void jieshou_try(int8 x)
-//{
-//	uint8 i=1;
-//	while(1)
-//{
-//	
-//	uart_query_byte(UART_4,&jieshoushuju.map_data);
+void jieshou_try(int8 x)
+{
+	uint8 i=1;
+	while(1)
+{
+	
+	uart_query_byte(UART_4,&jieshoushuju.map_data);
 
-//if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
-//{ 
-//	jieshoushuju.add[i]=jieshoushuju.map_data;
-//	i++;
-//	}
-//if(i==x+1)
-//{	i=1;
-//	jieshoushuju.map_data=0;
-//	break;}
-//}}
+if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
+{ 
+	jieshoushuju.add[i]=jieshoushuju.map_data - 48;
+	i++;
+	}
+if(i==x+1)
+{	i=1;
+	jieshoushuju.map_data=0;
+	break;}
+}}
 
 
 
 
 //临时通信用代码，lens为自己确定的坐标个数
-void jieshou_map(int8 lens)
-{
-	uint16 time_count = LINEATE_UART_TIMEOUT_COUNT;
-	uint8 i =1;
+//void jieshou_map(int8 lens)
+//{
+//	uint16 time_count = LINEATE_UART_TIMEOUT_COUNT;
+//	uint8 i =1;
 //		while(1){
 //		if(gpio_get_level(C12)==0){
 //			
@@ -235,7 +235,7 @@ void jieshou_map(int8 lens)
 //			break;
 //		}
 //	}
-		
+//		
 //		for(int i = 1;i<lens;i++)
 //		{
 //			jieshoushuju.map_data = uart_read_byte(UART_4);
@@ -245,16 +245,16 @@ void jieshou_map(int8 lens)
 //			jieshoushuju.Y[i] = jieshoushuju.map_data -48;
 //			}
 //		}			
+//	
+//	while(1)
+//	{
+//	jieshoushuju.map_data = uart_read_byte(UART_4);
+//		jieshoushuju.add[i] = jieshoushuju.map_data;
+//		i++;
+//		if(i>lens)
+//			break;
+//	}
 	
-	while(1)
-	{
-	jieshoushuju.map_data = uart_read_byte(UART_4);
-		jieshoushuju.add[i] = jieshoushuju.map_data;
-		i++;
-		if(i>lens)
-			break;
-	}
 	
 	
-	
-}
+//}

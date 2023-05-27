@@ -3,9 +3,13 @@
 by小天才狗蛋*/
 #include "menus.h"
 
+extern location_goal Car;
+
 extern int32 encoder1,encoder2,encoder3,encoder4;
 	
 extern int32 duty1,duty2,duty3,duty4;
+
+extern int16 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;
 	
 extern int speed_tar_1,speed_tar_2,speed_tar_3,speed_tar_4;
 //引用数据
@@ -49,7 +53,6 @@ void Menu_Scan(void)
 																					 showGyro();
 																					 showEncoder();
 																				   showDuty();
-//																					 showSpeedtar();
                                            menu_out2 = MatrixKey();
                                        }
                                        tft180_clear();
@@ -60,6 +63,7 @@ void Menu_Scan(void)
                                        while(menu_out2)
                                        {
                                            showSpeedtar();
+																				   showLUNzhuan();
                                            menu_out2 = MatrixKey();
                                        }
                                        tft180_clear();
@@ -118,4 +122,12 @@ void showSpeedtar(void)
   tft180_show_int(50,15,speed_tar_2,5);
 	tft180_show_int(0,30,speed_tar_3,5);
 	tft180_show_int(50,30,speed_tar_4,5);
+}
+void showLUNzhuan(void)
+{
+	tft180_show_string(0,75,"LUNz:");
+	tft180_show_int(0,90,Car.encord_add1,5);
+	tft180_show_int(50,90,Car.encord_add2,5);
+	tft180_show_int(0,105,Car.encord_add3,5);
+	tft180_show_int(50,105,Car.encord_add4,5);
 }

@@ -528,29 +528,152 @@ if(duty1>=0){
 
 ///////////////////////
 void car_omni(float x, float y, float z){
-//    speed_tar_1= y + x + z;
-//    speed_tar_2= y - x + z;
-//    speed_tar_3= y + x - z;
-//    speed_tar_4= y - x - z;
-	  
-//		speed_tar_1= y + x + z;
-//    speed_tar_2= y - x - z;
-//    speed_tar_3= y - x - z;
-//    speed_tar_4= y + x + z;
-	
-		speed_tar_1= 1.5*9 + z;
-    speed_tar_2= 3 - z;
-    speed_tar_3= -3 - z;
-    speed_tar_4= 1.5*(-9) + z;
-	
-	
-//	  speed_tar_1= y + x + z;
-//    speed_tar_2= y - x - z;
-//    speed_tar_3= y + x - z;
-//    speed_tar_4= y - x + z;
-	
-//    speed_tar_1= y - x + z;
-//    speed_tar_2= y + x - z;
-//    speed_tar_3= y + x - z;
-//    speed_tar_4= y - x + z;
+//	x=1;
+//	y= 2;
+	//前偏右
+	if(x>0&&y>0&&x<y)
+		{
+			speed_tar_1= speed_tar + z;
+			speed_tar_2= speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_3= -speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_4= -speed_tar + z; 
+		}
+//前偏左
+	if(x<0&&y>0&&-x<y)
+		{
+		
+			speed_tar_1= speed_tar*((y-abs(x))/(y+abs(x))) + z;
+			speed_tar_2= speed_tar - z;
+			speed_tar_3= -speed_tar - z;
+			speed_tar_4= -speed_tar*((y-abs(x))/(y+abs(x))) + z; 
+			
+//			speed_tar_1= speed_tar*((y-(-x))/(y+(-x))) + z;
+//			speed_tar_2= speed_tar - z;
+//			speed_tar_3= -speed_tar - z;
+//			speed_tar_4= -speed_tar*((y-(-x))/(y+(-x))) + z; 				
+		}
+//左偏前
+	if(x<0&&y>0&&-x>y)
+		{
+			x=abs(x);
+			y=abs(y);
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_3= speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_4= -speed_tar + z; 		
+		}
+//左偏后
+	if(x<0&&y<0&&-x>-y)
+		{
+			x=abs(x);
+			y=abs(y);
+			speed_tar_1= -speed_tar*((y-x)/(y+x)) + z;
+			speed_tar_2= speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= -speed_tar*((y-x)/(y+x)) + z; 			
+		}
+//右偏后
+	if(x>0&&y<0&&x>-y)
+		{
+			x=abs(x);
+			y=abs(y);
+			speed_tar_1= speed_tar + z;
+			speed_tar_2= -speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_3= speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_4= -speed_tar + z; 
+		}
+//右偏前
+	if(x>0&&y>0&&x>y)
+		{
+			x=abs(x);
+			y=abs(y);
+			speed_tar_1= speed_tar*((y-x)/(y+x)) + z;
+			speed_tar_2= -speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= -speed_tar*((y-x)/(y+x)) + z; 			
+		}
+//后偏右
+	if(x>0&&y<0&&-x<y)
+		{
+			x=abs(x);
+			y=abs(y);
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= -speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_3= speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_4= speed_tar + z; 
+		}
+//后偏左
+	if(x<0&&y<0&&-x<-y)
+		{
+			x=abs(x);
+			y=abs(y);
+			speed_tar_1= -speed_tar*((y-x)/(y+x)) + z;
+			speed_tar_2= -speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= speed_tar*((y-x)/(y+x)) + z; 			
+		}
+//正前
+	if(x==0&&y>0)
+		{
+			speed_tar_1= speed_tar + z;
+			speed_tar_2= speed_tar - z;
+			speed_tar_3= -speed_tar - z;
+			speed_tar_4= -speed_tar + z; 
+		}
+//正右		
+	if(x>0&&y==0)
+		{			
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= -speed_tar + z; 
+		}
+//正左		
+	if(x<0&&y==0)
+		{
+			speed_tar_1= speed_tar + z;
+			speed_tar_2= -speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= -speed_tar + z; 
+		}	
+//正后		
+	if(x==0&&y<0)
+		{
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= -speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= speed_tar + z; 
+		}
+//正右前		
+	if(x>0&&y>0&&x==y)
+		{
+			speed_tar_1= speed_tar + z;
+			speed_tar_2= 0- z;
+			speed_tar_3= 0 - z;
+			speed_tar_4= -speed_tar + z; 
+		}
+//正右后		
+	if(x>0&&y<0&&x==-y)
+		{
+			speed_tar_1= 0 + z;
+			speed_tar_2= -speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= 0 + z; 
+		}
+//正左后		
+	if(x<0&&y<0&&-x==-y)
+		{
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= 0 - z;
+			speed_tar_3= 0 - z;
+			speed_tar_4= speed_tar + z; 
+		}
+//正左前		
+	if(x<0&&y>0&&-x==y)
+		{
+			speed_tar_1= 0 + z;
+			speed_tar_2= speed_tar - z;
+			speed_tar_3= -speed_tar - z;
+			speed_tar_4= 0 + z; 
+		}		
 }

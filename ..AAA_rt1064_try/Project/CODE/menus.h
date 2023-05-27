@@ -13,5 +13,6 @@ void showGyro(void);
 void showEncoder(void);
 void showDuty(void);
 void showSpeedtar(void);
+void showLUNzhuan(void);
 
 #endif /* CODE_MY_MENU_H_ */

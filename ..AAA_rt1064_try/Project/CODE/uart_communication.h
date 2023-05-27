@@ -63,4 +63,6 @@ uint32 lineate_uart_send_byte (const uint8 data);
 void set_lineate_type (wireless_type_enum type_set, callback_function wireless_callback);
 
 void jieshou_map(int8 x);
+
+void jieshou_try(int8 x);
 #endif 

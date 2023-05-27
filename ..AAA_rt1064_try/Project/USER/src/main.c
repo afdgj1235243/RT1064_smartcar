@@ -62,9 +62,14 @@
 	extern int speed_tar_1;
 	
 	extern jieshou_try_need jieshoushuju;
+	
 	extern unsigned char original_image[image_h][image_w];
+	
 	extern unsigned char bin_image[image_h][image_w];
+	
+	extern location_goal Car;
 /***********************************************************/	
+void move_test(int x,int y);
 
 
 void main(void)
@@ -108,15 +113,13 @@ void main(void)
 //		pit_enable(PIT_CH0);
 
 	/***********************************************************************************/
-	
-	
 
-		pit_ms_init(PIT_CH0, 1);
 		
 //		lineate_uart_try();
 		tft180_clear();
 		
-//		jieshou_try(100);
+		
+//		jieshou_map(24);
 //		tft180_show_string(0,0,"jieshou_success");
 		
 	while(1){
@@ -124,62 +127,80 @@ void main(void)
 			
 			tft180_clear();
 			tft180_show_string(0,0,"Self test success");
-			
+			uart_write_string(UART_4, "2\n"); 
 			while(gpio_get_level(C12)==0);
+			tft180_show_string(0,0,"send success");
 			system_delay_ms(20);
 			tft180_clear();
 			break;
 			
 		}
 	}
-
-	jieshou_map(1);
+	pit_ms_init(PIT_CH0, 1);
+//		jieshou_try(100);
+//	
+//	jieshou_map(1);
+	
 		while(1)
 		{
-			
-//			uart_tx_interrupt(UART_1, 1);
-//			try();
-//			encoder_get();
-//		
-			
-//			tft180_show_int(0,0,jieshoushuju.X[1],5);
-//			tft180_show_int(0,15,jieshoushuju.X[2],5);
-//			tft180_show_int(0,30,jieshoushuju.X[3],5);
-//			tft180_show_int(0,45,jieshoushuju.X[4],5);          
-			
-//			car_ahead();
-			 
-//			motor_run(run);
-//			motor_control(1);
-//			gpio_set_level(DIR_1,1);
-//			pwm_set_duty(PWM_1,2000);
-//			gpio_set_level(DIR_2,1);
-//			pwm_set_duty(PWM_2,2000);
-//			
-//			pwm_set_duty(PWM_5,1800);
-//			pwm_set_duty(PWM_6,0);
-//			
-//			pwm_set_duty(PWM_7,1800);
-//			pwm_set_duty(PWM_8,0);
-//			car_ahead();
-//			tft180_show_int(0,60,speed_tar_1,5);
-//		motor_run(1);
-
-//			tft180_show_string(0,60,"lineate_uart_init");
-//			
-//			uart_write_string(UART_4, "seekfree"); 
-
 			      MatrixKey();
-//            Menu_Scan();
+            Menu_Scan();
 //						move_distance();
-						
-//			uart_write_byte(UART_4, 0xA5); 
+			
 			deal_image();
-			tft180_show_gray_image(0, 0, &bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);
+//			tft180_show_gray_image(0, 0, &bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);
+			
+			
+//			for(int i=0;i<2;i++){
+//				for(int j=0;j<12;j++){
+//					if(i==0){
+//						((j<6) ? (tft180_show_uint((i+1)*30,16*j,jieshoushuju.add[j],3)) : (tft180_show_uint((i+2)*30,16*(j-6),jieshoushuju.add[j],3)));
+//					}else if(i==1){
+//						((j<6) ? (tft180_show_uint((i+2)*30,16*j,jieshoushuju.add[i*10+j],3)) : (tft180_show_uint((i+3)*30,16*(j-6),jieshoushuju.add[i*10+j],3)));
+//					}
+//				}
+//			}
+	
+//			 car_omni(3,5,Car.Speed_Z);
+//motor_run(true);
 			//tft180_displayimage03x(mt9v03x_image[0], 94, 60);
-		}
-
+			
+//	car_ahead();
+//	motor_run(true);
 
 
 }
+}
 
+
+void location_lines(int8 x)
+{
+	int8 i = 0;
+		do 
+		{
+			move_test(jieshoushuju.X[i],jieshoushuju.Y[i]);
+			i++;
+		}while(i<x);
+	
+}
+
+
+void move_test(int x,int y)
+{
+//	if(abs(Car.encord_add2)<20){
+//	if(sqrt((Car.encord_add1*Car.encord_add1)+(Car.encord_add2*Car.encord_add2))<sqrt(x*x+y*y)*20){
+//		if(abs(Car.encord_add2)<sqrt(2)*20*((y-x)/x)){
+//	if(sqrt((Car.encord_add1*Car.encord_add1)+(Car.encord_add2*Car.encord_add2))<sqrt(x*x+y*y)*20*sqrt(2)){
+//	if(abs( abs(Car.encord_add1) - abs(Car.encord_add2) ) < 20*abs(x)*sqrt(2)*x/(y-x)){
+		if(abs(Car.encord_add1)<sqrt(x+1)){
+    car_omni(x,y,Car.Speed_Z);
+	}
+		else{
+		car_stop();
+		
+		}
+			//tft180_displayimage03x(mt9v03x_image[0], 94, 60);
+			 motor_run(true);
+}
+
+	

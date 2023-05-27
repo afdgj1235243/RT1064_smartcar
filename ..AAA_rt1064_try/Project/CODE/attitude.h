@@ -36,6 +36,11 @@ typedef struct location_goal {
     //距上次转向之后前进的距离(里程）
     float MileageX;
     float MileageY;
+		
+		float encord_add1;
+		float encord_add2;
+		float encord_add3;
+		float encord_add4;
 }location_goal;
 
 

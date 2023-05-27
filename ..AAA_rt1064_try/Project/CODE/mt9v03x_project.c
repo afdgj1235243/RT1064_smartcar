@@ -799,6 +799,8 @@ void turn_to_bin(void)
 }
 
 
+
+
 void Get_image(unsigned char(*mt9v03x_image)[image_w])
 {
 #define use_num		1	//1就是不压缩，2就是压缩一倍	
