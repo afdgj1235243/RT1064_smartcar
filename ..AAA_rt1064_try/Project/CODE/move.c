@@ -623,8 +623,8 @@ void car_omni(float x, float y, float z){
 //正右		
 	if(x>0&&y==0)
 		{			
-			speed_tar_1= -speed_tar + z;
-			speed_tar_2= speed_tar - z;
+			speed_tar_1= speed_tar + z;
+			speed_tar_2= -speed_tar - z;
 			speed_tar_3= speed_tar - z;
 			speed_tar_4= -speed_tar + z; 
 		}
@@ -639,9 +639,9 @@ void car_omni(float x, float y, float z){
 //正后		
 	if(x==0&&y<0)
 		{
-			speed_tar_1= -speed_tar + z;
+			speed_tar_1= speed_tar + z;
 			speed_tar_2= -speed_tar - z;
-			speed_tar_3= speed_tar - z;
+			speed_tar_3= -speed_tar - z;
 			speed_tar_4= speed_tar + z; 
 		}
 //正右前		

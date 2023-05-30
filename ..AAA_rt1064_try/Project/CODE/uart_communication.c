@@ -202,7 +202,7 @@ void jieshou_try(int8 x)
 	while(1)
 {
 	
-	uart_query_byte(UART_4,&jieshoushuju.map_data);
+	jieshoushuju.map_data = uart_read_byte(UART_4);
 
 if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
 { 
@@ -214,6 +214,8 @@ if(i==x+1)
 	jieshoushuju.map_data=0;
 	break;}
 }}
+
+
 
 
 

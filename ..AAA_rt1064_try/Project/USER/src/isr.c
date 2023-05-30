@@ -38,7 +38,7 @@
 #include "isr.h"
 
 extern void move_test(int x,int y);
-
+extern int x_text,y_text;
 
 void CSI_IRQHandler(void)
 {
@@ -52,7 +52,7 @@ void PIT_IRQHandler(void)
     {
 			
 			  keep_Front();
-			move_test(5,5);
+//			move_test(x_text,y_text);
 //				encoder_get();
 //  			ICM_getEulerianAngles();
 				

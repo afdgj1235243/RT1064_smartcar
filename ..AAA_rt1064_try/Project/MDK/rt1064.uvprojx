@@ -518,6 +518,16 @@
               <FileType>5</FileType>
               <FilePath>..\CODE\menus.h</FilePath>
             </File>
+            <File>
+              <FileName>location.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\location.c</FilePath>
+            </File>
+            <File>
+              <FileName>location.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\location.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

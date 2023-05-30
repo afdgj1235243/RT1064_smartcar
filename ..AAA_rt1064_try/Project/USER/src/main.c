@@ -54,7 +54,7 @@
 
 
 /***********************全局变量定义*************************/
-
+	int x_text,y_text;
 	bool run =1;
 	
 	extern int32 encoder1,encoder2,encoder3,encoder4;
@@ -123,6 +123,23 @@ void main(void)
 //		tft180_show_string(0,0,"jieshou_success");
 		
 	while(1){
+		
+			tft180_show_int(0,0,x_text,3);
+			tft180_show_int(0,16,y_text,3);
+			
+			if(gpio_get_level(C14)==0){
+			
+			x_text= x_text+1;
+			system_delay_ms(150);
+		}
+			if(gpio_get_level(C13)==0){
+			
+			y_text= y_text+1;
+			system_delay_ms(150);	
+			
+		}
+		
+		
 		if(gpio_get_level(C12)==0){
 			
 			tft180_clear();
@@ -136,32 +153,39 @@ void main(void)
 			
 		}
 	}
+	jieshou_try(5);
 	pit_ms_init(PIT_CH0, 1);
-//		jieshou_try(100);
+	
+		
 //	
 //	jieshou_map(1);
 	
 		while(1)
 		{
-			      MatrixKey();
-            Menu_Scan();
+			
+
+			
+//			      MatrixKey();
+//            Menu_Scan();
+			
 //						move_distance();
 			
-			deal_image();
+//			deal_image();
+			
 //			tft180_show_gray_image(0, 0, &bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);
 			
 			
-//			for(int i=0;i<2;i++){
-//				for(int j=0;j<12;j++){
-//					if(i==0){
-//						((j<6) ? (tft180_show_uint((i+1)*30,16*j,jieshoushuju.add[j],3)) : (tft180_show_uint((i+2)*30,16*(j-6),jieshoushuju.add[j],3)));
-//					}else if(i==1){
-//						((j<6) ? (tft180_show_uint((i+2)*30,16*j,jieshoushuju.add[i*10+j],3)) : (tft180_show_uint((i+3)*30,16*(j-6),jieshoushuju.add[i*10+j],3)));
-//					}
-//				}
-//			}
-	
-//			 car_omni(3,5,Car.Speed_Z);
+			for(int i=0;i<2;i++){
+				for(int j=0;j<12;j++){
+					if(i==0){
+						((j<6) ? (tft180_show_uint((i+1)*30,16*j,jieshoushuju.add[j],3)) : (tft180_show_uint((i+2)*30,16*(j-6),jieshoushuju.add[j],3)));
+					}else if(i==1){
+						((j<6) ? (tft180_show_uint((i+2)*30,16*j,jieshoushuju.add[i*10+j],3)) : (tft180_show_uint((i+3)*30,16*(j-6),jieshoushuju.add[i*10+j],3)));
+					}
+				}
+			}
+//	
+//			 car_omni(3,4,Car.Speed_Z);
 //motor_run(true);
 			//tft180_displayimage03x(mt9v03x_image[0], 94, 60);
 			
@@ -187,12 +211,14 @@ void location_lines(int8 x)
 
 void move_test(int x,int y)
 {
+	
+//	int x_load = abs(Car.encord_add1)*(y-x)/x;
 //	if(abs(Car.encord_add2)<20){
-//	if(sqrt((Car.encord_add1*Car.encord_add1)+(Car.encord_add2*Car.encord_add2))<sqrt(x*x+y*y)*20){
+	if(sqrt((2*Car.encord_add1*Car.encord_add1)+(2*Car.encord_add2*Car.encord_add2))<2*sqrt(x*x+y*y)*20){
 //		if(abs(Car.encord_add2)<sqrt(2)*20*((y-x)/x)){
 //	if(sqrt((Car.encord_add1*Car.encord_add1)+(Car.encord_add2*Car.encord_add2))<sqrt(x*x+y*y)*20*sqrt(2)){
 //	if(abs( abs(Car.encord_add1) - abs(Car.encord_add2) ) < 20*abs(x)*sqrt(2)*x/(y-x)){
-		if(abs(Car.encord_add1)<sqrt(x+1)){
+//		if(abs(Car.encord_add1)<sqrt(x+1)){
     car_omni(x,y,Car.Speed_Z);
 	}
 		else{
