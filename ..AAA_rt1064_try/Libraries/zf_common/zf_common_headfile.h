@@ -132,5 +132,6 @@
 #include "attitude.h"
 #include "menus.h"
 #include "keys.h"
+#include "location.h"
 
 #endif

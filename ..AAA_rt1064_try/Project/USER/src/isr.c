@@ -52,7 +52,9 @@ void PIT_IRQHandler(void)
     {
 			
 			  keep_Front();
-//			move_test(x_text,y_text);
+//				car_ahead();
+				motor_run(true);
+			
 //				encoder_get();
 //  			ICM_getEulerianAngles();
 				

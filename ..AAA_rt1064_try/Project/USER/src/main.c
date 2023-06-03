@@ -45,7 +45,6 @@
 
 /**********************************************************/
 
-
 // 打开新的工程或者工程移动了位置务必执行以下操作
 // 第一步 关闭上面所有打开的文件
 // 第二步 project->clean  等待下方进度条走完
@@ -54,22 +53,25 @@
 
 
 /***********************全局变量定义*************************/
-	int x_text,y_text;
+	
 	bool run =1;
 	
+	int x_text,y_text;
+
 	extern int32 encoder1,encoder2,encoder3,encoder4;
 	
 	extern int speed_tar_1;
-	
-	extern jieshou_try_need jieshoushuju;
 	
 	extern unsigned char original_image[image_h][image_w];
 	
 	extern unsigned char bin_image[image_h][image_w];
 	
-	extern location_goal Car;
+	extern int location_point_num;
+	
+	extern int8 car_test_x;
+	
+	extern int8 car_test_y;
 /***********************************************************/	
-void move_test(int x,int y);
 
 
 void main(void)
@@ -153,7 +155,7 @@ void main(void)
 			
 		}
 	}
-	jieshou_try(5);
+//	jieshou_try(5);
 	pit_ms_init(PIT_CH0, 1);
 	
 		
@@ -174,16 +176,18 @@ void main(void)
 			
 //			tft180_show_gray_image(0, 0, &bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);
 			
+//			
+//			for(int i=0;i<2;i++){
+//				for(int j=0;j<12;j++){
+//					if(i==0){
+//						((j<6) ? (tft180_show_uint((i+1)*30,16*j,jieshoushuju.add[j],3)) : (tft180_show_uint((i+2)*30,16*(j-6),jieshoushuju.add[j],3)));
+//					}else if(i==1){
+//						((j<6) ? (tft180_show_uint((i+2)*30,16*j,jieshoushuju.add[i*10+j],3)) : (tft180_show_uint((i+3)*30,16*(j-6),jieshoushuju.add[i*10+j],3)));
+//					}
+//				}
+//			}
 			
-			for(int i=0;i<2;i++){
-				for(int j=0;j<12;j++){
-					if(i==0){
-						((j<6) ? (tft180_show_uint((i+1)*30,16*j,jieshoushuju.add[j],3)) : (tft180_show_uint((i+2)*30,16*(j-6),jieshoushuju.add[j],3)));
-					}else if(i==1){
-						((j<6) ? (tft180_show_uint((i+2)*30,16*j,jieshoushuju.add[i*10+j],3)) : (tft180_show_uint((i+3)*30,16*(j-6),jieshoushuju.add[i*10+j],3)));
-					}
-				}
-			}
+			
 //	
 //			 car_omni(3,4,Car.Speed_Z);
 //motor_run(true);
@@ -191,42 +195,18 @@ void main(void)
 			
 //	car_ahead();
 //	motor_run(true);
+			tft180_show_uint(0,1,car_test_x,3);
+			tft180_show_uint(0,16,car_test_y,3);
 
+
+			tft180_show_uint(0,3*16,location_point_num,3);
+
+			
+			move_test(4);
 
 }
 }
 
 
-void location_lines(int8 x)
-{
-	int8 i = 0;
-		do 
-		{
-			move_test(jieshoushuju.X[i],jieshoushuju.Y[i]);
-			i++;
-		}while(i<x);
-	
-}
-
-
-void move_test(int x,int y)
-{
-	
-//	int x_load = abs(Car.encord_add1)*(y-x)/x;
-//	if(abs(Car.encord_add2)<20){
-	if(sqrt((2*Car.encord_add1*Car.encord_add1)+(2*Car.encord_add2*Car.encord_add2))<2*sqrt(x*x+y*y)*20){
-//		if(abs(Car.encord_add2)<sqrt(2)*20*((y-x)/x)){
-//	if(sqrt((Car.encord_add1*Car.encord_add1)+(Car.encord_add2*Car.encord_add2))<sqrt(x*x+y*y)*20*sqrt(2)){
-//	if(abs( abs(Car.encord_add1) - abs(Car.encord_add2) ) < 20*abs(x)*sqrt(2)*x/(y-x)){
-//		if(abs(Car.encord_add1)<sqrt(x+1)){
-    car_omni(x,y,Car.Speed_Z);
-	}
-		else{
-		car_stop();
-		
-		}
-			//tft180_displayimage03x(mt9v03x_image[0], 94, 60);
-			 motor_run(true);
-}
 
 	

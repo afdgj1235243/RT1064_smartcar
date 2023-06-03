@@ -112,4 +112,5 @@
   ..\..\libraries\sdk\board\clock_config.h ..\code\encord.h \
   ..\code\move.h ..\code\mymath.h ..\code\uart_communication.h \
   ..\code\mt9v03x_project.h ..\code\attitude.h ..\code\icm20602.h \
-  ..\code\utils.h ..\code\menus.h ..\code\encord.h ..\code\keys.h
+  ..\code\utils.h ..\code\menus.h ..\code\encord.h ..\code\keys.h \
+  ..\code\location.h

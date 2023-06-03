@@ -99,3 +99,13 @@ void encoderjiajia()
 		Car.encord_add3+=(RC_encoder3*MileageKy)*0.8;
 		Car.encord_add4+=(RC_encoder4*MileageKx)*0.8;
 }
+
+
+void encoder_init()
+{
+	Car.encord_add1=0;
+	Car.encord_add2=0;
+	Car.encord_add3=0;
+	Car.encord_add4=0;
+
+}	
