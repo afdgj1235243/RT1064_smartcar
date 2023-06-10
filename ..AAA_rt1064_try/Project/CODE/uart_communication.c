@@ -198,24 +198,23 @@ void lineate_uart_callback (void)
 
 void jieshou_try(int8 x)
 {
-	uint8 i=1;
+	uint8 i=0;
 	while(1)
 {
 	
-	jieshoushuju.map_data = uart_read_byte(UART_4);
+	jieshoushuju.map_data = uart_read_byte(UART_1);
 
-if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
-{ 
+//if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
+//{ 
 	jieshoushuju.add[i]=jieshoushuju.map_data - 48;
 	i++;
-	}
+//	}
 if(i==x+1)
 {	i=1;
 	jieshoushuju.map_data=0;
 	break;}
-}}
-
-
+}
+}
 
 
 

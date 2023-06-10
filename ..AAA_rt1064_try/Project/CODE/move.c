@@ -528,9 +528,7 @@ if(duty1>=0){
 
 ///////////////////////
 void car_omni(float x, float y, float z){
-//	x=1;
-//	y= 2;
-	//Ç°Æ«ÓÒ
+//Ç°Æ«ÓÒ1
 	if(x>0&&y>0&&x<y)
 		{
 			speed_tar_1= speed_tar + z;
@@ -538,79 +536,61 @@ void car_omni(float x, float y, float z){
 			speed_tar_3= -speed_tar*((y-x)/(y+x)) - z;
 			speed_tar_4= -speed_tar + z; 
 		}
-//Ç°Æ«×ó
+//Ç°Æ«×ó1
 	if(x<0&&y>0&&-x<y)
-		{
-		
-			speed_tar_1= speed_tar*((y-abs(x))/(y+abs(x))) + z;
+		{			
+			speed_tar_1= speed_tar*((y-(-x))/(y+(-x))) + z;
 			speed_tar_2= speed_tar - z;
 			speed_tar_3= -speed_tar - z;
-			speed_tar_4= -speed_tar*((y-abs(x))/(y+abs(x))) + z; 
-			
-//			speed_tar_1= speed_tar*((y-(-x))/(y+(-x))) + z;
-//			speed_tar_2= speed_tar - z;
-//			speed_tar_3= -speed_tar - z;
-//			speed_tar_4= -speed_tar*((y-(-x))/(y+(-x))) + z; 				
+			speed_tar_4= -speed_tar*((y-(-x))/(y+(-x))) + z; 				
 		}
-//×óÆ«Ç°
+//×óÆ«Ç°1
 	if(x<0&&y>0&&-x>y)
 		{
-			x=abs(x);
-			y=abs(y);
-			speed_tar_1= -speed_tar + z;
-			speed_tar_2= speed_tar*((y-x)/(y+x)) - z;
-			speed_tar_3= speed_tar*((y-x)/(y+x)) - z;
-			speed_tar_4= -speed_tar + z; 		
+			speed_tar_1= speed_tar*((y-(-x))/(y+(-x))) + z;
+			speed_tar_2= speed_tar - z;
+			speed_tar_3= -speed_tar - z;
+			speed_tar_4= -speed_tar*((y-(-x))/(y+(-x))) + z; 		
 		}
-//×óÆ«ºó
+//×óÆ«ºó1
 	if(x<0&&y<0&&-x>-y)
 		{
-			x=abs(x);
-			y=abs(y);
-			speed_tar_1= -speed_tar*((y-x)/(y+x)) + z;
-			speed_tar_2= speed_tar - z;
-			speed_tar_3= speed_tar - z;
-			speed_tar_4= -speed_tar*((y-x)/(y+x)) + z; 			
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= -speed_tar*((-y-(-x))/(-y+(-x))) - z;
+			speed_tar_3= speed_tar*((-y-(-x))/(-y+(-x))) - z;
+			speed_tar_4= speed_tar + z; 			
 		}
 //ÓÒÆ«ºó
 	if(x>0&&y<0&&x>-y)
 		{
-			x=abs(x);
-			y=abs(y);
-			speed_tar_1= speed_tar + z;
-			speed_tar_2= -speed_tar*((y-x)/(y+x)) - z;
-			speed_tar_3= speed_tar*((y-x)/(y+x)) - z;
-			speed_tar_4= -speed_tar + z; 
-		}
-//ÓÒÆ«Ç°
-	if(x>0&&y>0&&x>y)
-		{
-			x=abs(x);
-			y=abs(y);
-			speed_tar_1= speed_tar*((y-x)/(y+x)) + z;
+			speed_tar_1= -speed_tar*((-y-x)/(-y+x)) + z;
 			speed_tar_2= -speed_tar - z;
 			speed_tar_3= speed_tar - z;
-			speed_tar_4= -speed_tar*((y-x)/(y+x)) + z; 			
+			speed_tar_4= speed_tar*((-y-x)/(-y+x)) + z; 
+		}
+//ÓÒÆ«Ç°1
+	if(x>0&&y>0&&x>y)
+		{
+			speed_tar_1= speed_tar + z;
+			speed_tar_2= speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_3= -speed_tar*((y-x)/(y+x)) - z;
+			speed_tar_4= -speed_tar + z; 			
 		}
 //ºóÆ«ÓÒ
-	if(x>0&&y<0&&-x<y)
+	if(x>0&&y<0&&x<-y)
 		{
-			x=abs(x);
-			y=abs(y);
-			speed_tar_1= -speed_tar + z;
-			speed_tar_2= -speed_tar*((y-x)/(y+x)) - z;
-			speed_tar_3= speed_tar*((y-x)/(y+x)) - z;
-			speed_tar_4= speed_tar + z; 
+			speed_tar_1= -speed_tar*((-y-x)/(-y+x)) + z;
+			speed_tar_2= -speed_tar - z;
+			speed_tar_3= speed_tar - z;
+			speed_tar_4= speed_tar*((-y-x)/(-y+x)) + z; 
 		}
 //ºóÆ«×ó
 	if(x<0&&y<0&&-x<-y)
 		{
-			x=abs(x);
-			y=abs(y);
-			speed_tar_1= -speed_tar*((y-x)/(y+x)) + z;
-			speed_tar_2= -speed_tar - z;
-			speed_tar_3= speed_tar - z;
-			speed_tar_4= speed_tar*((y-x)/(y+x)) + z; 			
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= -speed_tar*((-y-(-x))/(-y+(-x))) - z;
+			speed_tar_3= speed_tar*((-y-(-x))/(-y+(-x))) - z;
+			speed_tar_4= speed_tar + z; 			
 		}
 //ÕıÇ°
 	if(x==0&&y>0)

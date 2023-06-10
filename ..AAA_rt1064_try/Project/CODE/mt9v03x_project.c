@@ -823,6 +823,13 @@ void deal_image()
 {
 	Get_image(&mt9v03x_image[0]);
 	turn_to_bin();
+	for(int h=0;h<188;h++)
+	{
+		for(int w = 0;w<70;w++)
+		{
+			bin_image[w][h] = black_pixel;
+		}
+	}
 }
 
 
