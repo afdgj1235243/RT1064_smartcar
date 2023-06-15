@@ -25,7 +25,13 @@ static          uint8       lineate_uart_data;  //回调函数中读到的数据存放，再放
 //uint8 data_buffer[32];  //测试设置，不用try时注释
 //uint8 data_len;  //测试设置，不用try时注释
 
+uint8               openart_rx_buffer;
+lpuart_transfer_t   openart_receivexfer;
+lpuart_handle_t     openart_g_lpuartHandle;
 
+uint8               openart1_rx_buffer;
+lpuart_transfer_t   openart1_receivexfer;
+lpuart_handle_t     openart1_g_lpuartHandle;
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     用于无模式的uart串口输出，测试使用
@@ -44,14 +50,15 @@ uint8 lineate_uart_init(void)
 	//FIFO配置（接收可加）发送缓冲区
 
 	fifo_init(&lineate_uart_fifo,FIFO_DATA_8BIT,lineate_uart_rx_buffer, LINEATE_UART_BUFFER_SIZE);    //初始化FIFO缓冲区，FIFO 对象指针为lineate_uart_fifo，数据位数为8比特，挂载的缓冲区为lineate_uart_rx_buffer，其长度LINEATE_UART_BUFFER_SIZE可在.h文件中更改
-
-  gpio_init(LINEATE_UART_RTS_PIN, GPI, GPIO_HIGH, GPI_PULL_UP);              //初始化gpio输出，引脚为LINEATE_UART_RTS_PIN，默认高电平 推挽输出模式
+	
+//  gpio_init(LINEATE_UART_RTS_PIN, GPI, GPIO_HIGH, GPI_PULL_UP);              //初始化gpio输出，引脚为LINEATE_UART_RTS_PIN，默认高电平 推挽输出模式
 #if(0 == LINEATE_UART_AUTO_BAUD_RATE)                                          // 关闭自动波特率
     // 本函数使用的波特率为115200 为无线转串口模块的默认波特率 如需其他波特率请自行配置模块并修改串口的波特率
 		uart_init(LINEATE_UART_INDEX, LINEATE_UART_BUAD_RATE, LINEATE_UART_RX_PIN, LINEATE_UART_TX_PIN);  //后期看引脚记得改一下，初始化uart接收与发送引脚
+		
 		tft180_show_string(0,60,"error");
+	
     uart_rx_interrupt(LINEATE_UART_INDEX, 1);					// 打开串口1接收完成中断
-
 #endif
     return return_state;
 }
@@ -177,9 +184,11 @@ void lineate_uart_try(void)
 	
 void lineate_uart_callback (void)
 {
+	tft180_show_string(0,60,"error");
 	uart_query_byte(LINEATE_UART_INDEX, &lineate_uart_data);
-
+	
 	fifo_write_buffer(&lineate_uart_fifo, &lineate_uart_data, 1);
+	tft180_show_string(0,60,"success");
 	
 #if WIRELESS_UART_AUTO_BAUD_RATE                                                // 开启自动波特率
     if(wireless_auto_baud_flag == 1 && fifo_used(&wireless_uart_fifo) == 3)
@@ -259,3 +268,38 @@ if(i==x+1)
 	
 	
 //}
+
+void fifo_text(uint8 *buff)
+{
+	int i;
+	
+//	uint32 len = lineate_uart_rx_buffer_len;
+//	zf_log(fifo_init(&lineate_uart_fifo,FIFO_DATA_8BIT, lineate_uart_rx_buffer, 64) == FIFO_SUCCESS, "fifo_read_buffer error");
+	
+	i =lineate_uart_buff_read(lineate_uart_rx_buffer,1);
+//	tft180_show_uint(0,0,i,3);
+	tft180_show_uint(0,2*16,lineate_uart_rx_buffer[0],3);
+	tft180_show_uint(20,2*16,lineate_uart_rx_buffer[1],3);
+	tft180_show_uint(40,2*16,lineate_uart_rx_buffer[2],3);
+	tft180_show_uint(60,2*16,lineate_uart_rx_buffer[3],3);
+
+}
+
+
+
+
+
+void uart_init_text()
+{
+	uart_init(UART_4,115200,UART4_TX_C16,UART4_RX_C17);
+	
+		openart_receivexfer.dataSize = 1;
+    openart_receivexfer.data = &openart_rx_buffer;
+
+
+    openart1_receivexfer.dataSize = 1;
+    openart1_receivexfer.data = &openart1_rx_buffer;
+	
+		uart_rx_interrupt(UART_4, 1);	
+	
+}

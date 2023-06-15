@@ -124,7 +124,12 @@ void LPUART4_IRQHandler(void)
 //        flexio_camera_uart_handler();
 //        
 //        gps_uart_callback();
-//			lineate_module_uart_handler();
+			tft180_clear();
+			tft180_show_uint(0,3*16,2,3);
+			lineate_module_uart_handler();
+			
+			tft180_show_uint(0,5*16,2,3);
+			tft180_clear();
     }
         
     LPUART_ClearStatusFlags(LPUART4, kLPUART_RxOverrunFlag);    // ²»ÔÊÐíÉ¾³ý

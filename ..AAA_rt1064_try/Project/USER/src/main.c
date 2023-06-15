@@ -79,6 +79,8 @@ extern jieshou_try_need jieshoushuju;
 
 	int8 x_error,y_error;
 	
+	uint8 ceshishuzu[10]; 
+	
 //int8 test_location_x[7] = {-4,-2,-1,0,1,2,4};
 //int8 test_location_y[7] = {-4,-2,-1,0,1,2,4};
 /***********************************************************/	
@@ -99,11 +101,16 @@ void main(void)
 		tft180_init();
 	
 		tft180_show_string(0,0,"uart_init");
-		uart_init(UART_1,115200,UART1_TX_B12,UART1_RX_B13);
+//		uart_init(UART_1,115200,UART1_TX_B12,UART1_RX_B13);
+//		uart_init(UART_4,115200,UART4_TX_C16,UART4_RX_C17);
 	
 		tft180_show_string(0,15,"lineate_uart_init");
-//		lineate_uart_init();
 	
+		lineate_uart_init();
+	
+//		uart_rx_interrupt(UART_4, 1);		
+//		wireless_uart_init();
+//		uart_init_text();
 	
 		tft180_show_string(0,30,"motor_init");
 		motor_init();
@@ -130,7 +137,7 @@ void main(void)
 //		lineate_uart_try();
 		tft180_clear();
 		
-	
+		 
 //		jieshou_map(24);
 //		tft180_show_string(0,0,"jieshou_success");
 		
@@ -161,7 +168,7 @@ void main(void)
 			
 			uart_write_string(UART_1, "2\n");
 			
-			jieshou_try(50);
+//			jieshou_try(50);
 			
 			tft180_show_string(0,0,"send success");
 			system_delay_ms(20);
@@ -171,7 +178,7 @@ void main(void)
 		}
 	}
 
-	pit_ms_init(PIT_CH0, 1);
+//	pit_ms_init(PIT_CH0, 1);
 //	pit_ms_init(PIT_CH1, 1);
 //	
 		
@@ -180,11 +187,14 @@ void main(void)
 	
 			car_locationread();
 //	location_shortest();
-//			
 		while(1)
 		{
 			
+			
+			
+			fifo_text(ceshishuzu);
 		
+			tft180_show_uint(0,0,1,5);
 			
 //			      MatrixKey();
 //            Menu_Scan();
@@ -207,18 +217,22 @@ void main(void)
 //			}
 //			
 
-tft180_show_uint(0,0,jieshoushuju.len,3);
 
-for(int i=0;i<6;i++){
-	tft180_show_uint(0,16*(i+1),jieshoushuju.X[i],3);
-	tft180_show_uint(30,16*(i+1),jieshoushuju.Y[i],3);
-}
 
-for(int i=6;i<12;i++){
-	tft180_show_uint(60,16*(i-5),jieshoushuju.X[i],3);
-	tft180_show_uint(90,16*(i-5),jieshoushuju.Y[i],3);
-}
-main_movement(jieshoushuju.len);
+//	tft180_show_uint(0,0,jieshoushuju.len,3);
+
+//	for(int i=0;i<6;i++){
+//		tft180_show_uint(0,16*(i+1),jieshoushuju.X[i],3);
+//		tft180_show_uint(30,16*(i+1),jieshoushuju.Y[i],3);
+//	}
+
+//	for(int i=6;i<12;i++){
+//		tft180_show_uint(60,16*(i-5),jieshoushuju.X[i],3);
+//		tft180_show_uint(90,16*(i-5),jieshoushuju.Y[i],3);
+//	}
+//	main_movement(jieshoushuju.len);
+
+
 
 //	
 //			 car_omni(3,4,Car.Speed_Z);

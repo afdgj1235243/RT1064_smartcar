@@ -14,7 +14,7 @@
 
 #define LINEATE_UART_INDEX         (UART_4)                                    // openart串口对应使用的串口号    当前为uart4号引脚，后期看情况更改
 #define LINEATE_UART_BUAD_RATE     (115200)                                    // openart串口对应使用的串口波特率
-#define LINEATE_UART_TX_PIN        (UART4_RX_C17)                              // openart串口对应模块的 TX 要接到单片机的 RX
+#define LINEATE_UART_TX_PIN        (UART4_RX_C17)                              // openart串口对应模块的 TX 要接到单片机的 RX(UART4_RX_C17) 
 #define LINEATE_UART_RX_PIN        (UART4_TX_C16)                              // openart串口对应模块的 RX 要接到单片机的 TX
 #define LINEATE_UART_RTS_PIN       (D26)                                       // openart串口对应模块的 RTS 引脚
 
@@ -65,4 +65,8 @@ void set_lineate_type (wireless_type_enum type_set, callback_function wireless_c
 void jieshou_map(int8 x);
 
 void jieshou_try(int8 x);
+
+void fifo_text(uint8 *buff);
+
+void uart_init_text();
 #endif 
