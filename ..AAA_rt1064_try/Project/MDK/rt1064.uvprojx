@@ -528,6 +528,21 @@
               <FileType>5</FileType>
               <FilePath>..\CODE\location.h</FilePath>
             </File>
+            <File>
+              <FileName>data_send.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\data_send.h</FilePath>
+            </File>
+            <File>
+              <FileName>data_send.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\data_send.c</FilePath>
+            </File>
+            <File>
+              <FileName>main_last.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\main_last.txt</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

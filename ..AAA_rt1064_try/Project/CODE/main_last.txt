@@ -71,11 +71,17 @@
 	
 	extern int8 car_test_y;
 	
-  extern location_goal Car;
+extern location_goal Car;
 
-  extern jieshou_try_need jieshoushuju;
+extern jieshou_try_need jieshoushuju;
+
+
+	
 	
 	uint8 ceshishuzu[10]; 
+	
+//int8 test_location_x[7] = {-4,-2,-1,0,1,2,4};
+//int8 test_location_y[7] = {-4,-2,-1,0,1,2,4};
 /***********************************************************/	
 
 
@@ -115,15 +121,25 @@ void main(void)
 		
 		
 		interrupt_global_enable(0);
-	
+		
+		//使用中断CH0
+//		pit_enable(PIT_CH0);
 
 	/***********************************************************************************/
 
+		
+//		lineate_uart_try();
 		tft180_clear();
 		
-  /***************************按键进入跳车界面**************************************/		
+		 
+//		jieshou_map(24);
+//		tft180_show_string(0,0,"jieshou_success");
+		
 	while(1){
 		
+//			tft180_show_uint(0,1,test_location_x[x_text],3);
+//			tft180_show_uint(0,16,test_location_y[y_text],3);
+			
 			if(gpio_get_level(C14)==0){
 			
 			x_text= x_text+1;
@@ -146,6 +162,8 @@ void main(void)
 			
 			uart_write_string(UART_4, "2\n");
 			
+//			jieshou_try(50);
+			
 			tft180_show_string(0,0,"send success");
 			system_delay_ms(20);
 			tft180_clear();
@@ -154,14 +172,87 @@ void main(void)
 		}
 	}
 
-	pit_ms_init(PIT_CH0, 1);                  //开启中断0
-/*****************主函数运行******************/
+	pit_ms_init(PIT_CH0, 1);
+//	pit_ms_init(PIT_CH1, 1);
+//	
+		
+
+	
+//			car_locationread();
+//	location_shortest();
 		while(1)
 		{
-
-			deal_image();
+//			send_test();
 		
+			tft180_show_uint(0,0,1,5);
+			
+//			      MatrixKey();
+//            Menu_Scan();
+			
+//						move_distance();
+			
+			deal_image();
+////			
 			image_find_move();
+			
+			
+//			for(int i=0;i<2;i++){
+//				for(int j=0;j<12;j++){
+//					if(i==0){
+//						((j<6) ? (tft180_show_uint((i+1)*30,16*j,jieshoushuju.add[j],3)) : (tft180_show_uint((i+2)*30,16*(j-6),jieshoushuju.add[j],3)));
+//					}else if(i==1){
+//						((j<6) ? (tft180_show_uint((i+2)*30,16*j,jieshoushuju.add[i*12+j],3)) : (tft180_show_uint((i+3)*30,16*(j-6),jieshoushuju.add[i*12+j],3)));
+//					}
+//				}
+//			}
+//			
+
+
+
+//	tft180_show_uint(0,0,jieshoushuju.len,3);
+
+//	for(int i=0;i<6;i++){
+//		tft180_show_uint(0,16*(i+1),jieshoushuju.X[i],3);
+//		tft180_show_uint(30,16*(i+1),jieshoushuju.Y[i],3);
+//	}
+
+//	for(int i=6;i<12;i++){
+//		tft180_show_uint(60,16*(i-5),jieshoushuju.X[i],3);
+//		tft180_show_uint(90,16*(i-5),jieshoushuju.Y[i],3);
+//	}
+//	main_movement(jieshoushuju.len);
+
+//motor_run(true);
+//			tft180_displayimage03x(mt9v03x_image[0], 94, 60);
+			
+//	car_ahead();
+//	motor_run(true);
+
+
+
+
+
+
+
+
+//			tft180_show_uint(0,3*16,location_point_num,3);
+
+//			
+//			main_movement(jieshoushuju.len);
+//				move_test(6);
+
+
+
+
+//if(sqrt((2*Car.encord_add1*Car.encord_add1)+(2*Car.encord_add2*Car.encord_add2))<2*sqrt(test_location_x[x_text]*test_location_x[x_text]+test_location_y[y_text]*test_location_y[y_text])*20){
+
+//    car_omni(test_location_x[x_text],test_location_y[y_text],Car.Speed_Z);
+//}else{
+
+//car_stop();}
+//	
+//	
+//}
 
 }
 }

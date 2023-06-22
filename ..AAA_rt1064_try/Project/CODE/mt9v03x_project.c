@@ -787,7 +787,8 @@ unsigned char bin_image[image_h][image_w];//图像数组
 void turn_to_bin(void)
 {
   unsigned char i,j;
- image_thereshold = otsuThreshold(original_image[0], image_w, image_h);
+ image_thereshold = otsuThreshold(original_image[0], image_w, image_h) + 100;
+//	while(1){tft180_show_int(0,0,image_thereshold,3);}
   for(i = 0;i<image_h;i++)
   {
       for(j = 0;j<image_w;j++)
@@ -803,7 +804,7 @@ void turn_to_bin(void)
 
 void Get_image(unsigned char(*mt9v03x_image)[image_w])
 {
-#define use_num		1	//1就是不压缩，2就是压缩一倍	
+#define use_num		2	//1就是不压缩，2就是压缩一倍	
 	unsigned char i = 0, j = 0, row = 0, line = 0;
     for (i = 0; i < image_h; i += use_num)          //
     {
@@ -822,11 +823,22 @@ void Get_image(unsigned char(*mt9v03x_image)[image_w])
 void deal_image()
 {
 	Get_image(&mt9v03x_image[0]);
+	
 	turn_to_bin();
-	for(int h=0;h<188;h++)
+	
+//	for(int h=0;h<188;h++)
+//	{
+//		for(int w = 0;w<70;w++)
+//		{
+//			bin_image[w][h] = black_pixel;
+//		}
+//	}
+	
+		for(int h=0;h<94;h++)
 	{
-		for(int w = 0;w<70;w++)
+		for(int w = 0;w<60;w++)
 		{
+			if(w==0||h==0||w==60||h==94)
 			bin_image[w][h] = black_pixel;
 		}
 	}

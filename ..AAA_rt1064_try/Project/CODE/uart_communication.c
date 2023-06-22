@@ -58,7 +58,10 @@ uint8 lineate_uart_init(void)
 		
 		tft180_show_string(0,60,"error");
 	
+		NVIC_SetPriority((IRQn_Type)((IRQn_Type)(LINEATE_UART_INDEX) + LPUART1_IRQn),0); 
+	
     uart_rx_interrupt(LINEATE_UART_INDEX, 1);					// 打开串口1接收完成中断
+	
 #endif
     return return_state;
 }
@@ -184,11 +187,8 @@ void lineate_uart_try(void)
 	
 void lineate_uart_callback (void)
 {
-	tft180_show_string(0,60,"error");
 	uart_query_byte(LINEATE_UART_INDEX, &lineate_uart_data);
-	
 	fifo_write_buffer(&lineate_uart_fifo, &lineate_uart_data, 1);
-	tft180_show_string(0,60,"success");
 	
 #if WIRELESS_UART_AUTO_BAUD_RATE                                                // 开启自动波特率
     if(wireless_auto_baud_flag == 1 && fifo_used(&wireless_uart_fifo) == 3)
@@ -205,25 +205,25 @@ void lineate_uart_callback (void)
 
 
 
-void jieshou_try(int8 x)
-{
-	uint8 i=0;
-	while(1)
-{
-	
-	jieshoushuju.map_data = uart_read_byte(UART_1);
+//void jieshou_try(int8 x)
+//{
+//	uint8 i=0;
+//	while(1)
+//{
+//	
+//	jieshoushuju.map_data = uart_read_byte(UART_1);
 
-//if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
-//{ 
-	jieshoushuju.add[i]=jieshoushuju.map_data - 48;
-	i++;
-//	}
-if(i==x+1)
-{	i=1;
-	jieshoushuju.map_data=0;
-	break;}
-}
-}
+////if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
+////{ 
+//	jieshoushuju.add[i]=jieshoushuju.map_data - 48;
+//	i++;
+////	}
+//if(i==x+1)
+//{	i=1;
+//	jieshoushuju.map_data=0;
+//	break;}
+//}
+//}
 
 
 
@@ -276,7 +276,7 @@ void fifo_text(uint8 *buff)
 //	uint32 len = lineate_uart_rx_buffer_len;
 //	zf_log(fifo_init(&lineate_uart_fifo,FIFO_DATA_8BIT, lineate_uart_rx_buffer, 64) == FIFO_SUCCESS, "fifo_read_buffer error");
 	
-	i =lineate_uart_buff_read(lineate_uart_rx_buffer,1);
+	i =lineate_uart_buff_read(lineate_uart_rx_buffer,4);
 //	tft180_show_uint(0,0,i,3);
 	tft180_show_uint(0,2*16,lineate_uart_rx_buffer[0],3);
 	tft180_show_uint(20,2*16,lineate_uart_rx_buffer[1],3);
@@ -285,21 +285,3 @@ void fifo_text(uint8 *buff)
 
 }
 
-
-
-
-
-void uart_init_text()
-{
-	uart_init(UART_4,115200,UART4_TX_C16,UART4_RX_C17);
-	
-		openart_receivexfer.dataSize = 1;
-    openart_receivexfer.data = &openart_rx_buffer;
-
-
-    openart1_receivexfer.dataSize = 1;
-    openart1_receivexfer.data = &openart1_rx_buffer;
-	
-		uart_rx_interrupt(UART_4, 1);	
-	
-}

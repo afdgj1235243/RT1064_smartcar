@@ -1,5 +1,4 @@
-./objects/mt9v03x_project.o: ..\CODE\mt9v03x_project.c \
-  ..\code\mt9v03x_project.h \
+./objects/data_send.o: ..\CODE\data_send.c ..\code\data_send.h \
   ..\..\libraries\zf_common\zf_common_headfile.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \

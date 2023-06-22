@@ -1,5 +1,8 @@
 #include "location.h"
 
+#define LOCATION_TARGETX  20
+#define LOCATION_TARGETY  100
+
 bool panduan;
 
 int location_point_num = 0;
@@ -13,6 +16,16 @@ int8 y_add_test[6]={4,1,12,10,10,8};
 int8 car_test_x_last = 0,car_test_y_last = 0;
 int8 car_target_x_last = 0,car_target_y_last = 0;
 
+int8 point_x_middle;                       //判断空白色块中点坐标值
+int8 point_y_middle;
+
+float location_KP,location_KI,location_KD; //坐标定位位置式PID
+
+/********************坐标读取*******************************/
+//state:testing
+
+//instance: main_movement(point_lens);
+/**************************************************************/
 void car_locationread()
 {
 	
@@ -27,19 +40,11 @@ void car_locationread()
 	
 }
 
+/********************运动测试函数*******************************/
+//state:testing
 
-void location_lines(int8 x)
-{
-	int8 i = 0;
-		do 
-		{
-			move_test(jieshoushuju.X[i],jieshoushuju.Y[i]);
-			i++;
-		}while(i<x);
-	
-}
-
-
+//instance: main_movement(point_lens);
+/**************************************************************/
 void move_test(int point)
 {
 	int8 car_test_x,car_test_y;
@@ -84,7 +89,11 @@ while(1){
 			 
 }
 
+/********************走已知点**********************************/
+//state:useing
 
+//instance: main_movement(point_lens);
+/**************************************************************/
 
 void main_movement(int point)
 {
@@ -134,8 +143,16 @@ while(1){
 
 
 
-int8  now_x = 0,now_y = 0;
 
+//data need:
+int8  now_x = 0,now_y = 0;
+/********************路径规划函数*******************************/
+//author:zhaoyouming
+
+//state:testing
+
+//instance:location_shortest();
+/**************************************************************/
 void location_shortest()
 {
 	int  i ,j , k ,t, a, b, c, d, e, mile ,mile1 ,max;
@@ -168,10 +185,157 @@ void location_shortest()
 	}
 }
 
+/********************坐标转换函数*******************************/
+//state:useing
 
+//instance:
+/**************************************************************/
 
 void location_swtich(int x)
 {		
 	now_x = jieshoushuju.X[x] - now_x;
 	now_y = jieshoushuju.Y[x] - now_y;		
 }
+
+
+
+
+
+/********************反馈定位测试*******************************/
+//state:testing
+
+//instance:
+/**************************************************************/
+
+extern unsigned char bin_image[image_h][image_w];
+
+void image_find_move()
+{
+	int8 x_error = 0,y_error = 0;
+	
+	tft180_show_gray_image(0, 0, bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);
+		for(int h=0;h<94;h++)
+	{
+		for(int w = 0;w<60;w++)
+		{
+			if(bin_image[h][w] == white_pixel)
+			{
+				
+				tft180_show_string(50,16*6,"fir find");
+//				tft180_show_int(0,16*6,h,3);
+//				tft180_show_int(0,16*7,w,3);
+		
+				if(boold_judue(h,w))
+				{
+					x_error = location_correct_pid_x(LOCATION_TARGETX,h);
+					y_error = location_correct_pid_y(LOCATION_TARGETY,w);
+					tft180_show_int(50,16*7,x_error,3);
+					while(1){
+					deal_image();
+					tft180_show_gray_image(0, 0, bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);}
+					car_omni(x_error,y_error, Car.Speed_Z);
+					
+				}
+			}
+		}
+	}
+	
+	
+	if(y_error>0){
+	tft180_show_string(0,16*6,"forword");
+	}else if(y_error<0){
+	tft180_show_string(0,16*6,"back   ");
+	}else{
+	tft180_show_string(0,16*6,"stop   ");
+	}
+	if(x_error>0){
+	tft180_show_string(0,16*7,"left ");
+	}else if(x_error<0){
+	tft180_show_string(0,16*7,"right");
+	}else{
+	tft180_show_string(0,16*7,"stop ");
+	}
+
+}
+/********************色块识别与中点获取*******************************/
+//state:testing
+
+//instance:boold_judue(h,w);
+/**************************************************************/
+
+bool boold_judue(int8 image_judge_point_x,int8 image_judge_point_y)
+{
+	int8 point_x_first = image_judge_point_x;
+	int8 point_y_first = image_judge_point_y;
+	
+		point_x_middle = image_judge_point_x;
+		point_y_middle = image_judge_point_y;
+	
+
+	if(bin_image[image_judge_point_y][image_judge_point_x+1] == white_pixel)         //简单的超前判断，通过起始点向x，y两侧判断直到出现黑色像素，计算中点值
+			{
+			image_judge_point_x++;
+			}else{
+				point_x_middle = (point_x_middle + image_judge_point_x - 1)/2;
+			}
+			tft180_show_int(0,16*6,point_x_middle,3);
+//			while(1);
+	if(bin_image[image_judge_point_y+1][image_judge_point_x] == white_pixel)
+			{
+			image_judge_point_y++;
+			}else{
+				point_y_middle = (point_y_middle + image_judge_point_y -1)/2;
+			}
+			tft180_show_int(0,16*7,point_y_middle,3);
+if(abs(point_x_middle - point_x_first)>=1 && abs(point_y_middle - point_y_first) >= 1){
+	
+//		 tft180_draw_line(point_x_first, point_y_first, image_judge_point_x, point_y_first,RGB565_RED); 
+//		 tft180_draw_line(point_x_first, point_y_first, point_x_first, image_judge_point_y,RGB565_RED); 
+	
+	
+	
+		return true;
+}else{
+return false;
+}
+} 
+
+/********************定位pid计算********************************/
+
+//state:testing
+
+//instance:location_correct_pid(locaton_target,now_location);
+
+/**************************************************************/
+int16 location_correct_pid_x(int8 locaton_target_x,int8 now_location_x)
+{
+	  static float Bias,Location_point_x,Integral_bias,Last_Bias;
+	
+    Bias=(float)(locaton_target_x - now_location_x);//当前误差
+	
+    Integral_bias+=Bias;//误差和
+	
+    Location_point_x=location_KP*Bias+location_KI*Integral_bias+location_KD*(Bias-Last_Bias);
+	
+    Last_Bias=Bias;
+	
+    return (int)Location_point_x;
+}
+
+
+
+int16 location_correct_pid_y(int8 locaton_target_y,int8 now_location_y)
+{
+	  static float Bias,Location_point_y,Integral_bias,Last_Bias;
+	
+    Bias=(float)(locaton_target_y - now_location_y);//当前误差
+	
+    Integral_bias+=Bias;//误差和
+	
+    Location_point_y=location_KP*Bias+location_KI*Integral_bias+location_KD*(Bias-Last_Bias);
+	
+    Last_Bias=Bias;
+	
+    return (int)Location_point_y;
+}
+

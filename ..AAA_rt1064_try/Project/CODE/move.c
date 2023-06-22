@@ -24,7 +24,7 @@
 //#define PWM_7 PWM1_MODULE0_CHA_D12
 //#define PWM_8 PWM1_MODULE1_CHA_D14
 
-#define PWM_LIMIT 8000
+#define PWM_LIMIT 6000
 
 
 //前轮接口
@@ -65,7 +65,7 @@ bool dir = true;
 
 int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机pwm值
 
-double speed_tar = 10;//目标速度
+double speed_tar = 5;//目标速度
 
 
 

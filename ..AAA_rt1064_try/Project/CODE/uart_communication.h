@@ -68,5 +68,4 @@ void jieshou_try(int8 x);
 
 void fifo_text(uint8 *buff);
 
-void uart_init_text();
 #endif 
