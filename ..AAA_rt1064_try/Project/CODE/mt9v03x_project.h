@@ -11,6 +11,10 @@
 #define image_h	120//图像高度
 #define image_w	188//图像宽度
 
+#define image_h_bin	60//图像高度_缩小二值化
+#define image_w_bin	94//图像宽度_缩小二值化
+
+
 #define white_pixel	255
 #define black_pixel	0
 

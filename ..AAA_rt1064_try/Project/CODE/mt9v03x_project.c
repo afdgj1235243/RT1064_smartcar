@@ -783,15 +783,15 @@ unsigned char otsuThreshold(unsigned char *image, unsigned short col, unsigned s
 
 
 
-unsigned char bin_image[image_h][image_w];//图像数组
+unsigned char bin_image[image_h_bin][image_w_bin];//图像数组
 void turn_to_bin(void)
 {
   unsigned char i,j;
  image_thereshold = otsuThreshold(original_image[0], image_w, image_h) + 100;
 //	while(1){tft180_show_int(0,0,image_thereshold,3);}
-  for(i = 0;i<image_h;i++)
+  for(i = 0;i<image_h_bin;i++)
   {
-      for(j = 0;j<image_w;j++)
+      for(j = 0;j<image_w_bin;j++)
       {
           if(original_image[i][j]>image_thereshold)bin_image[i][j] = white_pixel;
           else bin_image[i][j] = black_pixel;

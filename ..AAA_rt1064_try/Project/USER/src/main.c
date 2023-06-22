@@ -159,7 +159,7 @@ void main(void)
 		while(1)
 		{
 
-			deal_image();
+//			deal_image();
 		
 			image_find_move();
 

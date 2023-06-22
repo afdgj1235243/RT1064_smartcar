@@ -198,44 +198,54 @@ void location_swtich(int x)
 }
 
 
-
-
-
 /********************∑¥¿°∂®Œª≤‚ ‘*******************************/
 //state:testing
 
 //instance:
 /**************************************************************/
 
-extern unsigned char bin_image[image_h][image_w];
+extern unsigned char bin_image[image_h_bin][image_w_bin];
 
 void image_find_move()
 {
 	int8 x_error = 0,y_error = 0;
 	
-	tft180_show_gray_image(0, 0, bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);
-		for(int h=0;h<94;h++)
+	int h_point = 0;
+	int w_point = 0;
+	
+	while(1){
+		tft180_clear();
+		deal_image();
+		tft180_show_gray_image(0, 0, bin_image[0], image_w_bin, image_h_bin, image_w_bin, image_h_bin, 0);
+	for(int h=0;h<60;h++)
 	{
-		for(int w = 0;w<60;w++)
+		for(int w = 0;w<94;w++)
 		{
 			if(bin_image[h][w] == white_pixel)
 			{
+				h_point = h;
+				w_point = w;
+				tft180_show_string(80,16*6,"fir find");
+				tft180_show_int(50,16*6,h_point,3);
+				tft180_show_int(50,16*7,w_point,3);
 				
-				tft180_show_string(50,16*6,"fir find");
-//				tft180_show_int(0,16*6,h,3);
-//				tft180_show_int(0,16*7,w,3);
-		
-				if(boold_judue(h,w))
-				{
-					x_error = location_correct_pid_x(LOCATION_TARGETX,h);
-					y_error = location_correct_pid_y(LOCATION_TARGETY,w);
-					tft180_show_int(50,16*7,x_error,3);
-					while(1){
-					deal_image();
-					tft180_show_gray_image(0, 0, bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);}
-					car_omni(x_error,y_error, Car.Speed_Z);
-					
-				}
+		 
+			h = 60;
+			}
+		 tft180_draw_line(w_point, h_point, w_point, 0,RGB565_RED); 
+		 tft180_draw_line(w_point, h_point, 0, h_point,RGB565_RED); 
+//				if(boold_judue(w,h))
+//				{
+//					x_error = location_correct_pid_x(LOCATION_TARGETX,h);
+//					y_error = location_correct_pid_y(LOCATION_TARGETY,w);
+//					tft180_show_int(50,16*7,x_error,3);
+//					while(1);
+////					while(1){
+////					deal_image();
+////					tft180_show_gray_image(0, 0, bin_image[0], image_w, image_h, image_w / 1.5, image_h / 1.5, 0);}
+//					car_omni(x_error,y_error, Car.Speed_Z);
+//					
+//				}
 			}
 		}
 	}
@@ -279,7 +289,7 @@ bool boold_judue(int8 image_judge_point_x,int8 image_judge_point_y)
 				point_x_middle = (point_x_middle + image_judge_point_x - 1)/2;
 			}
 			tft180_show_int(0,16*6,point_x_middle,3);
-//			while(1);
+			tft180_show_int(80,16*3,image_judge_point_x,3);
 	if(bin_image[image_judge_point_y+1][image_judge_point_x] == white_pixel)
 			{
 			image_judge_point_y++;
@@ -287,13 +297,15 @@ bool boold_judue(int8 image_judge_point_x,int8 image_judge_point_y)
 				point_y_middle = (point_y_middle + image_judge_point_y -1)/2;
 			}
 			tft180_show_int(0,16*7,point_y_middle,3);
+			tft180_show_int(80,16*4,image_judge_point_y,3);
 if(abs(point_x_middle - point_x_first)>=1 && abs(point_y_middle - point_y_first) >= 1){
 	
-//		 tft180_draw_line(point_x_first, point_y_first, image_judge_point_x, point_y_first,RGB565_RED); 
-//		 tft180_draw_line(point_x_first, point_y_first, point_x_first, image_judge_point_y,RGB565_RED); 
+		 tft180_draw_line(point_x_first, point_y_first, point_x_first, 0,RGB565_RED); 
+		 tft180_draw_line(point_x_first, point_y_first, 0, point_y_first,RGB565_RED); 
 	
+		 tft180_show_int(80,0,point_x_first,3);
 	
-	
+		 tft180_show_int(80,16*1,point_y_first,3);
 		return true;
 }else{
 return false;
