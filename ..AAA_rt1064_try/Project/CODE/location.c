@@ -19,7 +19,7 @@ int8 car_target_x_last = 0,car_target_y_last = 0;
 int8 point_x_middle;                       //判断空白色块中点坐标值
 int8 point_y_middle;
 
-float location_KP,location_KI,location_KD; //坐标定位位置式PID
+float location_KP = 1,location_KI = 0,location_KD = 1; //坐标定位位置式PID
 
 /********************坐标读取*******************************/
 //state:testing
@@ -214,7 +214,7 @@ void image_find_move()
 	int w_point = 0;
 	
 	while(1){
-		tft180_clear();
+//		tft180_clear();
 		deal_image();
 		tft180_show_gray_image(0, 0, bin_image[0], image_w_bin, image_h_bin, image_w_bin, image_h_bin, 0);
 	for(int h=0;h<60;h++)
@@ -229,11 +229,17 @@ void image_find_move()
 				tft180_show_int(50,16*6,h_point,3);
 				tft180_show_int(50,16*7,w_point,3);
 				
-		 
+				x_error = location_correct_pid_x(LOCATION_TARGETX,h);
+				
+				y_error = location_correct_pid_y(LOCATION_TARGETY,w);
+				
+			  tft180_show_int(80,16*6,x_error,3);
+				tft180_show_int(80,16*7,y_error,3);
+				
 			h = 60;
 			}
-		 tft180_draw_line(w_point, h_point, w_point, 0,RGB565_RED); 
-		 tft180_draw_line(w_point, h_point, 0, h_point,RGB565_RED); 
+//		 tft180_draw_line(w_point, h_point, w_point, 0,RGB565_RED); 
+//		 tft180_draw_line(w_point, h_point, 0, h_point,RGB565_RED); 
 //				if(boold_judue(w,h))
 //				{
 //					x_error = location_correct_pid_x(LOCATION_TARGETX,h);
@@ -267,8 +273,11 @@ void image_find_move()
 	}
 
 }
+
+
+
 /********************色块识别与中点获取*******************************/
-//state:testing
+//state:testing (issue)
 
 //instance:boold_judue(h,w);
 /**************************************************************/

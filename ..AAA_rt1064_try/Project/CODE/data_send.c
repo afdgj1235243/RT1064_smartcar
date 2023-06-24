@@ -2,7 +2,7 @@
 
 
 uint8 msg[18] = {0};
-
+uint8 encord_mil[18] ={0} ;
     
 void send_test()
 {
@@ -35,6 +35,7 @@ void send_test()
         send_msg(DATA_SEND_UART_INDEX, 234, 567, 3, 4, PLANE);
         send_msg(DATA_SEND_UART_INDEX, 123, 456, 5, 6, CAR);
         send_msg(DATA_SEND_UART_INDEX, 234, 567, 7, 8, COACH);
+				
         system_delay_ms(2000);
     }
 }
@@ -81,6 +82,33 @@ void send_msg(uart_index_enum uartn, uint16 second, uint16 msecond, uint8 pos_x,
     msg[17] = '\n';
     uart_write_buffer(uartn, msg, 18);
 }
+
+void send_encord(uart_index_enum uartn, uint8 encord_addition)
+{
+	
+	
+	encord_mil[0] = encord_addition + '0';
+	encord_mil[1] = encord_addition + '0';
+	encord_mil[2] = encord_addition + '0';
+	encord_mil[3] = encord_addition + '0';
+	encord_mil[4] = encord_addition + '0';
+	encord_mil[5] = encord_addition + '0';
+	encord_mil[6] = encord_addition + '0';
+	encord_mil[7] = encord_addition + '0';
+	encord_mil[8] = encord_addition + '0';
+	encord_mil[9] = encord_addition + '0';
+	encord_mil[10] = encord_addition + '0';
+	encord_mil[11] = encord_addition + '0';
+	encord_mil[12] = encord_addition + '0';
+	encord_mil[13] = encord_addition + '0';
+	encord_mil[14] = encord_addition + '0';
+	encord_mil[15] = encord_addition + '0';
+	encord_mil[16] = encord_addition + '0';
+	encord_mil[17] = '\n';
+	
+	uart_write_buffer(uartn, encord_mil, 18);
+}
+
 
 void data_send_uart_init()
 {

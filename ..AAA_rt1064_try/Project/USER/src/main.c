@@ -124,6 +124,8 @@ void main(void)
   /***************************按键进入跳车界面**************************************/		
 	while(1){
 		
+		
+		
 			if(gpio_get_level(C14)==0){
 			
 			x_text= x_text+1;
@@ -160,7 +162,11 @@ void main(void)
 		{
 
 //			deal_image();
-		
+//			while(1){
+//	send_encord(UART_1,1);}
+//			send_test();
+			
+//			fifo_text();
 			image_find_move();
 
 }

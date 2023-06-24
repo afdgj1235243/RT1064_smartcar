@@ -258,3 +258,72 @@ void main(void)
 }
 
 
+
+/********************************已淘汰通信代码**********************************/
+
+//void jieshou_try(int8 x)
+//{
+//	uint8 i=0;
+//	while(1)
+//{
+//	
+//	jieshoushuju.map_data = uart_read_byte(UART_1);
+
+////if(jieshoushuju.map_data!=jieshoushuju.add[i-1])
+////{ 
+//	jieshoushuju.add[i]=jieshoushuju.map_data - 48;
+//	i++;
+////	}
+//if(i==x+1)
+//{	i=1;
+//	jieshoushuju.map_data=0;
+//	break;}
+//}
+//}
+
+
+
+
+//临时通信用代码，lens为自己确定的坐标个数
+//void jieshou_map(int8 lens)
+//{
+//	uint16 time_count = LINEATE_UART_TIMEOUT_COUNT;
+//	uint8 i =1;
+//		while(1){
+//		if(gpio_get_level(C12)==0){
+//			
+//			tft180_clear();
+//			tft180_show_string(0,0,"uart_out");
+//			while(gpio_get_level(C12)==0);
+//			system_delay_ms(20);
+//			tft180_clear();
+//			uart_write_string(UART_4, "2\n");
+//			break;
+//		}
+//	}
+//		
+//		for(int i = 1;i<lens;i++)
+//		{
+//			jieshoushuju.map_data = uart_read_byte(UART_4);
+//			if(i%2==1){
+//			jieshoushuju.X[i] = jieshoushuju.map_data -48;
+//			}else{
+//			jieshoushuju.Y[i] = jieshoushuju.map_data -48;
+//			}
+//		}			
+//	
+//	while(1)
+//	{
+//	jieshoushuju.map_data = uart_read_byte(UART_4);
+//		jieshoushuju.add[i] = jieshoushuju.map_data;
+//		i++;
+//		if(i>lens)
+//			break;
+//	}
+	
+	
+	
+//}
+
+
+/******************************************************************************/

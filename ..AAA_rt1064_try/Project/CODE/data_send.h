@@ -35,4 +35,6 @@ void send_msg(uart_index_enum uartn, uint16 second, uint16 msecond, uint8 pos_x,
 void data_send_uart_init();
 
 void send_test();
+
+void send_encord(uart_index_enum uartn, uint8 encord_addition);
 #endif 

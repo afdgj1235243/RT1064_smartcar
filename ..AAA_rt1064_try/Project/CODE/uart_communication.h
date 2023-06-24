@@ -66,6 +66,6 @@ void jieshou_map(int8 x);
 
 void jieshou_try(int8 x);
 
-void fifo_text(uint8 *buff);
+void fifo_text();
 
 #endif 
