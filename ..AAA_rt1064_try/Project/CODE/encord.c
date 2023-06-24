@@ -61,8 +61,8 @@ void encoder_get(void)
 	
     //计算位移(单位：m)
     //Car.mileage=(Encoder/1024)*(45/104)*2*PI*0.03;
-    omni_mileage();
-		encoderjiajia();
+    
+		
 		
 		
     RC_encoder1 = (int16_t)RCFilter(encoder1,RC_Encoder1);
@@ -70,8 +70,8 @@ void encoder_get(void)
     RC_encoder3 = (int16_t)RCFilter(encoder3,RC_Encoder3);
     RC_encoder4 = (int16_t)RCFilter(encoder4,RC_Encoder4);
 
-	
-	
+		omni_mileage();
+		encoderjiajia();
 
     encoder_clear_count(QTIMER1_ENCODER1 );
     encoder_clear_count(QTIMER1_ENCODER2 );
@@ -88,13 +88,15 @@ float RCFilter(float value,RC_Filter_pt Filter)
     return Filter->value;
 }
 
+float detaxx,detayy;
 
 void omni_mileage(){
     float detax=0,detay=0;
-    detax=(float)(RC_encoder1 - RC_encoder2 + RC_encoder3 - RC_encoder4)/4;
+    detax=(float)(RC_encoder1 - RC_encoder2 + RC_encoder4 - RC_encoder3)/4;
     detay=(float)(RC_encoder1 + RC_encoder2 + RC_encoder3 + RC_encoder4)/4;
     Car.MileageX+=(float)(detax*MileageKx);
     Car.MileageY+=(float)(detay*MileageKy);
+		detaxx=detax,detayy=detay;
 }
 
 void encoderjiajia()

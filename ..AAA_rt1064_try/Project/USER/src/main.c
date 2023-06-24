@@ -75,6 +75,9 @@
 
   extern jieshou_try_need jieshoushuju;
 	
+	extern float detaxx,detayy;
+	extern float MileageX,MileageY;
+	
 	uint8 ceshishuzu[10]; 
 /***********************************************************/	
 
@@ -165,9 +168,14 @@ void main(void)
 //			while(1){
 //	send_encord(UART_1,1);}
 //			send_test();
-			
+			car_ahead();
+  tft180_show_float(0,0,Car.MileageX,5,5);
+  tft180_show_float(0,20,Car.MileageY,5,5);
+	tft180_show_float(0,40,detaxx,5,5);
+	tft180_show_float(0,60,detayy,5,5);
+			motor_run(true);
 //			fifo_text();
-			image_find_move();
+//			image_find_move();
 
 }
 }

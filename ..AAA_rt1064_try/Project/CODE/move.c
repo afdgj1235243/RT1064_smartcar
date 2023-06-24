@@ -24,7 +24,7 @@
 //#define PWM_7 PWM1_MODULE0_CHA_D12
 //#define PWM_8 PWM1_MODULE1_CHA_D14
 
-#define PWM_LIMIT 6000
+#define PWM_LIMIT 3000
 
 
 //Ç°ÂÖ½Ó¿Ú
@@ -142,8 +142,8 @@ void motor_init(void)
 void car_ahead(){
     speed_tar_1 = speed_tar;
     speed_tar_2 = speed_tar;
-    speed_tar_3 = speed_tar;
-    speed_tar_4 = speed_tar;
+    speed_tar_3 = -speed_tar;
+    speed_tar_4 = -speed_tar;
 }
 
 
