@@ -65,7 +65,7 @@ bool dir = true;
 
 int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机pwm值
 
-double speed_tar = 5;//目标速度
+double speed_tar = 10;//目标速度
 
 
 

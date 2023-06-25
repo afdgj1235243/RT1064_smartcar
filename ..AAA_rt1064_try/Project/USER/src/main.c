@@ -77,7 +77,9 @@
 	
 	extern float detaxx,detayy;
 	extern float MileageX,MileageY;
-	
+	extern int32 duty1;
+	extern int32 encoder1;
+	extern int32 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;
 	uint8 ceshishuzu[10]; 
 /***********************************************************/	
 
@@ -168,12 +170,18 @@ void main(void)
 //			while(1){
 //	send_encord(UART_1,1);}
 //			send_test();
-			car_ahead();
+			
+//	move_test(1);
+			car_omni(0,1,Car.Speed_Z);
   tft180_show_float(0,0,Car.MileageX,5,5);
   tft180_show_float(0,20,Car.MileageY,5,5);
 	tft180_show_float(0,40,detaxx,5,5);
 	tft180_show_float(0,60,detayy,5,5);
-			motor_run(true);
+	tft180_show_float(0,80,duty1,5,5);
+	tft180_show_float(0,100,encoder3,5,5);
+	tft180_show_float(50,100,RC_encoder3,5,5);
+			
+			
 //			fifo_text();
 //			image_find_move();
 

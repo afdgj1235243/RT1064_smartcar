@@ -4,8 +4,10 @@ extern location_goal Car;
 
 int32 encoder1=0,encoder2=0,encoder3=0,encoder4=0;//编码器的值
 int32 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;
-float MileageKx=0.01079f;
-float MileageKy=0.00999f;
+//float MileageKx=0.01079f;
+//float MileageKy=0.00999f;
+float MileageKx=0.0001f;
+float MileageKy=0.0001f;
 
 struct RC_Para Encoder1_Para = {0,0,0.25};
 struct RC_Para Encoder2_Para = {0,0,0.25};
@@ -61,8 +63,9 @@ void encoder_get(void)
 	
     //计算位移(单位：m)
     //Car.mileage=(Encoder/1024)*(45/104)*2*PI*0.03;
-    
-		
+    //计算速度（单位：m/s）
+		////V = N/1024*（30/68*20.1/100*20） = N*0.0017 m/s
+		//求出车速转换为M/S  N/1024 *（30/68*20.1cm/50ms） = Vm/s,30为编码器齿轮，68为传动齿轮，20.1为轮子周长，控制周期50ms
 		
 		
     RC_encoder1 = (int16_t)RCFilter(encoder1,RC_Encoder1);
@@ -92,8 +95,11 @@ float detaxx,detayy;
 
 void omni_mileage(){
     float detax=0,detay=0;
-    detax=(float)(RC_encoder1 - RC_encoder2 + RC_encoder4 - RC_encoder3)/4;
-    detay=(float)(RC_encoder1 + RC_encoder2 + RC_encoder3 + RC_encoder4)/4;
+    detax=(float)(RC_encoder1 - (-RC_encoder2) + RC_encoder4 - (-RC_encoder3))/4;
+    detay=(float)(RC_encoder1 + (-RC_encoder2) + (-RC_encoder3) + RC_encoder4)/4;
+//    detax=(float)(((RC_encoder1 - (-RC_encoder2) + RC_encoder4 - (-RC_encoder3))/4)/1024*(45/104*18.2));
+//    detay=(float)((RC_encoder1 + (-RC_encoder2) + (-RC_encoder3) + RC_encoder4)/4)/1024*(45/104*18.2);
+		
     Car.MileageX+=(float)(detax*MileageKx);
     Car.MileageY+=(float)(detay*MileageKy);
 		detaxx=detax,detayy=detay;

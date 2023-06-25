@@ -1026,7 +1026,7 @@ void search_l_r(unsigned short break_flag, unsigned char(*image)[image_w], unsig
 				temp_r[index_r][0] = search_filds_r[(i)][0];
 				temp_r[index_r][1] = search_filds_r[(i)][1];
 				index_r++;//索引加一
-				dir_r[r_data_statics - 1] = (i);//记录生长方向
+				dir_r[r_data_statics - 1] = (i);//记录生长方向	
 				//printf("dir[%d]:%d\n", r_data_statics - 1, dir_r[r_data_statics - 1]);
 			}
 			if (index_r)
@@ -1055,4 +1055,78 @@ void search_l_r(unsigned short break_flag, unsigned char(*image)[image_w], unsig
 	*l_stastic = l_data_statics;
 	*r_stastic = r_data_statics;
 
+}
+
+/********************sobel算子检测边缘返回********************************/
+
+//state:testing（try the best choose）
+
+//instance:
+
+/**************************************************************/
+void sobel_deal(char target_image[image_h][image_w])
+{
+	
+	uint8 line_first, line_middle, line_end;
+	
+	uint8 sobel_core_gx[3][3] = { -1, 0, 1,
+															  -2, 0, 2,	
+															  -1 ,0 ,1};  
+	
+	uint8 sobel_core_gy[3][3] = {-1,-2,-1,
+															  0, 0, 0,	
+															  1 ,2 ,1};  //定义3*3sobel卷积核
+	
+//池化原图像，扩展图像大小
+char Pooling_image[image_h + 1][image_w + 1];
+int16 deal_image_x[image_h][image_w];
+int16 deal_image_y[image_h][image_w];						//定义卷积后的x梯度图像与y梯度图像									
+													
+//计算x方向梯度
+	for(int pool_y = 0; pool_y < image_h + 1;pool_y++)
+	{
+		for(int pool_x = 0;pool_x < image_w + 1;pool_x++)
+		{
+			line_first   =     Pooling_image[pool_y][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y][pool_x]*sobel_core_gx[0][0];
+			line_middle  =     Pooling_image[pool_y+1][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+1][pool_x]*sobel_core_gx[0][0];
+			line_end     =     Pooling_image[pool_y+2][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+2][pool_x]*sobel_core_gx[0][0];
+			
+			deal_image_x[pool_y][pool_x] = line_first + line_middle + line_end;
+			
+				if(deal_image_x[pool_y][pool_x] > 255)
+				{
+					deal_image_x[pool_y][pool_x] = deal_image_x[pool_y][pool_x] - 255;
+				}else if(deal_image_x[pool_y][pool_x] < 0)
+				{
+						deal_image_x[pool_y][pool_x] = - deal_image_x[pool_y][pool_x];                 //越界影像处理
+				}
+			
+		}
+	}															 
+																												 
+//计算y方向梯度
+		for(int pool_y = 0; pool_y < image_h + 1;pool_y++)
+	{
+		for(int pool_x = 0;pool_x < image_w + 1;pool_x++)
+		{
+			line_first   =     Pooling_image[pool_y][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y][pool_x]*sobel_core_gx[0][0];
+			line_middle  =     Pooling_image[pool_y+1][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+1][pool_x]*sobel_core_gx[0][0];
+			line_end     =     Pooling_image[pool_y+2][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+2][pool_x]*sobel_core_gx[0][0];
+			
+			deal_image_x[pool_y][pool_x] = line_first + line_middle + line_end;
+			
+				if(deal_image_x[pool_y][pool_x] > 255)
+				{
+					deal_image_x[pool_y][pool_x] = deal_image_x[pool_y][pool_x] - 255;
+				}else if(deal_image_x[pool_y][pool_x] < 0)
+				{
+						deal_image_x[pool_y][pool_x] = - deal_image_x[pool_y][pool_x];                 //越界影像处理
+				}
+			
+		}
+	}																 
+														 
+														 
+  //计算总梯度													 
+//	g = abs(gx) + abs(gy);//简化总梯度用法（精确算法：g = sqrt((gx^2) + sqrt(gy^2)）
 }
