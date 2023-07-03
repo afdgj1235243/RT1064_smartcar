@@ -9,17 +9,24 @@ int location_point_num = 0;
 
 extern location_goal Car;
 extern jieshou_try_need jieshoushuju;
+extern location_now location_correct;
 
-int8 x_add_test[6]={3,15,8,4,10,1};
-int8 y_add_test[6]={4,1,12,10,10,8};
+int8 x_add_test[12]={32,10,14,20,8,13,18,8,15,23,32,26};
+int8 y_add_test[12]={3,4,6,6,8,10,13,14,16,16,17,19};
 
-int8 car_test_x_last = 0,car_test_y_last = 0;
-int8 car_target_x_last = 0,car_target_y_last = 0;
+int8 car_test_x_last = 1,car_test_y_last = 0;
+int8 car_target_x_last = 1,car_target_y_last = 0;
 
 int8 point_x_middle;                       //判断空白色块中点坐标值
 int8 point_y_middle;
 
-float location_KP = 1,location_KI = 0,location_KD = 1; //坐标定位位置式PID
+uint8_t location_correct_target_x = 140;    //限定坐标
+uint8_t location_correct_target_y = 90;
+extern double speed_tar;//目标速度
+float location_KP = 0.007,location_KI = 0,location_KD = 0.0005; //坐标定位位置式PID
+
+extern uint8 concern_point_x[300];
+extern uint8 concern_point_y[300];
 
 /********************坐标读取*******************************/
 //state:testing
@@ -54,6 +61,7 @@ void move_test(int point)
 			car_test_x = x_add_test[location_point_num] - car_test_x_last;
 			car_test_y = y_add_test[location_point_num] - car_test_y_last;
 		
+		
 			car_test_x_last = x_add_test[location_point_num];
 			car_test_y_last = y_add_test[location_point_num];
 		
@@ -62,13 +70,13 @@ void move_test(int point)
 	}else{
 		car_stop();
 		
-		tft180_show_uint(0,4*16,point,3);
+//		tft180_show_uint(0,4*16,point,3);
 		while(1);
 	}
 	
 while(1){	
-	if(sqrt((2*Car.encord_add1*Car.encord_add1)+(2*Car.encord_add2*Car.encord_add2))<2*sqrt(car_test_x*car_test_x+car_test_y*car_test_y)*20){
-
+	if(abs(Car.MileageX) < 20*abs(car_test_x)){
+//if(abs(Car.MileageY) < 20*abs(car_test_y)){
     car_omni(car_test_x,car_test_y,Car.Speed_Z);
 		
 		
@@ -77,8 +85,12 @@ while(1){
 			
 //			tft180_show_uint(0,1,car_test_x,3);
 //			tft180_show_uint(0,16,car_test_y,3);
+			  tft180_show_float(0,0,Car.MileageX,5,5);
+
+				tft180_show_float(0,20,Car.MileageY,5,5);
 			
 			car_stop();
+			location_correct_text();
 			icm20602_init();
 			encoder_init();
 			system_delay_ms(1000);
@@ -133,6 +145,8 @@ while(1){
 			
 			car_stop();
 			encoder_init();
+			uart_write_string(UART_4, "3\n");
+			
 			system_delay_ms(1000);
 			
 			break;
@@ -141,6 +155,58 @@ while(1){
 			 
 }
 
+
+/********************走已知点_新里程计**********************************/
+//state:testing
+
+//instance: main_movement(point_lens);
+/**************************************************************/
+
+void main_movement_new(int point)
+{
+	bool x_flag=false,y_flag=false;
+	int8 car_target_x = 0,car_target_y = 0;
+	
+	if(location_point_num < point){
+		
+			car_target_x = jieshoushuju.X[location_point_num] - car_target_x_last;
+			car_target_y = jieshoushuju.Y[location_point_num] - car_target_y_last;
+		
+			
+			car_target_x_last = jieshoushuju.X[location_point_num];
+			car_target_y_last = jieshoushuju.Y[location_point_num];
+			
+			
+			location_point_num ++;
+		
+	}else{
+		
+		car_stop();
+		tft180_show_uint(0,4*16,point,3);
+		while(1);
+	}
+	
+while(1){	
+	
+	if(abs(Car.MileageX)<abs(car_target_x)*20){
+		
+    car_omni(car_target_x,car_target_y,Car.Speed_Z);
+		
+	}
+		else{
+			
+			car_stop();
+			location_correct_text();
+			encoder_init();
+//			uart_write_string(UART_4, "3\n");
+			
+			system_delay_ms(1000);
+			
+			break;
+		}
+	}	
+			 
+}
 
 
 
@@ -155,7 +221,7 @@ int8  now_x = 0,now_y = 0;
 /**************************************************************/
 void location_shortest()
 {
-	int  i ,j , k ,t, a, b, c, d, e, mile ,mile1 ,max;
+	int  i ,j , k ,t, a, b, c, d, e, mile ,mile1 , mile0, max;
 	t=0;
 	j=0;
 	c=0;
@@ -166,8 +232,9 @@ void location_shortest()
 		mile = 10000;
 		for( j = t ; j < max   ;j++)
 		{
+			mile0 = jieshoushuju.X[j] + jieshoushuju.Y[j];
 			mile1 = (jieshoushuju.X[j]-c)*(jieshoushuju.X[j]-c) + (jieshoushuju.Y[j]-d)*(jieshoushuju.Y[j]-d);
-			if (mile1<mile)
+			if (mile1<mile&&mile0>1)
 				{
 					mile=mile1;
 					 a= jieshoushuju.X[t];
@@ -216,8 +283,17 @@ void image_find_move()
 	while(1){
 //		tft180_clear();
 		deal_image();
+
+		
 		tft180_show_gray_image(0, 0, bin_image[0], image_w_bin, image_h_bin, image_w_bin, image_h_bin, 0);
-	for(int h=0;h<60;h++)
+		
+		tft180_draw_point(concern_point_x[0], concern_point_y[0], RGB565_RED);
+		tft180_draw_point(concern_point_x[0] +1, concern_point_y[0], RGB565_RED);
+		tft180_draw_point(concern_point_x[0]+1, concern_point_y[0]+1, RGB565_RED);
+		tft180_draw_point(concern_point_x[0], concern_point_y[0]+1, RGB565_RED);
+		
+//tft180_draw_point(1,1,RGB565_RED);
+		for(int h=0;h<60;h++)
 	{
 		for(int w = 0;w<94;w++)
 		{
@@ -225,16 +301,27 @@ void image_find_move()
 			{
 				h_point = h;
 				w_point = w;
-				tft180_show_string(80,16*6,"fir find");
-				tft180_show_int(50,16*6,h_point,3);
-				tft180_show_int(50,16*7,w_point,3);
+				
+//				tft180_show_string(80,16*6,"fir find");
+//				tft180_show_int(50,16*6,h_point,3);
+//				tft180_show_int(50,16*7,w_point,3);
+				
+				
+				
+				tft180_show_uint(80,16*6,concern_point_x[0],3);
+				tft180_show_uint(80,16*7,concern_point_y[0],3);
+				
+				tft180_show_uint(100,16*6,concern_point_x[1],3);
+				tft180_show_uint(100,16*7,concern_point_y[1],3);
+				
+//				tft180_draw_point(1,1,RGB565_RED);
 				
 				x_error = location_correct_pid_x(LOCATION_TARGETX,h);
 				
 				y_error = location_correct_pid_y(LOCATION_TARGETY,w);
 				
-			  tft180_show_int(80,16*6,x_error,3);
-				tft180_show_int(80,16*7,y_error,3);
+//			  tft180_show_int(80,16*6,x_error,3);
+//				tft180_show_int(80,16*7,y_error,3);
 				
 			h = 60;
 			}
@@ -328,7 +415,7 @@ return false;
 //instance:location_correct_pid(locaton_target,now_location);
 
 /**************************************************************/
-int16 location_correct_pid_x(int8 locaton_target_x,int8 now_location_x)
+int16 location_correct_pid_x(int16 locaton_target_x,int16 now_location_x)
 {
 	  static float Bias,Location_point_x,Integral_bias,Last_Bias;
 	
@@ -345,7 +432,7 @@ int16 location_correct_pid_x(int8 locaton_target_x,int8 now_location_x)
 
 
 
-int16 location_correct_pid_y(int8 locaton_target_y,int8 now_location_y)
+int16 location_correct_pid_y(int16 locaton_target_y,int16 now_location_y)
 {
 	  static float Bias,Location_point_y,Integral_bias,Last_Bias;
 	
@@ -358,5 +445,67 @@ int16 location_correct_pid_y(int8 locaton_target_y,int8 now_location_y)
     Last_Bias=Bias;
 	
     return (int)Location_point_y;
+}
+
+int16 location_correct_pid_x_and_y(int16 locaton_target_x_and_y,int16 now_location_x_and_y)
+{
+	  static float Bias,Location_point_x_and_y,Integral_bias,Last_Bias;
+	
+    Bias=-(float)(locaton_target_x_and_y - now_location_x_and_y);//当前误差
+	
+    Integral_bias+=Bias;//误差和
+	
+    Location_point_x_and_y=location_KP*Bias+location_KI*Integral_bias+location_KD*(Bias-Last_Bias);
+	
+    Last_Bias=Bias;
+	
+    return (int)Location_point_x_and_y;
+}
+/************************微调*************************************************/
+
+void location_correct_text()
+{
+	while(1)
+	{
+		float x = 0,y = 0;
+		
+		uart_write_string(UART_4, "4");
+		location_correct.k = 90 / 12.0;
+		if(location_correct_point_read())
+		{
+			x = (location_correct.x - location_correct_target_x) * location_correct.k;
+			y = (location_correct.y - location_correct_target_y) * (-location_correct.k);
+			speed_tar = location_correct_pid_x_and_y(0,sqrt(x*x + y*y));
+			car_omni(x,y,Car.Speed_Z);
+			if(speed_tar == 0)
+			{
+		
+				car_stop();
+				break;
+			}
+		}
+//		运动部分	
+//		tft180_show_uint(0,0,location_correct.x ,5);
+//		tft180_show_uint(0,20,location_correct.y ,5);
+//		while(1)
+//		{	
+		
+//		}
+//		if(abs(x)<5 && abs(y)<5)
+//		{
+//			
+//			car_stop();
+//			break;
+//		}
+		
+			
+		tft180_show_uint(0,0,location_correct.x ,5);
+		tft180_show_uint(0,20,location_correct.y ,5);
+//	
+	}
+	
+	
+	
+
 }
 

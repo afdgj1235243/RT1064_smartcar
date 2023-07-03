@@ -4,10 +4,17 @@ extern location_goal Car;
 
 int32 encoder1=0,encoder2=0,encoder3=0,encoder4=0;//±àÂëÆ÷µÄÖµ
 int32 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;
-//float MileageKx=0.01079f;
-//float MileageKy=0.00999f;
-float MileageKx=0.0001f;
-float MileageKy=0.0001f;
+float MileageKx=0.01079f;
+float MileageKy=0.00999f;
+//float MileageKx=0.0001f;
+//float MileageKy=0.0001f;
+
+//float MileageKx_my=0.007943;
+//float MileageKy_my=0.007943;
+//float MileageKx_my=0.00789;
+//float MileageKy_my=0.00789;
+float MileageKx_my=0.00828;
+float MileageKy_my=0.00863;
 
 struct RC_Para Encoder1_Para = {0,0,0.25};
 struct RC_Para Encoder2_Para = {0,0,0.25};
@@ -48,7 +55,7 @@ void encord_init()
 	encoder_dir_init(QTIMER2_ENCODER1, QTIMER2_ENCODER1_CH1_C3, QTIMER2_ENCODER1_CH2_C4);
 	
 	encoder_dir_init(QTIMER2_ENCODER2, QTIMER2_ENCODER2_CH1_C5, QTIMER2_ENCODER2_CH2_C25);
-	
+
 }
 
 
@@ -97,11 +104,16 @@ void omni_mileage(){
     float detax=0,detay=0;
     detax=(float)(RC_encoder1 - (-RC_encoder2) + RC_encoder4 - (-RC_encoder3))/4;
     detay=(float)(RC_encoder1 + (-RC_encoder2) + (-RC_encoder3) + RC_encoder4)/4;
+	
+//	  detax=(float)(RC_encoder1 - RC_encoder2 + RC_encoder4 - RC_encoder3)/4;
+//    detay=(float)(RC_encoder1 + RC_encoder2 + RC_encoder3 + RC_encoder4)/4;
+
 //    detax=(float)(((RC_encoder1 - (-RC_encoder2) + RC_encoder4 - (-RC_encoder3))/4)/1024*(45/104*18.2));
 //    detay=(float)((RC_encoder1 + (-RC_encoder2) + (-RC_encoder3) + RC_encoder4)/4)/1024*(45/104*18.2);
 		
-    Car.MileageX+=(float)(detax*MileageKx);
-    Car.MileageY+=(float)(detay*MileageKy);
+    Car.MileageX+=(float)(detax*MileageKx_my);
+    Car.MileageY+=(float)(detay*MileageKy_my);
+	
 		detaxx=detax,detayy=detay;
 }
 
@@ -121,5 +133,9 @@ void encoder_init()
 	Car.encord_add2=0;
 	Car.encord_add3=0;
 	Car.encord_add4=0;
+	
+	 Car.MileageX = 0;
+	 Car.MileageY = 0;
+	
 
 }	

@@ -114,4 +114,5 @@
   ..\code\uart_communication.h ..\code\mt9v03x_project.h \
   ..\code\attitude.h ..\code\icm20602.h ..\code\utils.h ..\code\menus.h \
   ..\code\keys.h ..\code\location.h ..\code\data_send.h \
+  ..\code\path_planning.h ..\code\global_strategy.h ..\code\smotor.h \
   ..\user\inc\isr.h

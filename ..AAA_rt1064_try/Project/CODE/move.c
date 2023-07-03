@@ -7,8 +7,8 @@
 
 #define DIR_1 D2
 #define DIR_2 C10
-#define DIR_3 C6
-#define DIR_4 C8
+#define DIR_3 C8
+#define DIR_4 C6
 
 //#define PWM_LIMIT 10000
 
@@ -24,7 +24,7 @@
 //#define PWM_7 PWM1_MODULE0_CHA_D12
 //#define PWM_8 PWM1_MODULE1_CHA_D14
 
-#define PWM_LIMIT 3000
+#define PWM_LIMIT 8000
 
 
 //前轮接口
@@ -32,15 +32,15 @@
 #define PWM_2 PWM2_MODULE2_CHB_C11
 
 //dv8701后轮接口
-//#define PWM_3 PWM2_MODULE1_CHB_C9
-//#define PWM_4 PWM2_MODULE0_CHB_C7
+#define PWM_3 PWM2_MODULE1_CHB_C9
+#define PWM_4 PWM2_MODULE0_CHB_C7
 
-//2014驱动后轮接口
-#define PWM_5 PWM2_MODULE1_CHA_C8		
-#define PWM_6 PWM2_MODULE0_CHA_C6
+////2014驱动后轮接口
+//#define PWM_5 PWM2_MODULE1_CHA_C8		
+//#define PWM_6 PWM2_MODULE0_CHA_C6
 
-#define PWM_7 PWM2_MODULE1_CHB_C9
-#define PWM_8 PWM2_MODULE0_CHB_C7
+//#define PWM_7 PWM2_MODULE1_CHB_C9
+//#define PWM_8 PWM2_MODULE0_CHB_C7
 
 #define MAX_DUTY            (50             )  
 
@@ -55,10 +55,15 @@ float Position_KI =20;
 float Position_KD =5;
 
 //电机目标速度
-int speed_tar_1 = 0;
-int speed_tar_2 = 0;
-int speed_tar_3 = 0;
-int speed_tar_4 = 0;
+double speed_tar_1 = 0;
+double speed_tar_2 = 0;
+double speed_tar_3 = 0;
+double speed_tar_4 = 0;
+
+double speed_tar_1_fix  = 0;
+double speed_tar_2_fix  = 0;
+double speed_tar_3_fix  = 0;
+double speed_tar_4_fix  = 0;
 
 int8 duty = 0;
 bool dir = true;
@@ -78,12 +83,12 @@ void motor_init(void)
     gpio_init(DIR_4, GPO, 0, GPIO_PIN_CONFIG);
     pwm_init(PWM_1, 17000, 0);      					
     pwm_init(PWM_2, 17000, 0);     						
-//    pwm_init(PWM_3, 17000, 0);                          
-//    pwm_init(PWM_4, 17000, 0);    
-    pwm_init(PWM_5, 17000, 0);                          
-    pwm_init(PWM_6, 17000, 0);   
-		pwm_init(PWM_7, 17000, 0);                          
-    pwm_init(PWM_8, 17000, 0); 	
+    pwm_init(PWM_3, 17000, 0);                          
+    pwm_init(PWM_4, 17000, 0);    
+//    pwm_init(PWM_5, 17000, 0);                          
+//    pwm_init(PWM_6, 17000, 0);   
+//		pwm_init(PWM_7, 17000, 0);                          
+//    pwm_init(PWM_8, 17000, 0); 	
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -449,28 +454,26 @@ if(duty1>=0){
       gpio_set_level(DIR_2,0);
 			pwm_set_duty(PWM_2,-duty2);
     }
-//		 if(duty3>=0){
-//			 
-//			gpio_set_level(DIR_3,1);
-//			pwm_set_duty(PWM_3,duty3);
-//    } else {
-//       
-//      gpio_set_level(DIR_3,0);
-//			pwm_set_duty(PWM_3,-duty3);
-//    }
+		 if(duty3>=0){
+			 
+			gpio_set_level(DIR_3,1);
+			pwm_set_duty(PWM_3,duty3);
+    } else {
+			
+      gpio_set_level(DIR_3,0);
+			pwm_set_duty(PWM_3,-duty3);
+    }
 
-//    if(duty4>=0){
+    if(duty4>=0){
+			gpio_set_level(DIR_4,1);
+			pwm_set_duty(PWM_4,duty4);
+    } else {
 
-//        
-//			gpio_set_level(DIR_4,1);
-//			pwm_set_duty(PWM_4,duty4);
-//    } else {
-
-//      gpio_set_level(DIR_4,0);
-//			pwm_set_duty(PWM_4,-duty4);
-//    }
+      gpio_set_level(DIR_4,0);
+			pwm_set_duty(PWM_4,-duty4);
+    }
 	
-//}
+}
 
 
 
@@ -505,26 +508,26 @@ if(duty1>=0){
 ////        pwm_set_duty(PWM_4,-duty2);
 ////    }
 
-    if(duty3>=0){
-        
-      pwm_set_duty(PWM_6,duty3);
-			pwm_set_duty(PWM_5, 0);
-    } else {
-       
-      pwm_set_duty(PWM_6,0);
-			pwm_set_duty(PWM_5, -duty3);
-    }
+//    if(duty3>=0){
+//        
+//      pwm_set_duty(PWM_6,duty3);
+//			pwm_set_duty(PWM_5, 0);
+//    } else {
+//       
+//      pwm_set_duty(PWM_6,0);
+//			pwm_set_duty(PWM_5, -duty3);
+//    }
 
-    if(duty4>=0){
-        
-      pwm_set_duty(PWM_7,duty4);
-			pwm_set_duty(PWM_8, 0);
-    } else {
-        
-      pwm_set_duty(PWM_7,0);
-			pwm_set_duty(PWM_8, -duty4);
-    }
-}
+//    if(duty4>=0){
+//        
+//      pwm_set_duty(PWM_7,duty4);
+//			pwm_set_duty(PWM_8, 0);
+//    } else {
+//        
+//      pwm_set_duty(PWM_7,0);
+//			pwm_set_duty(PWM_8, -duty4);
+//    }
+//}
 
 ///////////////////////
 void car_omni(float x, float y, float z){
@@ -656,4 +659,8 @@ void car_omni(float x, float y, float z){
 			speed_tar_3= -speed_tar - z;
 			speed_tar_4= 0 + z; 
 		}		
+		speed_tar_1_fix = speed_tar_1;
+		speed_tar_2_fix = speed_tar_2;
+		speed_tar_3_fix = speed_tar_3;
+		speed_tar_4_fix = speed_tar_4;
 }

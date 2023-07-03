@@ -134,5 +134,8 @@
 #include "keys.h"
 #include "location.h"
 #include "data_send.h"
+#include "path_planning.h"
+#include "global_strategy.h"
+#include "smotor.h"
 
 #endif

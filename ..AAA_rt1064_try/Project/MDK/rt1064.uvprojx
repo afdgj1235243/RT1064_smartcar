@@ -543,6 +543,46 @@
               <FileType>5</FileType>
               <FilePath>..\CODE\main_last.txt</FilePath>
             </File>
+            <File>
+              <FileName>wifi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\wifi.c</FilePath>
+            </File>
+            <File>
+              <FileName>wifi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\wifi.h</FilePath>
+            </File>
+            <File>
+              <FileName>global_strategy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\global_strategy.c</FilePath>
+            </File>
+            <File>
+              <FileName>global_strategy.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\global_strategy.h</FilePath>
+            </File>
+            <File>
+              <FileName>path_planning.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\path_planning.c</FilePath>
+            </File>
+            <File>
+              <FileName>path_planning.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\path_planning.h</FilePath>
+            </File>
+            <File>
+              <FileName>smotor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\smotor.c</FilePath>
+            </File>
+            <File>
+              <FileName>smotor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\smotor.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

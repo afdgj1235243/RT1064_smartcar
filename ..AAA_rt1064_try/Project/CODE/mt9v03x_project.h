@@ -121,4 +121,7 @@ void turn_to_bin(void);
 void deal_image();
 
 void Get_image(unsigned char(*mt9v03x_image)[image_w]);
+
+void fast_find_angular_point(unsigned char(*target_image)[image_w_bin]);
+
 #endif 

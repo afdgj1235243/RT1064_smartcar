@@ -1,6 +1,7 @@
 //uart串口通信
 //
 //author：czy
+
 //
 //最后修改时间：2023.4.2
 
@@ -20,7 +21,8 @@ static fifo_struct lineate_uart_fifo;  //定义一个FIFO对象指针，即为我的user_fifo
 
 static          uint8       lineate_uart_data;  //回调函数中读到的数据存放，再放入缓冲区时用
 
- jieshou_try_need jieshoushuju;
+location_now location_correct;
+jieshou_try_need jieshoushuju;
 
 //uint8 data_buffer[32];  //测试设置，不用try时注释
 //uint8 data_len;  //测试设置，不用try时注释
@@ -210,12 +212,87 @@ void fifo_text()
 //	uint32 len = lineate_uart_rx_buffer_len;
 //	zf_log(fifo_init(&lineate_uart_fifo,FIFO_DATA_8BIT, lineate_uart_rx_buffer, 64) == FIFO_SUCCESS, "fifo_read_buffer error");
 	
-	i =lineate_uart_buff_read(lineate_uart_rx_buffer,4);
+//	i =lineate_uart_buff_read(lineate_uart_rx_buffer,4);
 //	tft180_show_uint(0,0,i,3);
-	tft180_show_uint(0,2*16,lineate_uart_rx_buffer[0],3);
-	tft180_show_uint(20,2*16,lineate_uart_rx_buffer[1],3);
-	tft180_show_uint(40,2*16,lineate_uart_rx_buffer[2],3);
-	tft180_show_uint(60,2*16,lineate_uart_rx_buffer[3],3);
+	tft180_show_uint(0,1*16,lineate_uart_rx_buffer[0],3);
+	tft180_show_uint(20,1*16,lineate_uart_rx_buffer[1],3);
+	tft180_show_uint(40,1*16,lineate_uart_rx_buffer[2],3);
+	tft180_show_uint(60,1*16,lineate_uart_rx_buffer[3],3);
+
 
 }
+
+/**********************从缓冲区读取坐标点**********************************/
+//state:using
+
+//instance: location_point_read(void);
+
+/*************************************************************************/
+void location_point_read()
+{
+	uint8 count;
+	count	 = lineate_uart_buff_read(jieshoushuju.add,64);
+	for(int i = 0;i< count;i++)
+	{
+		jieshoushuju.add[i] =jieshoushuju.add[i] - 48; 
+	}
+	
+	car_locationread();                 //处理坐标原数据使其成为可用的坐标，转换到X,Y数组中
+}
+
+/**********************从缓冲区读取矫正返回值**********************************/
+//state:using
+
+//instance: location_point_read(void);
+
+/*************************************************************************/
+uint8_t location_correct_point_read()
+{
+	uint8 count,end;
+	
+	
+	if(lineate_uart_rx_buffer[0]=='\n'&& lineate_uart_rx_buffer[7]=='\n')
+	{
+		
+		
+//		tft180_show_uint(0,0,lineate_uart_rx_buffer[0],5);
+//		tft180_show_uint(0,15,lineate_uart_rx_buffer[1] ,5);
+//		tft180_show_uint(0,30,lineate_uart_rx_buffer[2] ,5);
+//		tft180_show_uint(0,45,lineate_uart_rx_buffer[3] ,5);
+//		tft180_show_uint(0,60,lineate_uart_rx_buffer[4],5);
+//		tft180_show_uint(0,75,lineate_uart_rx_buffer[5] ,5);
+//		tft180_show_uint(0,90,lineate_uart_rx_buffer[6] ,5);
+//		tft180_show_uint(0,105,lineate_uart_rx_buffer[7] ,5);
+		lineate_uart_buff_read(location_correct.add,64);
+//		count = lineate_uart_buff_read(location_correct.add,8);
+//		
+//			for(int j=1;j<7;j++)
+//			{
+//				location_correct.add [j] = location_correct.add [j] - 48;
+//			}
+		location_correct.x = (location_correct.add[1]-48)*100 + (location_correct.add[2]-48)*10 + (location_correct.add[3]-48);
+		location_correct.y = (location_correct.add[4]-48)*100 + (location_correct.add[5]-48)*10 + (location_correct.add[6]-48);
+		tft180_show_uint(0,0,location_correct.add[0],5);
+		tft180_show_uint(0,15,location_correct.add[1] ,5);
+		tft180_show_uint(0,30,location_correct.add[2] ,5);
+		tft180_show_uint(0,45,location_correct.add[3] ,5);
+		tft180_show_uint(0,60,location_correct.add[4],5);
+		tft180_show_uint(0,75,location_correct.add[5] ,5);
+		tft180_show_uint(0,90,location_correct.add[6] ,5);
+		tft180_show_uint(0,105,location_correct.add[7] ,5);
+		
+//			location_correct.k = location_correct.add[6] + location_correct.add[7]*0.1 + location_correct.add[8]*0.01;
+			
+			
+			
+			end = 1;//接收成功
+		
+	}
+	else
+		end = 0;//接收失败
+
+	return end;
+}
+
+
 

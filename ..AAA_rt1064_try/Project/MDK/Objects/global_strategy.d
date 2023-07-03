@@ -1,4 +1,5 @@
-./objects/data_send.o: ..\CODE\data_send.c ..\code\data_send.h \
+./objects/global_strategy.o: ..\CODE\global_strategy.c \
+  ..\code\global_strategy.h \
   ..\..\libraries\zf_common\zf_common_headfile.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \

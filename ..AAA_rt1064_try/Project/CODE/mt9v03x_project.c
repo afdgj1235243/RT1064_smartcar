@@ -7,7 +7,7 @@
 #define AT_CLIP(img, x, y)  AT_IMAGE((img), clip((x), 0, (img)->width-1), clip((y), 0, (img)->height-1));
 #define PI_1           		    3.14159265358979f
 
-
+uint8 point_addtion = 0;
 
 extern int clip(int x, int low, int up);
 
@@ -787,7 +787,7 @@ unsigned char bin_image[image_h_bin][image_w_bin];//图像数组
 void turn_to_bin(void)
 {
   unsigned char i,j;
- image_thereshold = otsuThreshold(original_image[0], image_w, image_h) + 100;
+ image_thereshold = otsuThreshold(original_image[0], image_w, image_h) + 80;
 //	while(1){tft180_show_int(0,0,image_thereshold,3);}
   for(i = 0;i<image_h_bin;i++)
   {
@@ -818,31 +818,6 @@ void Get_image(unsigned char(*mt9v03x_image)[image_w])
     }
 }
 
-
-
-void deal_image()
-{
-	Get_image(&mt9v03x_image[0]);
-	
-	turn_to_bin();
-	
-//	for(int h=0;h<188;h++)
-//	{
-//		for(int w = 0;w<70;w++)
-//		{
-//			bin_image[w][h] = black_pixel;
-//		}
-//	}
-	
-		for(int h=0;h<94;h++)
-	{
-		for(int w = 0;w<60;w++)
-		{
-			if(w==0||h==0||w==60||h==94)
-			bin_image[w][h] = black_pixel;
-		}
-	}
-}
 
 
 /*
@@ -1064,10 +1039,11 @@ void search_l_r(unsigned short break_flag, unsigned char(*image)[image_w], unsig
 //instance:
 
 /**************************************************************/
-void sobel_deal(char target_image[image_h][image_w])
+void sobel_deal(unsigned char(*target_image)[image_w])
 {
 	
-	uint8 line_first, line_middle, line_end;
+	uint8 line_first_x, line_middle_x, line_end_x;
+	uint8 line_first_y, line_middle_y, line_end_y;
 	
 	uint8 sobel_core_gx[3][3] = { -1, 0, 1,
 															  -2, 0, 2,	
@@ -1080,53 +1056,239 @@ void sobel_deal(char target_image[image_h][image_w])
 //池化原图像，扩展图像大小
 char Pooling_image[image_h + 1][image_w + 1];
 int16 deal_image_x[image_h][image_w];
-int16 deal_image_y[image_h][image_w];						//定义卷积后的x梯度图像与y梯度图像									
+int16 deal_image_y[image_h][image_w];						//定义卷积后的x梯度图像与y梯度图像												
 													
-//计算x方向梯度
-	for(int pool_y = 0; pool_y < image_h + 1;pool_y++)
+//计算x方向梯度，计算y方向梯度
+	for(int pool_y = 0; pool_y < image_w + 1;pool_y++)
 	{
-		for(int pool_x = 0;pool_x < image_w + 1;pool_x++)
+		for(int pool_x = 0;pool_x < image_h + 1;pool_x++)
 		{
-			line_first   =     Pooling_image[pool_y][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y][pool_x]*sobel_core_gx[0][0];
-			line_middle  =     Pooling_image[pool_y+1][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+1][pool_x]*sobel_core_gx[0][0];
-			line_end     =     Pooling_image[pool_y+2][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+2][pool_x]*sobel_core_gx[0][0];
+			line_first_x   =     Pooling_image[pool_y][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y][pool_x]*sobel_core_gx[0][0];
+			line_middle_x  =     Pooling_image[pool_y+1][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+1][pool_x]*sobel_core_gx[0][0];
+			line_end_x     =     Pooling_image[pool_y+2][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+2][pool_x]*sobel_core_gx[0][0];
 			
-			deal_image_x[pool_y][pool_x] = line_first + line_middle + line_end;
+			
+			line_first_y   =     Pooling_image[pool_y][pool_x + 2]*sobel_core_gy[0][2] - Pooling_image[pool_y][pool_x]*sobel_core_gy[0][0];
+			line_middle_y  =     Pooling_image[pool_y+1][pool_x + 2]*sobel_core_gy[0][2] - Pooling_image[pool_y+1][pool_x]*sobel_core_gy[0][0];
+			line_end_y     =     Pooling_image[pool_y+2][pool_x + 2]*sobel_core_gy[0][2] - Pooling_image[pool_y+2][pool_x]*sobel_core_gy[0][0];
+			
+		if(pool_x < image_h && pool_y < image_w){	
+			deal_image_x[pool_y][pool_x] = line_first_x + line_middle_x + line_end_x;
+			
+			deal_image_y[pool_y][pool_x] = line_first_y + line_middle_y + line_end_y;
+			
 			
 				if(deal_image_x[pool_y][pool_x] > 255)
 				{
 					deal_image_x[pool_y][pool_x] = deal_image_x[pool_y][pool_x] - 255;
+					
 				}else if(deal_image_x[pool_y][pool_x] < 0)
 				{
-						deal_image_x[pool_y][pool_x] = - deal_image_x[pool_y][pool_x];                 //越界影像处理
+					deal_image_x[pool_y][pool_x] = - deal_image_x[pool_y][pool_x];                 //x梯度图像越界影像处理
+				}else{
+					deal_image_x[pool_y][pool_x] = 0;   	
 				}
-			
-		}
-	}															 
-																												 
-//计算y方向梯度
-		for(int pool_y = 0; pool_y < image_h + 1;pool_y++)
-	{
-		for(int pool_x = 0;pool_x < image_w + 1;pool_x++)
-		{
-			line_first   =     Pooling_image[pool_y][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y][pool_x]*sobel_core_gx[0][0];
-			line_middle  =     Pooling_image[pool_y+1][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+1][pool_x]*sobel_core_gx[0][0];
-			line_end     =     Pooling_image[pool_y+2][pool_x + 2]*sobel_core_gx[0][2] - Pooling_image[pool_y+2][pool_x]*sobel_core_gx[0][0];
-			
-			deal_image_x[pool_y][pool_x] = line_first + line_middle + line_end;
-			
-				if(deal_image_x[pool_y][pool_x] > 255)
+				
+				if(deal_image_y[pool_y][pool_x] > 255)
 				{
-					deal_image_x[pool_y][pool_x] = deal_image_x[pool_y][pool_x] - 255;
-				}else if(deal_image_x[pool_y][pool_x] < 0)
+					deal_image_y[pool_y][pool_x] = deal_image_y[pool_y][pool_x] - 255;
+					
+				}else if(deal_image_y[pool_y][pool_x] < 0)
 				{
-						deal_image_x[pool_y][pool_x] = - deal_image_x[pool_y][pool_x];                 //越界影像处理
+					deal_image_y[pool_y][pool_x] = - deal_image_y[pool_y][pool_x];                 //y梯度图像越界影像处理
+				}else{
+					deal_image_y[pool_y][pool_x] = 0;   	
 				}
-			
+			}
 		}
-	}																 
-														 
+	}															 																																				 
 														 
   //计算总梯度													 
 //	g = abs(gx) + abs(gy);//简化总梯度用法（精确算法：g = sqrt((gx^2) + sqrt(gy^2)）
+	for(int pool_y = 0; pool_y < image_w ;pool_y++)
+	{
+		for(int pool_x = 0;pool_x < image_h ;pool_x++)
+		{
+			assert(deal_image_x[pool_y][pool_x] ==255&&deal_image_y[pool_y][pool_x] == 255);                            //判断是否存在x，y梯度共同极大的情况
+			Pooling_image[pool_y][pool_x] = sqrt(deal_image_x[pool_y][pool_x]^2 + deal_image_y[pool_y][pool_x]^2);
+			
+			
+		} 
+	}
+}
+
+/********************FAST非极大值抑制找角点********************************/
+
+//state:testing（try the best choose）
+
+//instance:
+
+/************************************************************************/
+uint8 concern_point_x[300] = {0};
+uint8 concern_point_y[300] = {0};
+//uint8 point_addtion = 0;
+
+void fast_find_angular_point(unsigned char(*target_image)[image_w_bin])
+{
+
+	uint8 count = 0;
+	
+
+	uint8 point_filter[image_h_bin][image_w_bin] = {0};
+	uint8 preliminary_sign_point[image_h_bin][image_w_bin] = {0};
+	
+	uint8  max_point = 0;
+	uint8 last_max_x = 0,last_max_y = 0;
+	for(int y = 0;y <image_h_bin;y++)
+	{
+		for(int x = 0;x < image_w_bin; x++)
+		{
+			
+			if(target_image[y][x] == 255)
+			{
+				
+					count = 0;
+			
+					(target_image[y+3][x] == 0) ?(count++) :(count = count);
+					(target_image[y][x+3] == 0) ?(count++) :(count = count);
+					(target_image[y-3][x] == 0) ?(count++) :(count = count);
+					(target_image[y][x-3] == 0) ?(count++) :(count = count);
+					
+					if(count >=3)
+					{
+						preliminary_sign_point[y][x] = 1 ;
+						
+					}
+				}
+			
+				
+		}
+	}                                                                       //以左上到右下的顺序遍历全部图像数组，预筛选角点位置，将位置标志在preliminary_sign_point数组中
+	
+	for(int y = 0;y <image_h_bin;y++)
+	{
+		for(int x = 0;x < image_w_bin; x++)
+		{
+			if(preliminary_sign_point[y][x] == 1)                              
+			{
+					count = 0;
+				
+					(target_image[y+3][x] == 0) ?(count++) :(count = count);
+					(target_image[y][x+3] == 0) ?(count++) :(count = count);
+					(target_image[y-3][x] == 0) ?(count++) :(count = count);
+					(target_image[y][x-3] == 0) ?(count++) :(count = count);
+					
+					(target_image[y+3][x+1] == 0) ?(count++) :(count = count);
+					(target_image[y+1][x+3] == 0) ?(count++) :(count = count);
+					(target_image[y-3][x-1] == 0) ?(count++) :(count = count);
+					(target_image[y-1][x-3] == 0) ?(count++) :(count = count);
+					
+					(target_image[y+3][x-1] == 0) ?(count++) :(count = count);
+					(target_image[y-1][x+3] == 0) ?(count++) :(count = count);
+					(target_image[y-3][x+1] == 0) ?(count++) :(count = count);
+					(target_image[y+1][x-3] == 0) ?(count++) :(count = count);
+					
+					(target_image[y+2][x+2] == 0) ?(count++) :(count = count);
+					(target_image[y-2][x+2] == 0) ?(count++) :(count = count);
+					(target_image[y-2][x-2] == 0) ?(count++) :(count = count);
+					(target_image[y+2][x-2] == 0) ?(count++) :(count = count);
+				
+				if(count >=9)
+					{
+						preliminary_sign_point[y][x] = 1 ;
+						point_filter[y][x] = count;
+					}else{
+						preliminary_sign_point[y][x] = 0;
+					}
+			}
+		}
+	}                                                                    //同样的顺序遍历预筛选角点数组，对预角点进行更多处理，读取预角点判断权值存放在point_filter数组中
+	
+	for(int y = 0;y <image_h_bin-4;y++)
+	{
+		for(int x = 0;x < image_w_bin-4; x++)
+		{
+			if(preliminary_sign_point[y][x] != 0)
+			{
+				for(int i = 0;i<3;i++)
+				{
+					for(int j = 0;j<3;j++)
+					{
+						if(point_filter[y+i][x+j] > max_point)
+						{
+							point_filter[last_max_y][last_max_x] = 0;
+							preliminary_sign_point[last_max_y][last_max_x] = 0;
+							
+							last_max_x = x + j;
+							last_max_y = y + i;
+							max_point = point_filter[y+i][x+j];
+							
+							
+						}else{
+							point_filter[y+i][x+j] = 0;
+							
+						}
+					}
+					if(i == 2){
+					concern_point_x[point_addtion] = last_max_x;
+					concern_point_y[point_addtion] = last_max_y;
+					point_addtion++;
+					last_max_x = last_max_y = max_point = 0;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+void deal_image()
+{
+	uint8 x,y;
+	Get_image(&mt9v03x_image[0]);
+
+	turn_to_bin();
+//	sobel_deal(&mt9v03x_image[0]);
+//	for(int h=0;h<188;h++)
+//	{
+//		for(int w = 0;w<70;w++)
+//		{
+//			bin_image[w][h] = black_pixel;
+//		}
+//	}
+	
+		for(int h=0;h<94;h++)
+	{
+		for(int w = 0;w<60;w++)
+		{
+			if(w==0||h==0||w==60||h==94)
+			bin_image[w][h] = black_pixel;
+		}
+	}
+	fast_find_angular_point(&bin_image[0]);
+	for(int i=0;i<point_addtion;i++)	
+	{
+		
+		x = concern_point_x[point_addtion];
+		y = concern_point_y[point_addtion];
+//		if(x > 98)
+//			x = 98;
+//		if(y > 60)
+//			y = 60;
+		
+		bin_image[y][x] = 155;
+		bin_image[y+1][x] = 155;
+		bin_image[y-1][x] = 155;
+		bin_image[y][x+1] = 155;
+		bin_image[y][x-1] = 155;
+		bin_image[y+1][x+1] = 155;
+		bin_image[y-1][x-1] = 155;
+			  
+//		tft180_show_int(80,16*6,x,3);
+//		tft180_sh.ow_int(80,16*7,y,3);
+////		tft180_draw_point(x,y,RGB565_RED);
+		
+	}
+	
 }

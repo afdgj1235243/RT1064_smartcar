@@ -1,4 +1,4 @@
-./objects/data_send.o: ..\CODE\data_send.c ..\code\data_send.h \
+./objects/smotor.o: ..\CODE\smotor.c ..\code\smotor.h \
   ..\..\libraries\zf_common\zf_common_headfile.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \

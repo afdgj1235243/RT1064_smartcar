@@ -35,6 +35,14 @@ typedef struct
 
 }lineate_buff;
 
+typedef struct
+{
+	uint8_t x;
+	uint8_t y;
+	uint8_t add[100];
+	float k;
+
+}location_now;
 
 typedef struct
 {
@@ -57,6 +65,7 @@ uint8 lineate_uart_init(void);
 
 uint32 lineate_uart_buff_read(uint8 *buff, uint32 len);
 
+
 uint32 lineate_uart_buff_send (const uint8 data);
 uint32 lineate_uart_send_byte (const uint8 data);
 	
@@ -67,5 +76,8 @@ void jieshou_map(int8 x);
 void jieshou_try(int8 x);
 
 void fifo_text();
+
+void location_point_read();
+uint8_t location_correct_point_read();
 
 #endif 

@@ -1,5 +1,5 @@
-./objects/data_send.o: ..\CODE\data_send.c ..\code\data_send.h \
-  ..\..\libraries\zf_common\zf_common_headfile.h \
+./objects/path_planning.o: ..\CODE\path_planning.c \
+  ..\code\path_planning.h ..\..\libraries\zf_common\zf_common_headfile.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \
   D:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h \

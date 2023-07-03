@@ -81,6 +81,18 @@
 	extern int32 encoder1;
 	extern int32 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;
 	uint8 ceshishuzu[10]; 
+	
+	extern double speed_tar_1_fix ;
+	extern double speed_tar_2_fix ;
+  extern double speed_tar_3_fix ;
+  extern double speed_tar_4_fix ;
+	
+	extern int ax_add_test[12];
+	extern int ay_add_test[12];
+	
+	extern int x_add_test[12];
+	extern int y_add_test[12];
+	
 /***********************************************************/	
 
 
@@ -131,17 +143,17 @@ void main(void)
 		
 		
 		
-			if(gpio_get_level(C14)==0){
-			
-			x_text= x_text+1;
-			system_delay_ms(150);
-		}
-			if(gpio_get_level(C13)==0){
-			
-			y_text= y_text+1;
-			system_delay_ms(150);	
-			
-		}
+//			if(gpio_get_level(C14)==0){
+//			
+//			x_text= x_text+1;
+//			system_delay_ms(150);
+//		}
+//			if(gpio_get_level(C13)==0){
+//			
+//			y_text= y_text+1;
+//			system_delay_ms(150);	
+//			
+//		}
 		
 		
 		if(gpio_get_level(C12)==0){
@@ -151,37 +163,131 @@ void main(void)
 			 
 			while(gpio_get_level(C12)==0);
 			
-			uart_write_string(UART_4, "2\n");
-			
+			uart_write_string(UART_4, "2");
+	
 			tft180_show_string(0,0,"send success");
-			system_delay_ms(20);
+			
+				system_delay_ms(500);			           //延时保证接收全部数据
+				location_point_read();
+//			for(int i = 0;i < 12;i++)
+//			{
+//				ax_add_test[i] = jieshoushuju.X[i];
+//				ay_add_test[i] = jieshoushuju.Y[i];
+//			}
+//				path();
+//			for(int i = 0;i < 12;i++)
+//			{
+//				jieshoushuju.X[i] = ax_add_test[i];
+//				jieshoushuju.Y[i] = ay_add_test[i];
+//			}
+//			system_delay_ms(20);
 			tft180_clear();
+//			
+			
+tft180_show_uint(0,0,jieshoushuju.len,3);
+
+	for(int i=0;i<6;i++){
+		tft180_show_uint(0,16*(i+1),jieshoushuju.X[i],3);
+		tft180_show_uint(30,16*(i+1),jieshoushuju.Y[i],3);
+	}
+
+	for(int i=6;i<12;i++){
+		tft180_show_uint(60,16*(i-5),jieshoushuju.X[i],3);
+		tft180_show_uint(90,16*(i-5),jieshoushuju.Y[i],3);
+	}
+
+//	for(int i=0;i<6;i++){
+//		tft180_show_uint(0,16*(i+1),ax_add_test[i],3);
+//		tft180_show_uint(30,16*(i+1),ay_add_test[i],3);
+//	}
+
+//	for(int i=6;i<12;i++){
+//		tft180_show_uint(60,16*(i-5),ax_add_test[i],3);
+//		tft180_show_uint(90,16*(i-5),ay_add_test[i],3);
+//	}
+//				path();
 			break;
 			
 		}
+		
 	}
 
+
+	
+	while(gpio_get_level(C14)==1);
+	system_delay_ms(1000);
+	
 	pit_ms_init(PIT_CH0, 1);                  //开启中断0
 /*****************主函数运行******************/
+
+//		for (int i = 0; i < 12; i++) {
+//    ax_add_test[i] =(int) jieshoushuju.X[i];
+//    ay_add_test[i] =(int) jieshoushuju.Y[i];
+//    }
+
+//		for (int i = 0; i < 12; i++) {
+//    ax_add_test[i] = x_add_test[i];
+//    ay_add_test[i] = x_add_test[i];
+//    }
+	
+		tft180_clear();
+//		 path();
+		
+//	    for (int i = 0; i < 6; i++) {
+//			tft180_show_int(0,15*i,x_add_test[i],3);
+//			tft180_show_int(30,15*i,y_add_test[i],3);
+//			tft180_show_int(60,15*i,x_add_test[i+6],3);
+// 			tft180_show_int(90,15*i,y_add_test[i+6],3);
+//	    }
+//			while(1);
+			
 		while(1)
 		{
+			
+//			
+//	for(int i=0;i<6;i++){
+//		tft180_show_uint(0,16*(i+1),jieshoushuju.X[i],3);
+//		tft180_show_uint(30,16*(i+1),jieshoushuju.Y[i],3);
+//	}
+
+//	for(int i=6;i<12;i++){
+//		tft180_show_uint(60,16*(i-5),jieshoushuju.X[i],3);
+//		tft180_show_uint(90,16*(i-5),jieshoushuju.Y[i],3);
+//	}
+	
 
 //			deal_image();
 //			while(1){
 //	send_encord(UART_1,1);}
 //			send_test();
-			
+//			
 //	move_test(1);
-			car_omni(0,1,Car.Speed_Z);
-  tft180_show_float(0,0,Car.MileageX,5,5);
-  tft180_show_float(0,20,Car.MileageY,5,5);
-	tft180_show_float(0,40,detaxx,5,5);
-	tft180_show_float(0,60,detayy,5,5);
-	tft180_show_float(0,80,duty1,5,5);
-	tft180_show_float(0,100,encoder3,5,5);
-	tft180_show_float(50,100,RC_encoder3,5,5);
+//			
+//	tft180_show_float(0,2*16,speed_tar_1_fix,3,3);
+//	tft180_show_float(0,3*16,speed_tar_2_fix,3,3);
+//	tft180_show_float(0,4*16,speed_tar_3_fix,3,3);
+//	tft180_show_float(0,5*16,speed_tar_4_fix,3,3);
 			
+//			
+//			car_ahead();
+//			car_omni(0,3,Car.Speed_Z);
 			
+////			
+//  tft180_show_float(0,0,Car.MileageX,5,5);
+////			while(1);
+//  tft180_show_float(0,20,Car.MileageY,5,5);
+//	tft180_show_float(0,40,detaxx,5,5);
+//	tft180_show_float(0,60,detayy,5,5);
+//	tft180_show_float(50,60,encoder1,5,5);		
+//	tft180_show_float(0,80,RC_encoder1,5,5);
+//	tft180_show_float(50,80,RC_encoder2,5,5);
+//	tft180_show_float(0,100,RC_encoder3,5,5);
+//	tft180_show_float(50,100,RC_encoder4,5,5);
+//	
+	
+//			main_movement_new(jieshoushuju.len);
+       move_test(12);
+
 //			fifo_text();
 //			image_find_move();
 
