@@ -10,9 +10,10 @@ int location_point_num = 0;
 extern location_goal Car;
 extern jieshou_try_need jieshoushuju;
 extern location_now location_correct;
+extern int ax_add_test[12],ay_add_test[12];
 
-int8 x_add_test[12]={32,10,14,20,8,13,18,8,15,23,32,26};
-int8 y_add_test[12]={3,4,6,6,8,10,13,14,16,16,17,19};
+int8 x_add_test[12]={10,14,20,32,32,26,23,18,15,8,13,8};
+int8 y_add_test[12]={4,6,6,3,17,19,16,13,16,14,10,8};
 
 int8 car_test_x_last = 1,car_test_y_last = 0;
 int8 car_target_x_last = 1,car_target_y_last = 0;
@@ -20,10 +21,10 @@ int8 car_target_x_last = 1,car_target_y_last = 0;
 int8 point_x_middle;                       //判断空白色块中点坐标值
 int8 point_y_middle;
 
-uint8_t location_correct_target_x = 140;    //限定坐标
-uint8_t location_correct_target_y = 90;
+uint8_t location_correct_target_x = 163;    //限定坐标
+uint8_t location_correct_target_y = 131;
 extern double speed_tar;//目标速度
-float location_KP = 0.007,location_KI = 0,location_KD = 0.0005; //坐标定位位置式PID
+float location_KP = 0.013,location_KI = 0,location_KD = 0.001; //坐标定位位置式PID
 
 extern uint8 concern_point_x[300];
 extern uint8 concern_point_y[300];
@@ -74,30 +75,31 @@ void move_test(int point)
 		while(1);
 	}
 	
-while(1){	
-	if(abs(Car.MileageX) < 20*abs(car_test_x)){
-//if(abs(Car.MileageY) < 20*abs(car_test_y)){
-    car_omni(car_test_x,car_test_y,Car.Speed_Z);
-		
-		
-	}
-		else{
-			
-//			tft180_show_uint(0,1,car_test_x,3);
-//			tft180_show_uint(0,16,car_test_y,3);
-			  tft180_show_float(0,0,Car.MileageX,5,5);
-
-				tft180_show_float(0,20,Car.MileageY,5,5);
-			
-			car_stop();
-			location_correct_text();
-			icm20602_init();
-			encoder_init();
-			system_delay_ms(1000);
-			
-			break;
-		}
-	}	
+				while(1){	
+					if(car_test_x != 0){			
+						if(abs(Car.MileageX) < 20*abs(car_test_x)){
+							car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+						}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								break;
+					  }
+				  }else{              //这是在X=0的特殊情况下使用的，不要骂我写的是shit山代码
+							if(abs(Car.MileageY) < 20*abs(car_test_y)){
+								car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+							}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								break;
+					  }
+				}	
+			}
 			 
 }
 
@@ -165,18 +167,26 @@ while(1){
 void main_movement_new(int point)
 {
 	bool x_flag=false,y_flag=false;
-	int8 car_target_x = 0,car_target_y = 0;
+	int8 car_target_x = 1,car_target_y = 0;
 	
 	if(location_point_num < point){
 		
-			car_target_x = jieshoushuju.X[location_point_num] - car_target_x_last;
-			car_target_y = jieshoushuju.Y[location_point_num] - car_target_y_last;
+//			car_target_x = jieshoushuju.X[location_point_num] - car_target_x_last;
+//			car_target_y = jieshoushuju.Y[location_point_num] - car_target_y_last;
+//		
+//			
+//			car_target_x_last = jieshoushuju.X[location_point_num];
+//			car_target_y_last = jieshoushuju.Y[location_point_num];
+//			
+			
+			car_target_x = ax_add_test[location_point_num] - car_target_x_last;
+			car_target_y = ay_add_test[location_point_num] - car_target_y_last;
 		
 			
-			car_target_x_last = jieshoushuju.X[location_point_num];
-			car_target_y_last = jieshoushuju.Y[location_point_num];
+			car_target_x_last = ax_add_test[location_point_num];
+			car_target_y_last = ay_add_test[location_point_num];
 			
-			
+		
 			location_point_num ++;
 		
 	}else{
@@ -186,25 +196,36 @@ void main_movement_new(int point)
 		while(1);
 	}
 	
-while(1){	
-	
-	if(abs(Car.MileageX)<abs(car_target_x)*20){
-		
-    car_omni(car_target_x,car_target_y,Car.Speed_Z);
-		
-	}
-		else{
-			
-			car_stop();
-			location_correct_text();
-			encoder_init();
-//			uart_write_string(UART_4, "3\n");
-			
-			system_delay_ms(1000);
-			
-			break;
-		}
-	}	
+				while(1){	
+					if(car_target_x != 0 && abs(car_target_x) != 1){			
+						if(abs(Car.MileageX) < 20*abs(car_target_x)){
+							car_omni(car_target_x,car_target_y,Car.Speed_Z);			
+						}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								location_correct_text();
+								system_delay_ms(1000);
+								break;
+					  }
+				  }else{              //这是在X=0的特殊情况下使用的，不要骂我写的是shit山代码
+							if(abs(Car.MileageY) < 20*abs(car_target_y)){
+								car_omni(car_target_x,car_target_y,Car.Speed_Z);			
+							}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								location_correct_text();
+								system_delay_ms(1000);
+								
+								break;
+					  }
+				}		
+			}
 			 
 }
 
@@ -479,8 +500,8 @@ void location_correct_text()
 			car_omni(x,y,Car.Speed_Z);
 			if(speed_tar == 0)
 			{
-		
 				car_stop();
+				speed_tar = 10;
 				break;
 			}
 		}
@@ -499,8 +520,8 @@ void location_correct_text()
 //		}
 		
 			
-		tft180_show_uint(0,0,location_correct.x ,5);
-		tft180_show_uint(0,20,location_correct.y ,5);
+//		tft180_show_uint(0,0,location_correct.x ,5);
+//		tft180_show_uint(0,20,location_correct.y ,5);
 //	
 	}
 	

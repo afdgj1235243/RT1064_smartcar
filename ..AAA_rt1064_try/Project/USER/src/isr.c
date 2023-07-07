@@ -41,6 +41,9 @@ extern void move_test(int x,int y);
 extern int x_text,y_text;
 void image_find_move();
 
+int16 count_zero = 0;
+int16 count_time = 0;
+
 void CSI_IRQHandler(void)
 {
     CSI_DriverIRQHandler();     // 调用SDK自带的中断函数 这个函数最后会调用我们设置的回调函数
@@ -51,7 +54,13 @@ void PIT_IRQHandler(void)
 {
     if(pit_flag_get(PIT_CH0))
     {
-			
+			if(count_zero < 1000)
+			{
+				count_zero++;
+			}else{
+				count_time++;
+				count_zero = 0;
+			}
 			  keep_Front();
 //				car_ahead();
 //				encoder_get();

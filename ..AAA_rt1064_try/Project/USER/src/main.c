@@ -90,8 +90,8 @@
 	extern int ax_add_test[12];
 	extern int ay_add_test[12];
 	
-	extern int x_add_test[12];
-	extern int y_add_test[12];
+	extern int8 x_add_test[12];
+	extern int8 y_add_test[12];
 	
 /***********************************************************/	
 
@@ -130,7 +130,8 @@ void main(void)
 		tft180_show_string(0,75,"mt9v03x_init");
 		mt9v03x_init();
 		
-		
+//		smotor_init();        
+//		pwm_init(PWM1_MODULE3_CHA_D0, 100, 0);
 		interrupt_global_enable(0);
 	
 
@@ -217,13 +218,13 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 	while(gpio_get_level(C14)==1);
 	system_delay_ms(1000);
 	
-	pit_ms_init(PIT_CH0, 1);                  //开启中断0
+
 /*****************主函数运行******************/
 
-//		for (int i = 0; i < 12; i++) {
-//    ax_add_test[i] =(int) jieshoushuju.X[i];
-//    ay_add_test[i] =(int) jieshoushuju.Y[i];
-//    }
+		for (int i = 0; i < 12; i++) {
+    ax_add_test[i] =(int) jieshoushuju.X[i];
+    ay_add_test[i] =(int) jieshoushuju.Y[i];
+    }
 
 //		for (int i = 0; i < 12; i++) {
 //    ax_add_test[i] = x_add_test[i];
@@ -231,19 +232,26 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 //    }
 	
 		tft180_clear();
-//		 path();
+		 path();
 		
-//	    for (int i = 0; i < 6; i++) {
-//			tft180_show_int(0,15*i,x_add_test[i],3);
-//			tft180_show_int(30,15*i,y_add_test[i],3);
-//			tft180_show_int(60,15*i,x_add_test[i+6],3);
-// 			tft180_show_int(90,15*i,y_add_test[i+6],3);
-//	    }
+	    for (int i = 0; i < 6; i++) {
+			tft180_show_int(0,15*i,ax_add_test[i],3);
+			tft180_show_int(30,15*i,ay_add_test[i],3);
+			tft180_show_int(60,15*i,ax_add_test[i+6],3);
+ 			tft180_show_int(90,15*i,ay_add_test[i+6],3);
+	    }
 //			while(1);
-			
+
+	while(gpio_get_level(C13)==1);
+	system_delay_ms(1000);
+	pit_ms_init(PIT_CH0, 1);                  //开启中断0
+//			 			grab_picture();
 		while(1)
 		{
 			
+
+//			pwm_set_duty(PWM1_MODULE3_CHA_D0, 666);
+			tft180_show_float(50,100,RC_encoder4,5,5);
 //			
 //	for(int i=0;i<6;i++){
 //		tft180_show_uint(0,16*(i+1),jieshoushuju.X[i],3);
@@ -279,14 +287,14 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 //	tft180_show_float(0,40,detaxx,5,5);
 //	tft180_show_float(0,60,detayy,5,5);
 //	tft180_show_float(50,60,encoder1,5,5);		
-//	tft180_show_float(0,80,RC_encoder1,5,5);
-//	tft180_show_float(50,80,RC_encoder2,5,5);
-//	tft180_show_float(0,100,RC_encoder3,5,5);
-//	tft180_show_float(50,100,RC_encoder4,5,5);
+	tft180_show_float(0,80,RC_encoder1,5,5);
+	tft180_show_float(50,80,RC_encoder2,5,5);
+	tft180_show_float(0,100,RC_encoder3,5,5);
+	tft180_show_float(50,100,RC_encoder4,5,5);
 //	
 	
-//			main_movement_new(jieshoushuju.len);
-       move_test(12);
+			main_movement_new(6);
+//       move_test(12);
 
 //			fifo_text();
 //			image_find_move();

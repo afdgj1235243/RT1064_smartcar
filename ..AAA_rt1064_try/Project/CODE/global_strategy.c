@@ -108,7 +108,7 @@ void remain_planning2()
 					planning_Num ++;				
 				}
 				while(1){	
-					if(car_test_x == 0){			
+					if(car_test_x != 0){			
 						if(abs(Car.MileageX) < 20*abs(car_test_x)){
 							car_omni(car_test_x,car_test_y,Car.Speed_Z);			
 						}

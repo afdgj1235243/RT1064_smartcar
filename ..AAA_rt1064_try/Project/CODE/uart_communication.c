@@ -249,21 +249,22 @@ void location_point_read()
 uint8_t location_correct_point_read()
 {
 	uint8 count,end;
-	
-	
-	if(lineate_uart_rx_buffer[0]=='\n'&& lineate_uart_rx_buffer[7]=='\n')
+	tft180_clear();
+		tft180_show_uint(0,0,lineate_uart_rx_buffer[0],5);
+		tft180_show_uint(0,15,lineate_uart_rx_buffer[1] ,5);
+		tft180_show_uint(0,30,lineate_uart_rx_buffer[2] ,5);
+		tft180_show_uint(0,45,lineate_uart_rx_buffer[3] ,5);
+		tft180_show_uint(0,60,lineate_uart_rx_buffer[4],5);
+		tft180_show_uint(0,75,lineate_uart_rx_buffer[5] ,5);
+		tft180_show_uint(0,90,lineate_uart_rx_buffer[6] ,5);
+		tft180_show_uint(0,105,lineate_uart_rx_buffer[7] ,5);
+		lineate_uart_buff_read(location_correct.add,64);
+	if(location_correct.add [0]=='\n'&& location_correct.add[7]=='\n')
 	{
 		
 		
-//		tft180_show_uint(0,0,lineate_uart_rx_buffer[0],5);
-//		tft180_show_uint(0,15,lineate_uart_rx_buffer[1] ,5);
-//		tft180_show_uint(0,30,lineate_uart_rx_buffer[2] ,5);
-//		tft180_show_uint(0,45,lineate_uart_rx_buffer[3] ,5);
-//		tft180_show_uint(0,60,lineate_uart_rx_buffer[4],5);
-//		tft180_show_uint(0,75,lineate_uart_rx_buffer[5] ,5);
-//		tft180_show_uint(0,90,lineate_uart_rx_buffer[6] ,5);
-//		tft180_show_uint(0,105,lineate_uart_rx_buffer[7] ,5);
-		lineate_uart_buff_read(location_correct.add,64);
+
+	
 //		count = lineate_uart_buff_read(location_correct.add,8);
 //		
 //			for(int j=1;j<7;j++)
@@ -272,15 +273,7 @@ uint8_t location_correct_point_read()
 //			}
 		location_correct.x = (location_correct.add[1]-48)*100 + (location_correct.add[2]-48)*10 + (location_correct.add[3]-48);
 		location_correct.y = (location_correct.add[4]-48)*100 + (location_correct.add[5]-48)*10 + (location_correct.add[6]-48);
-		tft180_show_uint(0,0,location_correct.add[0],5);
-		tft180_show_uint(0,15,location_correct.add[1] ,5);
-		tft180_show_uint(0,30,location_correct.add[2] ,5);
-		tft180_show_uint(0,45,location_correct.add[3] ,5);
-		tft180_show_uint(0,60,location_correct.add[4],5);
-		tft180_show_uint(0,75,location_correct.add[5] ,5);
-		tft180_show_uint(0,90,location_correct.add[6] ,5);
-		tft180_show_uint(0,105,location_correct.add[7] ,5);
-		
+
 //			location_correct.k = location_correct.add[6] + location_correct.add[7]*0.1 + location_correct.add[8]*0.01;
 			
 			

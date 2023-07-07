@@ -238,8 +238,8 @@ void path() {
 //    }
 		
 		    for (int i = 1; i < NUM_CITIES ; i++) {
-       x_add_test[i-1] = (int8_t)cities[optimalPath[i]].x;
-       y_add_test[i-1] = (int8_t)cities[optimalPath[i]].y;
+       ax_add_test[i-1] = (int8_t)cities[optimalPath[i]].x;
+       ay_add_test[i-1] = (int8_t)cities[optimalPath[i]].y;
     }
 		
 //    printf("%d\n", cities[optimalPath[NUM_CITIES - 1]].y);

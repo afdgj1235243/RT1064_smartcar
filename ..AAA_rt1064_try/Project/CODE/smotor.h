@@ -4,12 +4,14 @@
 #include "zf_common_headfile.h"
 
 void smotor_init(void);
-void smotor1_control(int16 duty);
+void smotor_updown_control(uint32 duty);
+	
 void grab_picture();
 void place_picture();
 
-void smotor2_control(int16 duty);
+void smotor_turn_control(int16 duty);
 void smotor3_control(int16 duty);
-    
+
+int smotor_pid(int now_position,int Target);
 
 #endif

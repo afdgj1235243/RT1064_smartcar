@@ -21,7 +21,7 @@ double getAngel_k=0;
 double getAngelN=0;
 float getAngel_Err=0.00003f;
 int nextpoint=0;
-
+extern int16 count_time;
 
 enum openart_mode{
     get_map,
@@ -59,7 +59,7 @@ int picture_yerror_pid(int16 now_y,int16 target_y){
     return (int)Speed_Y;
 }
 
-int angel_pid(int NowAngel,int TargetAngel){
+double angel_pid(int NowAngel,int TargetAngel){
     if (NowAngel<=0){
         if(NowAngel-TargetAngel<=-180){
             NowAngel+=180;
@@ -80,7 +80,7 @@ int angel_pid(int NowAngel,int TargetAngel){
         Speed_Z=10;
     if(Speed_Z<=-10)
         Speed_Z=-10;
-    return (int)Speed_Z;
+    return (double)Speed_Z;
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -111,6 +111,10 @@ void keep_Front(void)
     encoder_get();
 
     Car.Speed_Z=-angel_pid(eulerAngle.yaw,angelTarget);//omnimove模式下目标方向一直为0
+		if(count_time >= 30)
+		{
+			Car.Speed_Z =Car.Speed_Z - count_time/30;
+		}
 //    car_omni(Car.Speed_X,Car.Speed_Y,Car.Speed_Z);
 //		
 //    //控制电机转动

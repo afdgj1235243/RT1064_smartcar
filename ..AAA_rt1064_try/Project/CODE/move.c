@@ -54,6 +54,13 @@ float Position_KP =200;
 float Position_KI =20;
 float Position_KD =5;
 
+
+//float Position_KP =220;
+//float Position_KI =25;
+//float Position_KD =5;
+
+
+
 //电机目标速度
 double speed_tar_1 = 0;
 double speed_tar_2 = 0;
