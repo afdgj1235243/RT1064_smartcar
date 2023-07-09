@@ -42,7 +42,7 @@
 #define GPIO_PIN_CONFIG         SPEED_100MHZ | DSE_R0 | PULLUP_47K | PULL_EN	//宏定义GPIO引脚的默认配置，便于初始化GPIO时快速填写参数，如果需要其他参数可自行修改
 #define FAST_GPIO_PIN_CONFIG    SPEED_200MHZ | DSE_R0 | PULLUP_47K | PULL_EN    //宏定义快速GPIO引脚的默认配置，便于初始化GPIO时快速填写参数，如果需要其他参数可自行修改
 #define GPIO_INT_CONFIG         SPEED_100MHZ | HYS_EN | PULLUP_22K | PULL_EN    //宏定义GPIO中断引脚的默认配置，便于初始化GPIO中断时快速填写参数，如果需要其他参数可自行修改
-
+#define BEEP                (B11)
 /**********************************************************/
 
 // 打开新的工程或者工程移动了位置务必执行以下操作
@@ -109,6 +109,8 @@ void main(void)
 		tft180_set_font(TFT180_8X16_FONT);
 		tft180_set_color(RGB565_WHITE, RGB565_BLACK);
 		tft180_init();
+	
+		gpio_init(BEEP, GPO, GPIO_LOW, GPO_PUSH_PULL);
 	
 		tft180_show_string(0,0,"data_send_init");
 		data_send_uart_init();
@@ -232,7 +234,7 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 //    }
 	
 		tft180_clear();
-		 path();
+//		 path();
 		
 	    for (int i = 0; i < 6; i++) {
 			tft180_show_int(0,15*i,ax_add_test[i],3);
@@ -248,10 +250,12 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 //			 			grab_picture();
 		while(1)
 		{
+tft180_show_float(0,2*16,Car.Angel,3,3);
+tft180_show_float(0,3*16,Car.Speed_Z,3,3);
 			
-
+			
 //			pwm_set_duty(PWM1_MODULE3_CHA_D0, 666);
-			tft180_show_float(50,100,RC_encoder4,5,5);
+//			tft180_show_float(50,100,RC_encoder4,5,5);
 //			
 //	for(int i=0;i<6;i++){
 //		tft180_show_uint(0,16*(i+1),jieshoushuju.X[i],3);
@@ -287,14 +291,16 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 //	tft180_show_float(0,40,detaxx,5,5);
 //	tft180_show_float(0,60,detayy,5,5);
 //	tft180_show_float(50,60,encoder1,5,5);		
-	tft180_show_float(0,80,RC_encoder1,5,5);
-	tft180_show_float(50,80,RC_encoder2,5,5);
-	tft180_show_float(0,100,RC_encoder3,5,5);
-	tft180_show_float(50,100,RC_encoder4,5,5);
+//	tft180_show_float(0,80,RC_encoder1,5,5);
+//	tft180_show_float(50,80,RC_encoder2,5,5);
+//	tft180_show_float(0,100,RC_encoder3,5,5);
+//	tft180_show_float(50,100,RC_encoder4,5,5);
 //	
 	
-			main_movement_new(6);
-//       move_test(12);
+//			main_movement_new(12);
+//location_correct_text();
+//       move_test(2);
+//car_omni(0,-5,0);
 
 //			fifo_text();
 //			image_find_move();

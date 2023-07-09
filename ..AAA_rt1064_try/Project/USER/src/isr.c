@@ -40,7 +40,7 @@
 extern void move_test(int x,int y);
 extern int x_text,y_text;
 void image_find_move();
-
+  extern location_goal Car;
 int16 count_zero = 0;
 int16 count_time = 0;
 
@@ -62,6 +62,7 @@ void PIT_IRQHandler(void)
 				count_zero = 0;
 			}
 			  keep_Front();
+
 //				car_ahead();
 //				encoder_get();
 //				motor_run(true);

@@ -3,6 +3,9 @@
 #define LOCATION_TARGETX  20
 #define LOCATION_TARGETY  100
 
+
+#define BEEP                (B11)  //¶¨Òå·äÃùÆ÷Òý½Å
+
 bool panduan;
 
 int location_point_num = 0;
@@ -12,8 +15,8 @@ extern jieshou_try_need jieshoushuju;
 extern location_now location_correct;
 extern int ax_add_test[12],ay_add_test[12];
 
-int8 x_add_test[12]={10,14,20,32,32,26,23,18,15,8,13,8};
-int8 y_add_test[12]={4,6,6,3,17,19,16,13,16,14,10,8};
+int8 x_add_test[12]={10,10,20,32,32,26,23,18,15,8,13,8};
+int8 y_add_test[12]={7,2,6,3,17,19,16,13,16,14,10,8};
 
 int8 car_test_x_last = 1,car_test_y_last = 0;
 int8 car_target_x_last = 1,car_target_y_last = 0;
@@ -197,7 +200,11 @@ void main_movement_new(int point)
 	}
 	
 				while(1){	
-					if(car_target_x != 0 && abs(car_target_x) != 1){			
+					tft180_show_float(50,2*16,Car.Angel,3,3);
+					tft180_show_float(50,3*16,Car.Speed_Z,3,3);
+					tft180_show_float(50,4*16,car_target_x,3,3);
+					tft180_show_float(50,5*16,Car.MileageY,3,3);
+					if(car_target_x != 0 && car_target_x != 1 && car_target_x != -1){			
 						if(abs(Car.MileageX) < 20*abs(car_target_x)){
 							car_omni(car_target_x,car_target_y,Car.Speed_Z);			
 						}
@@ -489,7 +496,7 @@ void location_correct_text()
 	while(1)
 	{
 		float x = 0,y = 0;
-		
+		gpio_set_level(BEEP, GPIO_HIGH);
 		uart_write_string(UART_4, "4");
 		location_correct.k = 90 / 12.0;
 		if(location_correct_point_read())
@@ -500,7 +507,9 @@ void location_correct_text()
 			car_omni(x,y,Car.Speed_Z);
 			if(speed_tar == 0)
 			{
+				
 				car_stop();
+				gpio_set_level(BEEP, GPIO_LOW);
 				speed_tar = 10;
 				break;
 			}

@@ -3,7 +3,7 @@
 #define SMOTOR_TURN_PIN   PWM1_MODULE3_CHA_D0       //起落舵机定义
 #define SMOTOR_UPDOWN_PIN  	PWM1_MODULE3_CHB_D1       	 //旋转舵机定义
 
-#define STEPPING_MOTOR_PIN   PWM1_MODULE0_CHB_D13   	 //步进电机定义
+#define STEPPING_MOTOR_PIN   PWM2_MODULE3_CHA_B9   	 //步进电机定义
 //#define STEPPING_MOTOR_DIR   PWM4_MODULE2_CHA_C30  
 
 //#define SMOTOR3_PIN   PWM4_MODULE2_CHA_C30           //电磁铁定义
@@ -28,6 +28,12 @@ float servo_motor_duty = 1500;  //舵机当前值
 float servo_motor_duty_addition; //舵机累加值
 
 float smotor_KP = 1,smotor_KI,smotor_KD = 1;
+
+
+uint8 picture_type[] = {0};      //定义图片类型存储区域
+uint8 now_stepping_count = 0;   // 定义当前步进电机位置量
+
+
 void smotor_init(void)
 {
     pwm_init(SMOTOR_UPDOWN_PIN, SERVO_MOTOR_FREQ, SMOTOR_UPDOWN_CENTER);
@@ -35,7 +41,7 @@ void smotor_init(void)
 //    smotor_updown_control(2800);
     pwm_init(SMOTOR_TURN_PIN, SERVO_MOTOR_FREQ, SMOTOR_TURN_CENTER);
 		gpio_init(ELECTROMAG_PIN, GPO, 1, GPIO_PIN_CONFIG);
-//    pwm_init(STEPPING_MOTOR_PIN, 50, STEPPING_MOTOR_CENTER);
+    pwm_init(STEPPING_MOTOR_PIN, 735, 0);
 	
 }
 /********************起落舵机驱动*******************************/
@@ -131,9 +137,45 @@ void place_picture(){
     smotor_turn_control(1600);
 }
 
-void stepping_motor_control()
+void stepping_motor_control(uint8 step,uint8 dir)
 {
+	if(dir < 0)
+	{
+		
+	}else if(dir > 0){
 	
+	}
+	if(step==1)
+	{
+		 pwm_set_duty(STEPPING_MOTOR_PIN,325);
+		 system_delay_ms(1000);
+		 pwm_set_duty(STEPPING_MOTOR_PIN,0);
+		
+	}else if(step==2){
+	
+		 pwm_set_duty(STEPPING_MOTOR_PIN,325);
+		 system_delay_ms(1000);
+		 pwm_set_duty(STEPPING_MOTOR_PIN,0);
+		
+	}else if(step==3){
+	
+		 pwm_set_duty(STEPPING_MOTOR_PIN,325);
+		 system_delay_ms(1000);
+		 pwm_set_duty(STEPPING_MOTOR_PIN,0);
+		
+	}else if(step==4){
+	
+		 pwm_set_duty(STEPPING_MOTOR_PIN,325);
+		 system_delay_ms(1000);
+		 pwm_set_duty(STEPPING_MOTOR_PIN,0);
+		
+	}else if(step==5){
+	
+		 pwm_set_duty(STEPPING_MOTOR_PIN,325);
+		 system_delay_ms(1000);
+		 pwm_set_duty(STEPPING_MOTOR_PIN,0);
+		
+	}
 }
 
 
@@ -151,4 +193,28 @@ int smotor_pid(int now_position,int Target){
     Last_Bias=Bias;
 	
     return (int)Pwm;
+}
+
+/**********************从缓冲区读取图片类型并控制步进电机**********************************/
+//state:using
+
+//instance: location_point_read(void);
+
+/*************************************************************************/
+void picture_read_countrol()
+{
+	uint8 count;
+	uint8 step_duty;
+	uint8 dir_duty = 1;
+	lineate_uart_buff_read(picture_type,64);
+	if(picture_type[0] != now_stepping_count)
+	{
+		if(picture_type[0] < now_stepping_count){
+			dir_duty =  - dir_duty;
+		}else if(picture_type[0] > now_stepping_count){
+			dir_duty = 1;
+		}
+		step_duty = abs(now_stepping_count - picture_type[0]);
+		stepping_motor_control(step_duty,dir_duty);
+	}
 }

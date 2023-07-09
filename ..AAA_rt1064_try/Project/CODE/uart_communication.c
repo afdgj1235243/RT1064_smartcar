@@ -250,15 +250,30 @@ uint8_t location_correct_point_read()
 {
 	uint8 count,end;
 	tft180_clear();
-		tft180_show_uint(0,0,lineate_uart_rx_buffer[0],5);
-		tft180_show_uint(0,15,lineate_uart_rx_buffer[1] ,5);
-		tft180_show_uint(0,30,lineate_uart_rx_buffer[2] ,5);
-		tft180_show_uint(0,45,lineate_uart_rx_buffer[3] ,5);
-		tft180_show_uint(0,60,lineate_uart_rx_buffer[4],5);
-		tft180_show_uint(0,75,lineate_uart_rx_buffer[5] ,5);
-		tft180_show_uint(0,90,lineate_uart_rx_buffer[6] ,5);
-		tft180_show_uint(0,105,lineate_uart_rx_buffer[7] ,5);
+//		tft180_show_uint(0,0,lineate_uart_rx_buffer[0],5);
+//		tft180_show_uint(0,15,lineate_uart_rx_buffer[1] ,5);
+//		tft180_show_uint(0,30,lineate_uart_rx_buffer[2] ,5);
+//		tft180_show_uint(0,45,lineate_uart_rx_buffer[3] ,5);
+//		tft180_show_uint(0,60,lineate_uart_rx_buffer[4],5);
+//		tft180_show_uint(0,75,lineate_uart_rx_buffer[5] ,5);
+//		tft180_show_uint(0,90,lineate_uart_rx_buffer[6] ,5);
+//		tft180_show_uint(0,105,lineate_uart_rx_buffer[7] ,5);
+//	
+//	
+//		tft180_show_uint(50,0,location_correct.add[0],5);
+//		tft180_show_uint(50,15,location_correct.add[1] ,5);
+//		tft180_show_uint(50,30,location_correct.add[2] ,5);
+//		tft180_show_uint(50,45,location_correct.add[3] ,5);
+//		tft180_show_uint(50,60,location_correct.add[4],5);
+//		tft180_show_uint(50,75,location_correct.add[5] ,5);
+//		tft180_show_uint(50,90,location_correct.add[6] ,5);
+//		tft180_show_uint(50,105,location_correct.add[7] ,5);
+	
+	
 		lineate_uart_buff_read(location_correct.add,64);
+		
+		lineate_uart_buff_read(location_correct.add,64);
+	
 	if(location_correct.add [0]=='\n'&& location_correct.add[7]=='\n')
 	{
 		

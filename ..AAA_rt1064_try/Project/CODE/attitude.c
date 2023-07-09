@@ -106,16 +106,14 @@ void keep_Front(void)
     ICM_getEulerianAngles();
 
     eulerAngle.yaw=eulerAngle.yaw+getAngel_Err*getAngel_times;
-    Car.Angel=eulerAngle.yaw;
+    Car.Angel=eulerAngle.yaw  - count_time/4;
+
     //获取编码器的值
     encoder_get();
 
-    Car.Speed_Z=-angel_pid(eulerAngle.yaw,angelTarget);//omnimove模式下目标方向一直为0
-		if(count_time >= 30)
-		{
-			Car.Speed_Z =Car.Speed_Z - count_time/30;
-		}
-//    car_omni(Car.Speed_X,Car.Speed_Y,Car.Speed_Z);
+    Car.Speed_Z=-angel_pid(Car.Angel,angelTarget);//omnimove模式下目标方向一直为0
+
+//    car_omni(0,0,Car.Speed_Z);
 //		
 //    //控制电机转动
 //    motor_run(true);

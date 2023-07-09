@@ -13,8 +13,8 @@ float MileageKy=0.00999f;
 //float MileageKy_my=0.007943;
 //float MileageKx_my=0.00789;
 //float MileageKy_my=0.00789;
-float MileageKx_my=0.00828;
-float MileageKy_my=0.00863;
+float MileageKx_my=0.00820;
+float MileageKy_my=0.00839;
 
 struct RC_Para Encoder1_Para = {0,0,0.25};
 struct RC_Para Encoder2_Para = {0,0,0.25};

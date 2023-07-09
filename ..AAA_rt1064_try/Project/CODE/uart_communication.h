@@ -37,8 +37,8 @@ typedef struct
 
 typedef struct
 {
-	uint8_t x;
-	uint8_t y;
+	uint16_t x;
+	uint16_t y;
 	uint8_t add[100];
 	float k;
 
