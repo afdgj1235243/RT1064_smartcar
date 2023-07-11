@@ -621,10 +621,10 @@ void car_omni(float x, float y, float z){
 //Õý×ó		
 	if(x<0&&y==0)
 		{
-			speed_tar_1= speed_tar + z;
-			speed_tar_2= -speed_tar - z;
-			speed_tar_3= speed_tar - z;
-			speed_tar_4= -speed_tar + z; 
+			speed_tar_1= -speed_tar + z;
+			speed_tar_2= speed_tar - z;
+			speed_tar_3= -speed_tar - z;
+			speed_tar_4= speed_tar + z; 
 		}	
 //Õýºó		
 	if(x==0&&y<0)

@@ -24,10 +24,10 @@ int8 car_target_x_last = 1,car_target_y_last = 0;
 int8 point_x_middle;                       //判断空白色块中点坐标值
 int8 point_y_middle;
 
-uint8_t location_correct_target_x = 163;    //限定坐标
-uint8_t location_correct_target_y = 131;
+uint8_t location_correct_target_x = 156;    //限定坐标
+uint8_t location_correct_target_y = 107;
 extern double speed_tar;//目标速度
-float location_KP = 0.013,location_KI = 0,location_KD = 0.001; //坐标定位位置式PID
+float location_KP = 0.011,location_KI = 0,location_KD = 0.001; //坐标定位位置式PID
 
 extern uint8 concern_point_x[300];
 extern uint8 concern_point_y[300];
@@ -491,51 +491,150 @@ int16 location_correct_pid_x_and_y(int16 locaton_target_x_and_y,int16 now_locati
 }
 /************************微调*************************************************/
 
+//void location_correct_text()
+//{
+//	while(1)
+//	{
+//		float x = 0,y = 0;
+//		gpio_set_level(BEEP, GPIO_HIGH);
+//		uart_write_string(UART_4, "4");
+//		location_correct.k = 90 / 12.0;
+//		if(location_correct_point_read())
+//		{
+//			x = (location_correct.x - location_correct_target_x) * location_correct.k;
+//			y = (location_correct.y - location_correct_target_y) * (-location_correct.k);
+//			speed_tar = location_correct_pid_x_and_y(0,sqrt(x*x + y*y));
+//			car_omni(x,y,Car.Speed_Z);
+//			if(speed_tar == 0)
+//			{
+//				
+//				car_stop();
+//				gpio_set_level(BEEP, GPIO_LOW);
+//				grab_picture();
+//        place_picture();
+//				for(int i=0;i<7;i++)
+//				{
+//					location_correct.add [i] = 0;
+//				}
+//				speed_tar = 10;
+//				break;
+//			}
+//		 
+////		运动部分	
+////		tft180_show_uint(0,0,location_correct.x ,5);
+////		tft180_show_uint(0,20,location_correct.y ,5);
+////		while(1)
+////		{	
+//		
+////		}
+////		if(abs(x)<5 && abs(y)<5)
+////		{
+////			
+////			car_stop();
+////			break;
+////		}
+//		
+//			
+////		tft180_show_uint(0,0,location_correct.x ,5);
+////		tft180_show_uint(0,20,location_correct.y ,5);
+////	
+//	}
+//	
+//	
+//	
+
+//}
+
+//}
+
+
 void location_correct_text()
 {
-	while(1)
+	
+	for(int i=0;i<3;i++)
 	{
-		float x = 0,y = 0;
-		gpio_set_level(BEEP, GPIO_HIGH);
-		uart_write_string(UART_4, "4");
-		location_correct.k = 90 / 12.0;
-		if(location_correct_point_read())
+		uint8 count = 5,floag = 0;
+		while(count--)
 		{
-			x = (location_correct.x - location_correct_target_x) * location_correct.k;
-			y = (location_correct.y - location_correct_target_y) * (-location_correct.k);
-			speed_tar = location_correct_pid_x_and_y(0,sqrt(x*x + y*y));
-			car_omni(x,y,Car.Speed_Z);
-			if(speed_tar == 0)
+			float x = 0,y = 0;
+			gpio_set_level(BEEP, GPIO_HIGH);
+			uart_write_string(UART_4, "4");
+			location_correct.k = 90 / 12.0;
+			if(location_correct_point_read())
 			{
-				
-				car_stop();
-				gpio_set_level(BEEP, GPIO_LOW);
-				speed_tar = 10;
-				break;
+				count = 5;
+				x = (location_correct.x - location_correct_target_x) * location_correct.k;
+				y = (location_correct.y - location_correct_target_y) * (-location_correct.k);
+				speed_tar = location_correct_pid_x_and_y(0,sqrt(x*x + y*y));
+				car_omni(x,y,Car.Speed_Z);
+				if(speed_tar == 0)
+				{
+					floag = 1;
+					car_stop();
+					gpio_set_level(BEEP, GPIO_LOW);
+					grab_picture();			
+					place_picture();
+//					smotor_init();
+					system_delay_ms(500);
+					lineate_uart_buff_read(location_correct.add,64);
+					for(int i=0;i<7;i++)
+					{
+						location_correct.add[i] = 0;
+					}
+					speed_tar = 10;
+					break;
+				}
 			}
 		}
-//		运动部分	
-//		tft180_show_uint(0,0,location_correct.x ,5);
-//		tft180_show_uint(0,20,location_correct.y ,5);
-//		while(1)
-//		{	
 		
-//		}
-//		if(abs(x)<5 && abs(y)<5)
-//		{
-//			
-//			car_stop();
-//			break;
-//		}
 		
-			
-//		tft180_show_uint(0,0,location_correct.x ,5);
-//		tft180_show_uint(0,20,location_correct.y ,5);
-//	
+		if(floag)
+		{
+			break;			
+		}
+		//run
+		if(i == 0)
+		{
+		 while(1){
+			if(abs(Car.MileageY) < 20 ){
+								car_omni(0,-1,Car.Speed_Z);			
+				}else{
+							car_stop();
+							icm20602_init();
+							encoder_init();
+							system_delay_ms(1000);
+							break;
+					   }
+						}
+		}
+				if(i == 1)
+		{
+		 while(1){
+			if(abs(Car.MileageY) < 40 ){
+								car_omni(0,1,Car.Speed_Z);			
+				}else{
+							car_stop();
+							icm20602_init();
+							encoder_init();
+							system_delay_ms(1000);
+							break;
+					   }
+						}
+					}
+		if(i == 2)
+		{
+		 while(1){
+			if(abs(Car.MileageY) < 20 ){
+								car_omni(0,-1,Car.Speed_Z);			
+				}else{
+							car_stop();
+							icm20602_init();
+							encoder_init();
+							system_delay_ms(1000);
+							break;
+					   }
+						}
+		}
 	}
-	
-	
-	
 
 }
-

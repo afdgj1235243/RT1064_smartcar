@@ -8,5 +8,7 @@
 void remain_planning1();
 void remain_planning2();
 void remain();
+void unload();
+void unload_move();
 
 #endif 

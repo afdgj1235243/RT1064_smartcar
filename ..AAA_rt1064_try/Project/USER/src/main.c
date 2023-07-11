@@ -92,7 +92,7 @@
 	
 	extern int8 x_add_test[12];
 	extern int8 y_add_test[12];
-	
+	extern uint8 picture_type[100];
 /***********************************************************/	
 
 
@@ -132,7 +132,8 @@ void main(void)
 		tft180_show_string(0,75,"mt9v03x_init");
 		mt9v03x_init();
 		
-//		smotor_init();        
+		
+		smotor_init();        
 //		pwm_init(PWM1_MODULE3_CHA_D0, 100, 0);
 		interrupt_global_enable(0);
 	
@@ -170,7 +171,7 @@ void main(void)
 	
 			tft180_show_string(0,0,"send success");
 			
-				system_delay_ms(500);			           //延时保证接收全部数据
+				system_delay_ms(1000);			           //延时保证接收全部数据
 				location_point_read();
 //			for(int i = 0;i < 12;i++)
 //			{
@@ -234,8 +235,8 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 //    }
 	
 		tft180_clear();
-//		 path();
-		
+		 path();
+//		
 	    for (int i = 0; i < 6; i++) {
 			tft180_show_int(0,15*i,ax_add_test[i],3);
 			tft180_show_int(30,15*i,ay_add_test[i],3);
@@ -247,12 +248,21 @@ tft180_show_uint(0,0,jieshoushuju.len,3);
 	while(gpio_get_level(C13)==1);
 	system_delay_ms(1000);
 	pit_ms_init(PIT_CH0, 1);                  //开启中断0
-//			 			grab_picture();
+	
+			
+			
+//	uart_write_string(UART_4, "3");
+//	system_delay_ms(1000);	
+//	grab_picture();
+//		tft180_clear();	
 		while(1)
 		{
-tft180_show_float(0,2*16,Car.Angel,3,3);
-tft180_show_float(0,3*16,Car.Speed_Z,3,3);
+//			
+//			tft180_show_float(0,2*16,picture_type[1],3,3);
 			
+//tft180_show_float(0,2*16,Car.Angel,3,3);
+//tft180_show_float(0,3*16,Car.Speed_Z,3,3);
+//			stepping_motor_control(2200);
 			
 //			pwm_set_duty(PWM1_MODULE3_CHA_D0, 666);
 //			tft180_show_float(50,100,RC_encoder4,5,5);
@@ -297,7 +307,7 @@ tft180_show_float(0,3*16,Car.Speed_Z,3,3);
 //	tft180_show_float(50,100,RC_encoder4,5,5);
 //	
 	
-//			main_movement_new(12);
+			main_movement_new(12);
 //location_correct_text();
 //       move_test(2);
 //car_omni(0,-5,0);

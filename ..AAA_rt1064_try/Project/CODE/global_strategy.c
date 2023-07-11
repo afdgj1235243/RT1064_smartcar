@@ -5,7 +5,12 @@ by Ğ¡Ìì²Å¹·µ°*/
 #include "global_strategy.h"
 
 int remain_Num=6;
-
+int stop_num_text =0;
+int car_stop_x,car_stop_y;
+int unloadx[6], unloady[6];
+int car_stop_x = 30,car_stop_y = 5;
+int car_last_x ,car_last_y ;
+int car_last_x ,car_last_y ;
 extern int ax_add_test[12],ay_add_test[12];        
 extern location_goal Car;
 
@@ -20,17 +25,29 @@ void remain_planning1()//×îºóÒ»¸ö×ø±êÔÚÖĞ³¡×ó±ß
 			car_test_y = 1 - ay_add_test[11];
 //Õâ¸öÑ­»·ÊÇ½«³µÁ¾µ÷Õûµ½1£¬1µã			
 				while(1){	
-				if(abs(Car.MileageX) < 20*abs(car_test_x)){
-				//if(abs(Car.MileageY) < 20*abs(car_test_y)){
-					car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+					if(car_test_x != 0 && abs(car_test_x) != 1){			
+						if(abs(Car.MileageX) < 20*abs(car_test_x)){
+							car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+						}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								break;
+					  }
+				  }else{              //ÕâÊÇÔÚX=0µÄÌØÊâÇé¿öÏÂÊ¹ÓÃµÄ£¬²»ÒªÂîÎÒĞ´µÄÊÇshitÉ½´úÂë
+							if(abs(Car.MileageY) < 20*abs(car_test_y)){
+								car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+							}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								break;
+					  }
 				}
-					else{
-						car_stop();
-						icm20602_init();
-						encoder_init();
-						system_delay_ms(1000);
-						break;
-					}
 				}	
 //¿ªÊ¼½øĞĞÈ«Í¼ËÑÑ°
 		while(remain_Num)
@@ -43,7 +60,7 @@ void remain_planning1()//×îºóÒ»¸ö×ø±êÔÚÖĞ³¡×ó±ß
 					planning_Num ++;				
 				}
 				while(1){	
-					if(car_test_x == 0){			
+					if(car_test_x != 0 && abs(car_test_x) != 1){			
 						if(abs(Car.MileageX) < 20*abs(car_test_x)){
 							car_omni(car_test_x,car_test_y,Car.Speed_Z);			
 						}
@@ -86,16 +103,29 @@ void remain_planning2()
 			car_test_y = 1 - ay_add_test[11];
 //Õâ¸öÑ­»·ÊÇ½«³µÁ¾µ÷Õûµ½34£¬1µã			
 				while(1){	
-				if(abs(Car.MileageX) < 20*abs(car_test_x)){
-					car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+					if(car_test_x != 0 && abs(car_test_x) != 1){			
+						if(abs(Car.MileageX) < 20*abs(car_test_x)){
+							car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+						}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								break;
+					  }
+				  }else{              //ÕâÊÇÔÚX=0µÄÌØÊâÇé¿öÏÂÊ¹ÓÃµÄ£¬²»ÒªÂîÎÒĞ´µÄÊÇshitÉ½´úÂë
+							if(abs(Car.MileageY) < 20*abs(car_test_y)){
+								car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+							}
+							else{
+								car_stop();
+								icm20602_init();
+								encoder_init();
+								system_delay_ms(1000);
+								break;
+					  }
 				}
-					else{
-						car_stop();
-						icm20602_init();
-						encoder_init();
-						system_delay_ms(1000);
-						break;
-					}
 				}	
 //¿ªÊ¼½øĞĞÈ«Í¼ËÑÑ°
 		while(remain_Num)
@@ -108,7 +138,7 @@ void remain_planning2()
 					planning_Num ++;				
 				}
 				while(1){	
-					if(car_test_x != 0){			
+					if(car_test_x != 0 && abs(car_test_x) != 1){			
 						if(abs(Car.MileageX) < 20*abs(car_test_x)){
 							car_omni(car_test_x,car_test_y,Car.Speed_Z);			
 						}
@@ -139,6 +169,194 @@ void remain_planning2()
 		}
 }
 
+void unload_left()//³µ×ÓÔÚµØÍ¼×ó±ßµÄĞ¶»õ
+{
+				while(1){	
+			if(abs(Car.MileageX) < 20){
+				car_omni(-1,0,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(1000);
+					break;
+			}
+		}	
+				//»ØÕı
+				while(1){	
+			if(abs(Car.MileageX) < 0){
+				car_omni(1,0,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(2000);
+					break;
+			}
+		}						
+}
+
+void unload_right()//³µ×ÓÔÚµØÍ¼ÓÒ±ßµÄĞ¶»õ
+{
+				while(1){	
+			if(abs(Car.MileageX) < 20){
+				car_omni(1,0,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(1000);
+					break;
+			}
+		}		
+				//»ØÕı
+				while(1){	
+			if(abs(Car.MileageX) < 20){
+				car_omni(-1,0,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(2000);
+					break;
+			}
+		}					
+}
+
+void unload_above()//³µ×ÓÔÚµØÍ¼ÉÏ±ßµÄĞ¶»õ
+{
+				while(1){	
+			if(abs(Car.MileageY) < 20){
+				car_omni(0,1,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(1000);
+					break;
+			}
+		}	
+				//»ØÕı
+				while(1){	
+			if(abs(Car.MileageY) < 20){
+				car_omni(0,-1,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(2000);
+					break;
+			}
+		}						
+}
+
+void unload_below()//³µ×ÓÔÚµØÍ¼ÏÂ±ßµÄĞ¶»õ
+{
+				while(1){	
+			if(abs(Car.MileageY) < 20){
+				car_omni(0,-1,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(1000);
+					break;
+			}
+		}			
+				//»ØÕı
+					while(1){	
+			if(abs(Car.MileageY) < 20){
+				car_omni(0,1,Car.Speed_Z);			
+			}
+				else{
+					car_stop();
+					icm20602_init();
+					encoder_init();
+					system_delay_ms(2000);
+					break;
+			}
+		}	
+}
+
+void unload_move(int point)//Ğ¶»õÒÆ¶¯Â·¾¶¹æ»®
+{	
+ int8 car_test_x ,car_test_y;
+    if (car_stop_x < 18) //Ğ¶»õÂ·¾¶---×ó£¬ÉÏ£¬ÓÒ£¬ÏÂ //car_stop_x == 1
+    {
+        unloadx[0] = 1;
+        unloadx[1] = 15;
+        unloadx[2] = 15;
+        unloadx[3] = 35;
+        unloadx[4] = 31;
+        unloadx[5] = 1;
+        
+        unloady[0] = car_stop_y;
+        unloady[1] = car_stop_y;
+        unloady[2] = 25;
+        unloady[3] = 5;
+        unloady[4] = 1;
+        unloady[5] = 1;
+    }
+    else
+    {  
+        unloadx[0] = 35;
+        unloadx[1] = 15;
+        unloadx[2] = 15;
+        unloadx[3] = 15;
+        unloadx[4] = 1;
+        unloadx[5] = 1;
+
+        unloady[0] = car_stop_y;
+        unloady[1] = car_stop_y;
+        unloady[2] = 25;
+        unloady[3] = 1;
+        unloady[4] = 15;
+        unloady[5] = 1;
+    }
+	
+			if(stop_num_text < point ){					     				
+				car_test_x = unloadx[stop_num_text] - car_last_x;
+				car_test_y = unloady[stop_num_text] - car_last_y;								
+				car_last_x = unloadx[stop_num_text];
+				car_last_y = unloady[stop_num_text];				
+				stop_num_text ++;				
+			}
+			while(1){	
+				if(car_test_x != 0 && abs(car_test_x) != 1){			
+					if(abs(Car.MileageX) < 20*abs(car_test_x)){
+						car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+					}
+						else{
+							car_stop();
+							icm20602_init();
+							encoder_init();
+							system_delay_ms(1000);
+							break;
+					}
+				}else{              //ÕâÊÇÔÚX=0µÄÌØÊâÇé¿öÏÂÊ¹ÓÃµÄ£¬²»ÒªÂîÎÒĞ´µÄÊÇshitÉ½´úÂë
+						if(abs(Car.MileageY) < 20*abs(car_test_y)){
+							car_omni(car_test_x,car_test_y,Car.Speed_Z);			
+						}
+						else{
+							car_stop();
+							icm20602_init();
+							encoder_init();
+							system_delay_ms(1000);
+							break;
+					}
+			  }			
+		}
+
+}
+
+
 void remain()     //¹Ì¶¨×ø±êÊ¶±ğÍê³É£¬¿ªÊ¼ËÑÑ°É¢ÂäÎŞ×ø±êµãÍ¼Æ¬*****Õâ¸ö¿âµÄÖ÷º¯Êı
 {
 	 if(ax_add_test[11] < 18)
@@ -147,4 +365,66 @@ void remain()     //¹Ì¶¨×ø±êÊ¶±ğÍê³É£¬¿ªÊ¼ËÑÑ°É¢ÂäÎŞ×ø±êµãÍ¼Æ¬*****Õâ¸ö¿âµÄÖ÷º¯Ê
 	}else{
 		remain_planning2();
 	}		
+}
+
+
+void unload()
+{
+	int stop_num = 6;
+  car_last_x = car_stop_x,car_last_y = car_stop_y;
+			if( car_stop_x < 18 )
+//		if( ax_add_test[11] < 18 ) //car_stop_x == 1
+		{
+				while (stop_num)
+			{
+				if (stop_num == 5)
+				{
+						// ³µ×ÓÔÚµØÍ¼×ó±ßÊ±µÄĞ¶»õ
+						unload_left();
+				}
+				else if (stop_num == 3)
+				{
+						// ³µ×ÓÔÚµØÍ¼ÉÏ±ßÊ±µÄĞ¶»õ
+						unload_above();
+				}
+				else if (stop_num == 2)
+				{
+						// ³µ×ÓÔÚµØÍ¼ÓÒ±ßÊ±µÄĞ¶»õ
+						unload_right();
+				}
+				else if (stop_num == 1)
+				{
+						// ³µ×ÓÔÚµØÍ¼ÏÂ±ßÊ±µÄĞ¶»õ
+						unload_below();
+				}
+			unload_move(6);
+			stop_num --;
+			}
+		}else{
+				while (stop_num)
+			{
+				if (stop_num == 5)
+				{
+						// ³µ×ÓÔÚµØÍ¼ÓÒ±ßÊ±µÄĞ¶»õ
+					unload_right();
+				}
+				else if (stop_num == 3)
+				{
+						// ³µ×ÓÔÚµØÍ¼ÉÏ±ßÊ±µÄĞ¶»õ
+					unload_above();
+				}
+				else if (stop_num == 2)
+				{
+						// ³µ×ÓÔÚµØÍ¼ÏÂ±ßÊ±µÄĞ¶»õ
+					unload_below();
+				}
+				else if (stop_num == 1)
+				{
+						// ³µ×ÓÔÚµØÍ¼×ó±ßÊ±µÄĞ¶»õ
+					unload_left();
+				}
+			unload_move(6);
+			stop_num --;
+			}
+		} 
 }

@@ -14,6 +14,9 @@ void smotor3_control(int16 duty);
 
 int smotor_pid(int now_position,int Target);
 
-void stepping_motor_control(uint8 step,uint8 dir);
+void stepping_motor_control(uint16 run);
 
+void picture_read_countrol();
+
+uint16 step_command(uint8 step);
 #endif

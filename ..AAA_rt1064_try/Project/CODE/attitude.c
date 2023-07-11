@@ -106,8 +106,8 @@ void keep_Front(void)
     ICM_getEulerianAngles();
 
     eulerAngle.yaw=eulerAngle.yaw+getAngel_Err*getAngel_times;
-    Car.Angel=eulerAngle.yaw  - count_time/4;
-
+//    Car.Angel=eulerAngle.yaw;
+ Car.Angel=eulerAngle.yaw  - count_time/5;
     //获取编码器的值
     encoder_get();
 

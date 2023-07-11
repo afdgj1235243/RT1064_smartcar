@@ -41,8 +41,10 @@ extern void move_test(int x,int y);
 extern int x_text,y_text;
 void image_find_move();
   extern location_goal Car;
+	extern uint8 stepping_judge;
 int16 count_zero = 0;
 int16 count_time = 0;
+
 
 void CSI_IRQHandler(void)
 {
@@ -67,7 +69,9 @@ void PIT_IRQHandler(void)
 //				encoder_get();
 //				motor_run(true);
 			motor_run(true);
-
+//			pwm_set_duty(PWM2_MODULE3_CHA_B9,325);
+//			stepping_motor_control(2200);
+			stepping_judge--;
 //				encoder_get();
 //  			ICM_getEulerianAngles();
 				
